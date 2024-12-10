@@ -21,9 +21,9 @@
                     </div>
                     <div class="header-profile d-flex align-items-center d-none d-lg-flex">
                     {% if not user.is_authenticated %}
-                        <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
+                        <a href="/" class="btn btn-login">Login</a>
                     {% endif  %}
-                        <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+                        <a href="/text" class="btn get-start">
                             Get Started
                             <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
                         </a>
@@ -43,7 +43,7 @@
             <p class="desc">
                 Take control of your VSLs with LeadEditor.io - create, edit, and test leads effortlessly without relying on video editors for split testing.
             </p>
-            <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+            <a href="/text" class="btn get-start">
                 Get Started Today
                 <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </a>
