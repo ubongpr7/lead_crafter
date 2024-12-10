@@ -43,15 +43,34 @@
             </div>
             <p id="video_error" style="color:red; margin-top:-20px; "></p>
             <div class="browse-field">
-                <label for="transcribedFile" class="label-txt mt-4">Videos Transcribed File:</label>
+                <label for="trim_from" class="label-txt mt-4">Trim from:</label>
                 <div class="custum-browse d-flex align-items-center">
                     <div class="brws">
-                        <input class="br-input" type="file" name="transcribedFile" id="transcribedFile" accept=".txt" required />
-                        <a href="#!" class="btn get-start browse-btn">
-                            <img src="{% static 'lead-maker/images/upload-icn.svg' %}" alt="" /> Choose file
-                        </a>
+                      <div style="display: flex; gap: 24px; width: 100%;">
+                        <div style="display: flex; flex-direction: column; width: 100%; gap: 16px">
+                          <span class="text" style="width: 100%; text-align: left;">Start Trim :</span>
+                          <input type="text"
+                                 placeholder="00:00"
+                                 class="time startTime"
+                                 id="from_when"
+                                 name="from_when"
+                                 style="padding: 12px 24px;
+                                        border: 1px solid #E3E3E3;
+                                        border-radius: 4px" />
+                        </div>
+                        <div style="display: flex; flex-direction: column; width: 100%; gap: 16px">
+                          <span class="text" style="width: 100%; text-align: left;">End Trim:</span>
+                          <input type="text"
+                                 placeholder="00:00"
+                                 class="time endTime"
+                                 name="to_when"
+                                 id="to_when"
+                                 style="padding: 12px 24px;
+                                        border: 1px solid #E3E3E3;
+                                        border-radius: 4px" />
+                        </div>
+                      </div>
                     </div>
-                    <p>No file chosen</p>
                 </div>
             </div>
             <p id="subtitle_error" style="color:red; margin-top:-20px; "></p>
@@ -61,8 +80,8 @@
             </div>
             <p id="api_key_error" style="color:red;"></p>
             <div class="browse-field">
-                <label for="voiceID" class="label-txt">Voice ID:</label>
-                <input type="text" name="voiceID" placeholder="Voice ID" class="form-control" id="voiceID" required />
+                <label for="voiceid" class="label-txt">Voice ID:</label>
+                <input type="text" name="voiceid" placeholder="Voice ID" class="form-control" id="voiceID" required />
             </div>
             <p id="voice_id_error" style="color:red; "></p>
             <div class="sub-design">
@@ -168,6 +187,32 @@
     submitButton.prop('disabled', false);
 
 
+    function addInputValidation() {
+    const startTimeInput = document.getElementById(`from_when`);
+    const endTimeInput = document.getElementById(`to_when`);
+
+    [startTimeInput, endTimeInput].forEach(input => {
+      input.addEventListener('input', function() {
+        let value = input.value.replace(/[^0-9:]/g, '');
+        if (value.length === 2 && !value.includes(':')) {
+          value += ':';
+        }
+        if (value.length > 5) {
+          value = value.substring(0, 5);
+        }
+        input.value = value;
+
+        // Validate numbers on each side of the colon
+        const parts = value.split(':');
+        if (parts[0] && parseInt(parts[0], 10) > 59) {
+          input.value = `59:${parts[1] || ''}`;
+        }
+        if (parts[1] && parseInt(parts[1], 10) > 59) {
+          input.value = `${parts[0] || ''}:59`;
+        }
+      });
+    });
+  }
 
 function startProcessingAnimation(selector) {
   const button_text = $(selector);

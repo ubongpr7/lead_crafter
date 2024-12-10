@@ -494,6 +494,7 @@ def validate_api_keyv(request):
 @check_user_credits(minimum_credits_required=1)
 def add_text_video(request):
     if request.method == "POST":
+        videoFile = request.FILES.get("videoFile")
         voice_id = request.POST.get("voiceid")
         api_key = request.POST.get("elevenlabs_apikey")
         resolution = request.POST.get("resolution")
