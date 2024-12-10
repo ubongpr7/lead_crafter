@@ -1,7 +1,7 @@
-{% extends 'accounts/base.html' %}
+{% extends 'lead-maker/accounts/base.html' %}
 {% block content %}
 {% load static %}
-{% include "includes/header.html" %}
+{% include "lead-maker/includes/header.html" %}
 
 
 
@@ -19,18 +19,18 @@
                     <h5 class="text-center lead-title">Your Video Has Been Generated Successfully</h5>
                     <div class="video-container">
                         <video  controls>
-                        <source src="{% static 'final/'%}{{video_path}}" type="video/mp4" />
+                        <source src="{% static 'lead-maker/final/'%}{{video_path}}" type="video/mp4" />
                                 Your browser does not support the video tag.
                         </video> 
                     </div>
                     {% if user.coins == 0 %}
                         <a href="#plansModal" data-bs-toggle="modal" class="btn get-started">Download
-                        <img class="btn-arrow" src="{% static '/images/download-icn.svg' %}" alt="Download Arrow" /></a>
+                        <img class="btn-arrow" src="{% static 'lead-maker/images/download-icn.svg' %}" alt="Download Arrow" /></a>
                     {% else %}
 
                      <a href="{{ video_href }}"  class="btn proceed-btn" id="download">
                         Download
-                        <img class="btn-arrow" src="{% static '/images/download-icn.svg' %}" alt="Download Arrow" />
+                        <img class="btn-arrow" src="{% static 'lead-maker/images/download-icn.svg' %}" alt="Download Arrow" />
                         </a> 
                     {% endif %}
                     <p style="margin-top: 13px; font-size: 12px; color: black">
@@ -88,8 +88,8 @@
                                     </form>
                                     <a href="#!" onclick="upgradePayment('ProPlan')" class="btn get-started">
                                         Get Started
-                                        <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
-                                        <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
                                     </a>
                                 </div>
                             </div>
@@ -107,8 +107,8 @@
                                     </form>
                                     <a href="#!" onclick="upgradePayment('Premuimredirection')" class="btn get-started">
                                         Get Started
-                                        <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
-                                        <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
                                     </a>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
 <script>
 
 </script>
-    <script src="{% static '/js/downloads.js' %}"></script> <!-- external JS file -->
+    <script src="{% static 'lead-maker/js/downloads.js' %}"></script> <!-- external JS file -->
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

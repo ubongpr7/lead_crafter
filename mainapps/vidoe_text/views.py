@@ -492,7 +492,7 @@ def validate_api_keyv(request):
 
 @login_required
 @check_user_credits(minimum_credits_required=1)
-def add_text(request):
+def add_text_video(request):
     if request.method == "POST":
         voice_id = request.POST.get("voiceid")
         api_key = request.POST.get("elevenlabs_apikey")
@@ -524,7 +524,7 @@ def add_text(request):
                 messages.error(request, "Please provide all required fields.")
                 return render(
                     request,
-                    "vlc/frontend/VLSMaker/index.html",
+                    "lead-maker/add_text_video.html",
                     {"error": "Please provide all required fields."},
                 )
         elif x and not y:
@@ -534,7 +534,7 @@ def add_text(request):
             )
             return render(
                 request,
-                "vlc/frontend/VLSMaker/index.html",
+                "lead-maker/add_text_video.html",
                 {"error": "Please provide valid API key"},
             )
         elif not x:
@@ -544,11 +544,11 @@ def add_text(request):
             )
             return render(
                 request,
-                "vlc/frontend/VLSMaker/index.html",
+                "lead-maker/add_text_video.html",
                 {"error": "Please provide valid API key"},
             )
 
-    return render(request, "vlc/frontend/VLSMaker/index.html")
+    return render(request, "lead-maker/add_text_video.html",)
 
 
 # @login_required

@@ -30,8 +30,8 @@ urlpatterns = [
 
     # terms
 
-     path("terms-conditions/", terms_conditions_view, name="terms_conditions"),
-     path("privacy-policy/", privacy_policy_view, name="privacy_policy"),
-     path("refund-policy/", refund_policy_view, name="refund_policy"),
-     path("affiliate-terms/", affiliate_programs_terms_view, name="affiliate_terms"),    
+     path("terms-conditions/", views.terms_conditions_view, name="terms_conditions"),
+     path("privacy-policy/", views.privacy_policy_view, name="privacy_policy"),
+     path("refund-policy/", views.refund_policy_view, name="refund_policy"),
+     path("affiliate-terms/", views.affiliate_programs_terms_view, name="affiliate_terms"),    
 ]

@@ -1,13 +1,13 @@
-from django.urls import path
+from django.urls import path,re_path
 from . import views
-from django.urls import re_path
 
 app_name = "video_text"
 urlpatterns = [
-    path("", views.add_text, name="add_text"),
+    path("", views.add_text_video, name="add_text"),
     path(
         "process-textfile/<str:textfile_id>/", views.process_textfile, name="process_textfile"
     ),
+
     path("download_video/<str:textfile_id>/", views.download_video, name="download_video"),
     path(
         "progress_page/<str:al_the_way>/<str:text_file_id>",

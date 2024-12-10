@@ -1,7 +1,7 @@
-{% extends 'accounts/base.html' %}
+{% extends 'lead-maker/accounts/base.html' %}
 {% block content %}
 {% load static %}
-{% include "includes/header.html" %}
+{% include "lead-maker/includes/header.html" %}
 
     <div class="content">
       <section class="login-sec voice-subtitle">
@@ -35,5 +35,5 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
-    <script src="{% static '/js/loading.js' %}" defer></script>
+    <script src="{% static 'lead-maker//js/loading.js' %}" defer></script>
 {% endblock content %}

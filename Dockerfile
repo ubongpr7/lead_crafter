@@ -50,4 +50,4 @@ RUN fc-cache -f -v
 
 
 EXPOSE 7732
-CMD ["bash", "-c", "python3.10 manage.py migrate && python3.10 manage.py runserver 0.0.0.0:7732"]
+CMD ["bash", "-c", "python3.10 manage.py migrate && python3.10 manage.py runserver 0.0.0.0:7759"]
