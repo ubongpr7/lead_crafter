@@ -497,6 +497,7 @@ def add_text_video(request):
         videoFile = request.FILES.get("videoFile")
         voice_id = request.POST.get("voiceid")
         api_key = request.POST.get("elevenlabs_apikey")
+        resolution = request.POST.get("resolution")
         fontFile = request.FILES.get("fontFile")
         font_color = request.POST.get("font_color")
         subtitle_box_color = request.POST.get("subtitle_box_color")
@@ -513,6 +514,7 @@ def add_text_video(request):
                     voice_id=voice_id,
                     api_key=api_key,
                     font_file=fontFile,
+                    resolution=resolution,
                     subtitle_box_color=subtitle_box_color,
                     font_size=font_size,
                     font_color=font_color,

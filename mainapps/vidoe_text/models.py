@@ -88,7 +88,7 @@ class TextFile(models.Model):
     font_color = models.CharField(max_length=7)  # e.g., hex code: #ffffff
     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
     font_size = models.IntegerField()
-    
+    resolution=models.CharField(max_length=7, blank=True, null=True) 
     bg_music_text = models.FileField(upload_to="lead-editor/background_txt/", blank=True, null=True)
     audio_file = models.FileField(upload_to="lead-editor/audio_files", blank=True, null=True)
     srt_file = models.FileField(
