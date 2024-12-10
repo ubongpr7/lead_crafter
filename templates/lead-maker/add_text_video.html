@@ -205,7 +205,6 @@ function validateAPIKey(event) {
   voiceIdError.text('');
   font_error.text('');
   videoErrorTxt.text('');
-  subtitleErrorTxt.text('');
   //text_form.style.height = '2290px';
 
   let formValid = true
@@ -219,7 +218,6 @@ function validateAPIKey(event) {
   
   if (!subtitleFile){
     subtitleInput.focus()
-    subtitleErrorTxt.text('Please Upload a subtitle text file');
     formValid = false
     // stopProcessingAnimation('#button-text');
   }
