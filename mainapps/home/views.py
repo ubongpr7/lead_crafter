@@ -13,11 +13,11 @@ def home(request):
             return redirect("/text")
         else:
             return render(
-                request, "vlc/frontend/landing.html", context={"price_ids": price_ids}
+                request, "lead-maker/accounts/index.html", context={"price_ids": price_ids}
             )
     else:
         return render(
-            request, "vlc/frontend/landing.html", context={"price_ids": price_ids}
+            request, "lead-maker/accounts/index.html", context={"price_ids": price_ids}
         )
 
 

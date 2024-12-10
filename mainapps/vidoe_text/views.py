@@ -522,6 +522,7 @@ def add_text_video(request):
 
             else:
                 messages.error(request, "Please provide all required fields.")
+                
                 return render(
                     request,
                     "lead-maker/add_text_video.html",
