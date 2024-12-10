@@ -98,7 +98,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'password',
         'HOST': 'db',
-        'PORT': '5433', 
+        'PORT': '5432', 
     }
 }
 AUTH_USER_MODEL = "accounts.User"
