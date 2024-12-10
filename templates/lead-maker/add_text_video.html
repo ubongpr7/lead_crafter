@@ -42,41 +42,11 @@
                 </div>
             </div>
             <p id="video_error" style="color:red; margin-top:-20px; "></p>
-            <div class="browse-field">
-                <label for="from_when" class="label-txt mt-4">Trimming Settings</label>
-                <div class="custum-browse d-flex align-items-center">
-                    <div class="brws">
-                      <div style="display: flex; gap: 24px; width: 100%;">
-                        <div style="display: flex; flex-direction: column; width: 100%; gap: 16px">
-                          <span class="text" style="width: 100%; text-align: left;">Start:</span>
-                          <input type="text"
-                                 placeholder="00:00"
-                                 class="time startTime"
-                                 id="from_when"
-                                 name="from_when"
-                                 style="padding: 12px 24px;
-                                        border: 1px solid #E3E3E3;
-                                        border-radius: 4px" />
-                        </div>
-                        <div style="display: flex; flex-direction: column; width: 100%; gap: 16px">
-                          <span class="text" style="width: 100%; text-align: left;">End:</span>
-                          <input type="text"
-                                 placeholder="00:00"
-                                 class="time endTime"
-                                 name="to_when"
-                                 id="to_when"
-                                 style="padding: 12px 24px;
-                                        border: 1px solid #E3E3E3;
-                                        border-radius: 4px" />
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
+            
             <p id="subtitle_error" style="color:red; margin-top:-20px; "></p>
             <div class="browse-field">
-                <label for="apiKey" class="label-txt mt-4">ElevenLabs API Key:</label>
-                <input type="text" name="apiKey" placeholder="ElevenLabs API Key" class="form-control" id="apiKey" required />
+                <label for="elevenlabs_apikey" class="label-txt mt-4">ElevenLabs API Key:</label>
+                <input type="text" name="elevenlabs_apikey" placeholder="ElevenLabs API Key" class="form-control" id="apiKey" required />
             </div>
             <p id="api_key_error" style="color:red;"></p>
             <div class="browse-field">
@@ -105,16 +75,16 @@
                     <label for="formFileLg" class="label-txt mt-4">Font Color:</label>
                     <div class="custum-browse clr-fld-wrp d-flex align-items-center">
                         <div class="color-fld" id="text-picker">
-                            <input type="color" name="textColor" id="text-color" value="#ffffff" />
+                            <input type="color" name="font_color" id="text-color" value="#ffffff" />
                         </div>
                         <p id="text-code">#ffffff</p>
                     </div>
                 </div>
                 <div class="browse-field">
-                    <label for="bgColor" class="label-txt">Subtitles Background Color:</label>
+                    <label for="subtitle_box_color" class="label-txt">Subtitles Background Color:</label>
                     <div class="custum-browse clr-fld-wrp d-flex align-items-center">
                         <div class="color-fld clr-black" id="bg-picker">
-                            <input type="color" name="bgColor" id="bg-color" value="#000000" />
+                            <input type="color" name="subtitle_box_color" id="bg-color" value="#000000" />
                         </div>
                         <p id="bg-code">#000000</p>
                     </div>

@@ -46,7 +46,7 @@ def font_file_upload_path(instance, filename):
     """Generate a unique file path for uploaded custom fonts."""
     ext = filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"
-    return os.path.join("fonts", filename)
+    return os.path.join("lead-maker","fonts", filename)
 
 
 def audio_file_upload_path(instance, filename):
@@ -83,14 +83,13 @@ class TextFile(models.Model):
     processed = models.BooleanField(default=False)
     progress = models.CharField(default="0", max_length=100)
     api_key = models.CharField(max_length=200)
-    # resolution = models.CharField(max_length=50)
     font_file = models.FileField(upload_to=font_file_upload_path, blank=True, null=True)
-    font = models.CharField(max_length=50, default="Arial")
+    font = models.CharField(max_length=50, blank=True,null=True, default="Arial")
     font_color = models.CharField(max_length=7)  # e.g., hex code: #ffffff
     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
     font_size = models.IntegerField()
+    
     bg_music_text = models.FileField(upload_to="lead-editor/background_txt/", blank=True, null=True)
-    fps = models.IntegerField(default=30, editable=False)
     audio_file = models.FileField(upload_to="lead-editor/audio_files", blank=True, null=True)
     srt_file = models.FileField(
         upload_to="lead-editor/srt_files/", blank=True, null=True

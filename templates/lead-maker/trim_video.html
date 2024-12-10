@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Trimmer</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.slider-container {
+  position: relative;
+  width: 600px;
+  margin: 20px auto;
+  height: 30px;
+}
+
+input[type="range"] {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 15px;
+  height: 15px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  pointer-events: all;
+  width: 15px;
+  height: 15px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #ddd;
+  transform: translateY(-50%);
+}
+
+.slider-track::before {
+  content: '';
+  position: absolute;
+  height: 5px;
+  background: #007bff;
+  z-index: 1;
+}
+
+  </style>
+</head>
+<body>
+  <div>
+    <video id="video" width="600" controls>
+      <source src="{{text_file.video_file.url}}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="slider-container">
+    <input type="range" id="rangeStart" min="0" max="10" value="0" step="0.1">
+    <input type="range" id="rangeEnd" min="0" max="10" value="10" step="0.1">
+    <div class="slider-track"></div>
+  </div>
+  <div>
+    <p>Start Time: <span id="startTime">0</span>s</p>
+    <p>End Time: <span id="endTime">10</span>s</p>
+  </div>
+  <button id="trimButton">Trim Video</button>
+  <video id="trimmedVideo" width="600" controls style="display:none;"></video>
+
+  <script>
+    const video = document.getElementById('video');
+const rangeStart = document.getElementById('rangeStart');
+const rangeEnd = document.getElementById('rangeEnd');
+const startTimeDisplay = document.getElementById('startTime');
+const endTimeDisplay = document.getElementById('endTime');
+const trimButton = document.getElementById('trimButton');
+const trimmedVideo = document.getElementById('trimmedVideo');
+
+// Update the range slider maximum when the video is loaded
+video.addEventListener('loadedmetadata', () => {
+  rangeStart.max = video.duration;
+  rangeEnd.max = video.duration;
+  rangeEnd.value = video.duration;
+
+  updateSlider();
+});
+
+// Sync the slider track and values
+function updateSlider() {
+  const start = parseFloat(rangeStart.value);
+  const end = parseFloat(rangeEnd.value);
+
+  // Update start and end values
+  startTimeDisplay.textContent = start.toFixed(1);
+  endTimeDisplay.textContent = end.toFixed(1);
+
+  // Prevent overlap of sliders
+  if (start >= end) {
+    rangeStart.value = end - 0.1;
+    startTimeDisplay.textContent = rangeStart.value.toFixed(1);
+  }
+
+  // Update the slider track between the handles
+  const track = document.querySelector('.slider-track');
+  const range = rangeEnd.max - rangeEnd.min;
+  const startPercent = ((start - rangeStart.min) / range) * 100;
+  const endPercent = ((end - rangeEnd.min) / range) * 100;
+  track.style.left = startPercent + '%';
+  track.style.width = endPercent - startPercent + '%';
+}
+
+// Event listeners for slider handles
+rangeStart.addEventListener('input', updateSlider);
+rangeEnd.addEventListener('input', updateSlider);
+
+// Trim the video using FFmpeg or server-side logic
+trimButton.addEventListener('click', () => {
+  const start = parseFloat(rangeStart.value);
+  const end = parseFloat(rangeEnd.value);
+
+  console.log(`Trim video from ${start}s to ${end}s`);
+
+  // Placeholder logic for trimmed video
+  const blob = new Blob([], { type: 'video/mp4' });
+  trimmedVideo.src = URL.createObjectURL(blob);
+  trimmedVideo.style.display = 'block';
+});
+
+  </script>
+</body>
+</html>

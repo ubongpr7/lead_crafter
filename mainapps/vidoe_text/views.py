@@ -497,7 +497,7 @@ def add_text_video(request):
         videoFile = request.FILES.get("videoFile")
         voice_id = request.POST.get("voiceid")
         api_key = request.POST.get("elevenlabs_apikey")
-        resolution = request.POST.get("resolution")
+        fontFile = request.FILES.get("fontFile")
         font_color = request.POST.get("font_color")
         subtitle_box_color = request.POST.get("subtitle_box_color")
         font_select = request.POST.get("font_select")
@@ -509,17 +509,16 @@ def add_text_video(request):
             if voice_id and api_key:
                 text_obj = TextFile.objects.create(
                     user=request.user,
-                    bg_level=0.06,
+                    video_file=videoFile,
                     voice_id=voice_id,
                     api_key=api_key,
-                    resolution=resolution,
-                    font=font_select,
+                    font_file=fontFile,
                     subtitle_box_color=subtitle_box_color,
                     font_size=font_size,
                     font_color=font_color,
                 )
 
-                return redirect('/')
+                return redirect(f'/text/trim/{text_obj.id}')
 
             else:
                 messages.error(request, "Please provide all required fields.")
@@ -734,6 +733,10 @@ def download_video(
         messages.info(request, "You do not have enough credit to Proceed")
         return redirect(reverse("home:home") + "#pricing")
 
+@login_required
+def trim_video(request,textfile_id):
+    text_file=TextFile.objects.get(id=textfile_id)
+    return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):
