@@ -1,0 +1,87 @@
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" media="all">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> 
+<style>
+    .toast {
+            background-color: white !important; 
+            color: black !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+            border: 1px solid #ccc; 
+        }
+
+        /* Adjust position */
+        .toast-top-right {
+            top: 90px !important; /* Avoid overlap with navbar */
+            right: 10px !important;
+            z-index: 1050 !important;
+        }
+
+        #toast-container>.toast-error {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACPUlEQVR4nO2YTYhNYRjHf0wTmkRSaoooRSkLioXF2E2xwwpZ+diQj50UDXZodmzNjmZJFqMoySwsjJSNmlJKJk1JvuYyf711Tp103fN+nXPeU/dfv83t7X2e373nnvOeB/rpp50RHDLQ5gh2CP5k7KKNESwRPBMo44X5jLZFcKQgkXOYNkWwQvC+i8gHwRBtieBqF4mcMdoQwXrBtx4i3wUbST2C+z0kcu6RcgR7BIsWIoYRUoxgqeClpYThlWCA1CI44SCRc5yUIlgp+Ogh8kmwilQiuOkhkXODFCLYLPgZIPJLsCUFkYcBEjkPmpYYLWlwQTCfsVCydrQpiUHB25LmxiyPLcr2GmxC5JzFJXO5sP6KxfqzdUusEXyuQGResLZOkTuWf2JXEQlu1yWxTdCpUOS3YHsdIlMOt1UfEQmeVC1x0PH54CsiwYGqJJYJ3tUoMitYXoXIJcdGQkUkuBhbYp3gSwMiXwXDMUUmPJqIISLB3VgSO7NJYVMii4LdMaaFzz0biCUiwXTQlFJwLKB4TBEJjvpKDGWTwZDiLqffMvymlILrgYVd30dsuOYqsaFkWtgUPwSbXEQmIxXuFH4R24OmSpi0ldgb8Ru8UNj3fMR9R8okBgQzEQueKex9OuK+Mz2nlIJTka/pqkQkOPk/idWCucjFzAn2ccZs5L3nTM/dRMYjF6qDW/9KbI10n6+bjnn1Loo8SqApX6Zyif0JNBPKPiPyJoFGQnltRJ4m0Ego0z0fkP30g3f+AvyRzJq1UG61AAAAAElFTkSuQmCC') !important;
+        background-size: 30px;
+    }
+
+    #toast-container>.toast-success {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADWElEQVR4nO2Y/0sTYRzHH7M0zbQsrRQyzUmZq9a088tk8/J0s+f8Pqc5N81bhCD0HyREf0C/RF/ot6CQKMXSLHRmpanZdC7drs2bQYkFitEPGekT07KS1MfN8oR7weu3u/fn/dw93B0HgICAgICAgIDAHzAj9CGDk37IcPQlPSffDNYTjJOOZDj43uCk0Zyw88w7uBOsBypYZYjBCa2/ys/JcPD1GQfcC/hMNasMZDi6d2H53+7EW9fWAnykmlX6GjjYsnj5H3JwGCDgBfjEeXR+A8PB2mXLu7aSkx7l3QIYJ7yMU97ghFOGkex0wCcMHF2DdeU5OF05DDWATzAcPMtwEOF58pzbg6os8gDtKLVlVcs7lIWVDtW3yuEstKwO1QW3B5XbKbLCnvm5wp4xqX+Tkbsa5V2Z5faMLxX2TIThNbcHaa1UpJ6lPupZCs1qo2b0NqrGk/I6K3lYZ6Mm5jPZJbRR9XKjfKNbg04PJW/V2cgBnY1ECy2zklfdCdaxafvLbOTo3zJ1C7WSbW5/A7mey9pBeb12SIEWs3RQ0eRaJG6m1k6FaocU7FKZ2p8OKsynzLLtwF2KB1LOlVhkCMPuYjOxa7k89cv0oBKLrA8ns9gic5QOpu4BnqDpJ25ozIkIxyJzIqcZIA4uluXaBpp+og0vixhTWxKjPSo/uwATsa/AlGAv7EtAOBaY4scLTFLFwhx1rdq7sC/+HlaOKf5TXr/0mMfl54dbYoPzXh19kv9KgnDM65VM5fdKyuYDEPDK75Vcxz23wHQkA6w2SjbaN6dHfDOnR4yw7BbP5PSIa1zls3viLuKck90tns7tiisC/wwEvGBX7EW6KxZh+yK2A/dY2H2gCvwPsjpF5aoO0VRWZwxaLVWdIo9eiitG9TyKzHwWNaF8FoU8N/IKWAvS28JFVHsES7VHIPfdW6euBd5grTjxOGxHWmv4U9IYjlZqWmuYUW6MWPvfJMrGaF9FS+gtRcsutALNcmPQNsAbEPBKbd5ek/ooGC1rc7BDbgzZDfhISmNAZXJj4NfkpkD0N5OaAj/IHmyNAXwmocE/k2jwmyTu+6PfPX7fbzyp0V8C1gPSu777pfU+t+PrN41J63wmpXWb7hANPqK17iUgICAgIAD4zHd5fAGgfbEhmQAAAABJRU5ErkJggg==') !important;
+        background-size: 30px;
+    }
+
+
+    /* Default progress bar color */
+    .toast-progress {
+        background-color: #28a745 !important; /* Default color (green for success) */
+    }
+
+    /* For success messages (green) */
+    #toast-container > .toast-success .toast-progress {
+        background-color: #28a745 !important; /* Green */
+    }
+
+    /* For error messages (red) */
+    #toast-container > .toast-error .toast-progress {
+        background-color: #dc3545 !important; /* Red */
+    }
+
+    /* For info messages (blue) */
+    #toast-container > .toast-info .toast-progress {
+        background-color: #17a2b8 !important; /* Blue */
+    }
+
+    /* For warning messages (yellow) */
+    #toast-container > .toast-warning .toast-progress {
+        background-color: #ffc107 !important; /* Yellow */
+    }
+
+     
+</style>
+
+
+<script>
+    toastr.options = {
+        "positionClass": "toast-top-right",  // Change to desired position
+        "closeButton": true,
+        "progressBar": true,
+    //     timeOut: 0,
+    // extendedTimeOut: 0,
+    };
+
+    // toastr.success("This is a success message ");
+    // toastr.error("This is a error message ");
+</script>
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+          
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'error' %}
+            
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+

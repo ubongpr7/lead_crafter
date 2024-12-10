@@ -1,0 +1,132 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+{% load static %}
+{% include "includes/header.html" %}
+
+
+
+
+<main class="content contain">
+        <section class="login-sec voice-subtitle">
+            <div class="container">
+                <ul class="status-bar">
+                    <li class="active loading loaded"><a href="#!">Upload & Customise</a></li>
+                    <li class="active loading loaded"><a href="#!">Lead Creation</a></li>
+                    <li class="active loading loaded"><a href="#!">Background Music Selection</a></li>
+                    <li class="active"><a href="#!">Download</a></li>
+                </ul>
+                <div class="lead-container">
+                    <h5 class="text-center lead-title">Your Video Has Been Generated Successfully</h5>
+                    <div class="video-container">
+                        <video  controls>
+                        <source src="{% static 'final/'%}{{video_path}}" type="video/mp4" />
+                                Your browser does not support the video tag.
+                        </video> 
+                    </div>
+                    {% if user.coins == 0 %}
+                        <a href="#plansModal" data-bs-toggle="modal" class="btn get-started">Download
+                        <img class="btn-arrow" src="{% static '/images/download-icn.svg' %}" alt="Download Arrow" /></a>
+                    {% else %}
+
+                     <a href="{{ video_href }}"  class="btn proceed-btn" id="download">
+                        Download
+                        <img class="btn-arrow" src="{% static '/images/download-icn.svg' %}" alt="Download Arrow" />
+                        </a> 
+                    {% endif %}
+                    <p style="margin-top: 13px; font-size: 12px; color: black">
+                        *Please Note The Watermark Will Be Removed When You Click Download
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+
+    <div class="content load" style="display: none;">
+        <section class="login-sec voice-subtitle">
+            <div class="container">
+                <ul class="status-bar">
+                    <li class="active loading loaded"><a href="#!">Upload & Customise</a></li>
+                    <li class="active loading"><a href="#!">Lead Creation</a></li>
+                    <li><a href="#!">Background Music Selection</a></li>
+                    <li><a href="#!">Download</a></li>
+                </ul>
+                <div class="lead-container loading-block">
+                    <h5 class="text-center lead-title">Loading <span class="dots">.</span></h5>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+
+<div class="modal fade" id="plansModal" tabindex="-1" aria-labelledby="plansModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <section class="plan-sec2" id="pricing">
+                    <div class="container">
+                        <h2 class="plan-title text-center">
+                            Choose The Plan That Fits <br />
+                            Your Needs
+                        </h2>
+                        <div class="crd-wrp">
+                            <div class="plan-crd premium-crd">
+                                <h2>
+                                    Pro Plan
+                            
+                                </h2>
+                                <div class="price">
+                                    <strong>$497</strong>
+                                    <span>/month</span>
+                                    <p class="per-amount">$19.88 per video</p>
+                                    <ul class="checklist">
+                                        <li>25 leads per month</li>
+                                    </ul>
+                                    <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+                                        <input hidden name="plan" value="Pro_Plan">
+                                    </form>
+                                    <a href="#!" onclick="upgradePayment('ProPlan')" class="btn get-started">
+                                        Get Started
+                                        <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="plan-crd premium-crd">
+                                <h2>Premium Plan</h2>
+                                <div class="price">
+                                    <strong>$997</strong>
+                                    <span>/month</span>
+                                    <p class="per-amount">$13.94 per video</p>
+                                    <ul class="checklist">
+                                        <li>60 leads per month</li>
+                                    </ul>
+                                    <form id="Premuimredirection" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+                                        <input hidden name="plan" value="Premuim_Plan">
+                                    </form>
+                                    <a href="#!" onclick="upgradePayment('Premuimredirection')" class="btn get-started">
+                                        Get Started
+                                        <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                        <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+    <script src="{% static '/js/downloads.js' %}"></script> <!-- external JS file -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
+
+{% endblock content %}

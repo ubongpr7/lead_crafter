@@ -1,0 +1,43 @@
+<div class="container">
+        <div class="plan-crd premium-crd">
+            <h2>
+                Pro Plan
+                <span class="premium-tag">Most popular</span>
+            </h2>
+            <div class="price">
+                <strong>$497</strong>
+                <span>/month</span>
+                <p class="per-amount">$19.88 per video</p>
+                <ul class="checklist">
+                    <li>25 leads per month</li>
+                </ul>
+                <form id="ProPlan" action="/product_page" method="POST" class="btn get-started" style="display: none;">
+                    <input hidden name="plan" value="Pro_Plan">
+                </form>
+                <a href="#!" onclick="sendPaymentRequest('ProPlan')" class="btn get-started">
+                    Get Started
+                    <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                    <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                </a>
+            </div>
+        </div>
+        <div class="plan-crd">
+            <h2>Premium Plan</h2>
+            <div class="price">
+                <strong>$997</strong>
+                <span>/month</span>
+                <p class="per-amount">$13.94 per video</p>
+                <ul class="checklist">
+                    <li>60 leads per month</li>
+                </ul>
+                <form id="Premuimredirection" action="/product_page" method="POST" class="btn get-started" style="display: none;">
+                    <input hidden name="plan" value="Premuim_Plan">
+                </form>
+                <a href="#!" onclick="sendPaymentRequest('Premuimredirection')" class="btn get-started">
+                    Get Started
+                    <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                    <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                </a>
+            </div>
+        </div>
+</div>

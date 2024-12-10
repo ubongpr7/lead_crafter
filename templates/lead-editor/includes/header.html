@@ -1,0 +1,72 @@
+{% load static %}
+
+<style>
+    .profile-nav-item {
+        padding: 0.8rem 1.4rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-footer {
+        padding: 0.8rem 1.4rem;
+    }
+</style>
+
+<header class="admin-header">
+    <div class="container">
+        <div class="header-two">
+            <div class="vsl-logo text-center">
+                <a href="/">
+                    <img src="{% static 'images/logo.svg' %}" class="img-fluid" alt="LeadMaker Logo" />
+                </a>
+            </div>
+            <div class="header-profile">
+            {% if user.stripe_subscription_id != '' %}
+                <div class="credit-score">
+                    <span>Credits Remaining: </span> <span>{{ user.coins }}</span>
+                </div>
+            {% else %}
+            <div class="credit-score">
+                    <span>Free Trial</span>
+                </div>
+            {% endif %}
+                <div class="dropdown">
+                    <button class="profile-icn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'images/admin-user-icn.svg' %}" alt="User Profile Icon" />
+                    </button>
+                    <div class="profile-dropdown dropdown-menu dropdown-menu-end">
+                        <div class="profile-head">
+                            <h4>{{user.username}}</h4>
+                            <span class="email">{{ user.email }}</span>
+                        </div>
+                        <div class="profile-body">
+                            <div class="profile-nav-item">
+                                <a href="/manageSubscription" style="color:#000;font-weight: 500;">Manage Subscription</a>
+                            </div>
+                            <div class="profile-nav-item">
+                                {% if user.stripe_subscription_id != '' %}
+                                <div class="profile-nav-left">
+                                    <a href="#" style="color:#000;font-weight: 500;">Credit Left</a>
+                                </div>
+                                <div class="profile-nav-right">
+                                    <span class="count" style="color:#000;font-weight: 500;">{{ user.coins }}</span>
+                                </div>
+                                {% else %}
+                                  <div class="profile-nav-left">
+                                    <a href="#" style="color:#000;font-weight: 500;">Free Trial</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="profile-nav-item">
+                                <a href="#" style="color:#000;font-weight: 500;">Affiliate</a>
+                            </div>
+                        </div>
+                        <div class="profile-footer">
+                            <a href="/accounts/logout" style="color:#000;font-weight: 500;">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

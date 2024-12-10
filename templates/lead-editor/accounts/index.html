@@ -1,0 +1,475 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+{% load static %}
+<header class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid justify-content-between">
+                <a class="navbar-brand" href="{% url 'accounts:home' %}">
+                    <img src="{% static 'images/logo.svg' %}" alt="LeadEditor.io" class="img-fluid" />
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="#products">Product</a>
+                        <a class="nav-link" href="#how-it-work">How it Works</a>
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </div>
+                    <div class="header-profile d-flex align-items-center d-none d-lg-flex">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
+                    {% endif  %}
+                        <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+                            Get Started
+                            <img class="btn-arrow" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="content">
+    <section class="banner-sec text-center">
+        <div class="container">
+            <h1 class="main-title">
+                Optimize Your VSL’s <span>Performance</span> Without The Hassle of Video Editors
+            </h1>
+            <p class="desc">
+                Take control of your VSLs with LeadEditor.io - create, edit, and test leads effortlessly without relying on video editors for split testing.
+            </p>
+            <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+                Get Started Today
+                <img class="btn-arrow" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+            </a>
+            <div class="carousel-box">
+                <div class="carousel-card">
+                    <img class="placeholder" src="{% static 'images/carousel-card-gray.jpg' %}" alt="img" />
+                    <span class="play-btn">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="whyneed-sec" id="products">
+        <div class="container">
+            <div class="heading-block text-center">
+                <h2 class="main-title">Why You Need LeadEditor.io?</h2>
+                <p class="desc">
+                    LeadEditor.io helps marketers enhance VSL performance by easily split testing new leads. Upload your VSL, replace or remove sentences, and merge new content seamlessly. Keep voice consistency with Eleven Labs' voice cloning integration.
+                </p>
+            </div>
+            <div class="need-steps">
+                <div class="step-item">
+                    <div class="detail">
+                        <span class="icn">
+                            <img src="{% static 'images/user-icn.svg' %}" alt="icon" />
+                        </span>
+                        <h5>Effortless Lead Replacement</h5>
+                        <p>
+                            Delete and replace any part of your VSL, most commonly the lead, and insert new, high-converting sentences.
+                        </p>
+                    </div>
+                    <figure>
+                        <img src="{% static 'images/placeholder-img.jpg' %}" alt="placeholder" />
+                    </figure>
+                </div>
+                <div class="step-item">
+                    <div class="detail">
+                        <span class="icn">
+                            <img src="{% static 'images/mike-icn.svg' %}" alt="icon" />
+                        </span>
+                        <h5>Voice Cloning for Seamless Consistency</h5>
+                        <p>
+                            Using Eleven Labs API, you can clone the original voice in your VSL (with permission) and ensure that your new lead sounds identical to the rest of the video.
+                        </p>
+                    </div>
+                    <figure>
+                        <img src="{% static 'images/placeholder-img.jpg' %}" alt="placeholder" />
+                    </figure>
+                </div>
+                <div class="step-item">
+                    <div class="detail">
+                        <span class="icn">
+                            <img src="{% static 'images/new-user-icn.svg' %}" alt="icon" />
+                        </span>
+                        <h5>Add New Leads with Ease</h5>
+                        <p>
+                            No need to delete anything! Simply add new sentences or a brand-new lead to the start of your VSL and let LeadEditor.io merge it with your existing content.
+                        </p>
+                    </div>
+                    <figure>
+                        <img src="{% static 'images/placeholder-img.jpg' %}" alt="placeholder" />
+                    </figure>
+                </div>
+                <div class="step-item">
+                    <div class="detail">
+                        <span class="icn">
+                            <img src="{% static 'images/video-icn.svg' %}" alt="icon" />
+                        </span>
+                        <h5>Assign Custom Video Clips</h5>
+                        <p>
+                            Add video clips for each new sentence, and our software will seamlessly merge them into your existing video for a professional finish.
+                        </p>
+                    </div>
+                    <figure>
+                        <img src="{% static 'images/placeholder-img.jpg' %}" alt="placeholder" />
+                    </figure>
+                </div>
+                <div class="step-item">
+                    <div class="detail">
+                        <span class="icn">
+                            <img src="{% static 'images/split-icn.svg' %}" alt="icon" />
+                        </span>
+                        <h5>Split Test in Seconds</h5>
+                        <p>
+                            Test different leads to find out which performs best - all in-house, without waiting on external editors.
+                        </p>
+                    </div>
+                    <figure>
+                        <img src="{% static 'images/placeholder-img.jpg' %}" alt="placeholder" />
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="how-work" id="how-it-work">
+        <div class="container">
+            <div class="heading-block text-center">
+                <h2 class="main-title">How It Works?</h2>
+            </div>
+            <div class="work-steps">
+                <figure>
+                    <img
+                        class="d-block d-lg-none"
+                        src="{% static 'images/placeholder-img.jpg' %}"
+                        alt="placeholder"
+                    />
+                    <img
+                        class="placeholder d-none d-lg-block"
+                        src="{% static 'images/carousel-card-gray.jpg' %}"
+                        alt="img"
+                    />
+                    <span class="play-btn d-none d-lg-block">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                    <span class="work-bg"></span>
+                </figure>
+                <div class="work-cards">
+                    <div class="detail">
+                        <strong class="count">1</strong>
+                        <h5>Upload Your VSL</h5>
+                        <p>
+                            Get started by uploading your existing VSL video to LeadEditor.io.
+                        </p>
+                    </div>
+                    <div class="detail">
+                        <strong class="count">2</strong>
+                        <h5>Edit or Add Sentences</h5>
+                        <p>
+                            Delete, replace, or add new sentences to the start of your VSL, and assign video clips for a seamless transition.
+                        </p>
+                    </div>
+                    <div class="detail">
+                        <strong class="count">3</strong>
+                        <h5>Clone the Voice</h5>
+                        <p>
+                            Using our Eleven Labs integration, clone the original voice of your video for a natural-sounding lead replacement.
+                        </p>
+                    </div>
+                    <div class="detail">
+                        <strong class="count">4</strong>
+                        <h5>Merge and Publish</h5>
+                        <p>
+                            Let our software merge the new sentences with your VSL, creating a perfectly polished video ready to split test.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Power section Start -->
+<section class="power-sec" id="portfolio">
+<div class="container">
+    <div class="heading-block text-center">
+        <h2 class="main-title">The Power Of LeadEditor.io</h2>
+        <p>See How Our Tool Took This VSL From Breakeven To 3.2 ROAS</p>
+    </div>
+    <div class="ext-node">
+        <span class="obj pwr-obj1">
+            <img src="{% static 'images/power-obj1.svg' %}" alt="obj" />
+        </span>
+        <span class="obj pwr-obj2">
+            <img src="{% static 'images/power-obj2.svg' %}" alt="obj" />
+        </span>
+        <span class="obj pwr-obj3">
+            <img src="{% static 'images/power-obj3.svg' %}" alt="obj" />
+        </span>
+        <div class="video-wrp">
+            <div class="video-card">
+                <figure>
+                    <img class="placeholder" src="{% static 'images/carousel-card-gray.jpg' %}" alt="img" />
+                    <span class="play-btn">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                </figure>
+                <h3 class="text-center">Original Video</h3>
+            </div>
+            <div class="video-card">
+                <figure>
+                    <img class="placeholder" src="{% static 'images/carousel-card-gray.jpg' %}" alt="img" />
+                    <span class="play-btn">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                </figure>
+                <h3 class="text-center">Variant 1</h3>
+            </div>
+            <div class="video-card">
+                <figure>
+                    <img class="placeholder" src="{% static 'images/carousel-card-gray.jpg' %}" alt="img" />
+                    <span class="play-btn">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                </figure>
+                <h3 class="text-center">Variant 2</h3>
+            </div>
+            <div class="video-card">
+                <figure>
+                    <img class="placeholder" src="{% static 'images/carousel-card-gray.jpg' %}" alt="img" />
+                    <span class="play-btn">
+                        <img src="{% static 'images/play-icon.svg' %}" alt="play" />
+                    </span>
+                </figure>
+                <h3 class="text-center">Variant 3</h3>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<!-- Power section End -->
+
+<!-- Plan section Start -->
+<section class="plan-sec" id="pricing">
+<div class="container">
+    <h2 class="plan-title text-center">
+        Choose The Plan That Fits <br />
+        Your Needs
+    </h2>
+    <div class="crd-wrp">
+        <div class="plan-crd">
+            <h2>Free Trial Plan</h2>
+            
+            <div class="price">
+                <strong>Free</strong>
+
+                <p class="per-amount">Learn how LeadEditor.io Works </p>
+                <ul class="checklist">
+                    <li>1 Credit</li>
+                </ul>
+                <form id="FreeTrial" action="/accounts/signupFreeTrial" method="GET" class="btn get-started" style="display: none;">
+                    {% csrf_token %}
+                    <input hidden name="plan" value="FreeTrial">
+
+                </form>
+                <a href="#!" onclick="sendPaymentRequest('FreeTrial')" class="btn get-started">
+                    Get Started
+                    <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                    <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                </a>
+            </div>
+        </div>
+        <div class="plan-crd premium-crd">
+            <h2>
+                Pro Plan
+                <span class="premium-tag">Most popular</span>
+            </h2>
+            <div class="price">
+                <strong>$497</strong>
+                <span>/month</span>
+                <p class="per-amount">$19.88 per video</p>
+                <ul class="checklist">
+                    <li>25 leads per month</li>
+                </ul>
+                <form id="ProPlan" action="/product_page" method="POST" class="btn get-started" style="display: none;">
+                    <input hidden name="plan" value="Pro_Plan">
+                </form>
+                <a href="#!" onclick="sendPaymentRequest('ProPlan')" class="btn get-started">
+                    Get Started
+                    <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                    <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                </a>
+            </div>
+        </div>
+        <div class="plan-crd">
+            <h2>Premium Plan</h2>
+            <div class="price">
+                <strong>$997</strong>
+                <span>/month</span>
+                <p class="per-amount">$13.94 per video</p>
+                <ul class="checklist">
+                    <li>60 leads per month</li>
+                </ul>
+                <form id="Premuimredirection" action="/product_page" method="POST" class="btn get-started" style="display: none;">
+                    <input hidden name="plan" value="Premuim_Plan">
+                </form>
+                <a href="#!" onclick="sendPaymentRequest('Premuimredirection')" class="btn get-started">
+                    Get Started
+                    <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                    <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="all-plans">
+        <h3>All Plans Include</h3>
+        <ul class="checklist">
+            <li>Ability to upload your own video clips and assets </li>
+            <li>Customizable background music and timing</li>
+            <li>Fast, easy, and intuitive interface</li>
+            <li>No video editing skills required</li>
+        </ul>
+    </div>
+</div>
+</section>
+<!-- Plan section End -->
+<!-- Ready section Start -->
+<section class="ready-sec">
+<div class="container">
+    <div class="ready-wrp">
+        <div class="heading-block text-center">
+            <h2 class="main-title">Ready to boost your VSL performance?</h2>
+            <p class="desc">
+                Try LeadEditor.io today and see how effortless <br />
+                split testing can be.
+            </p>
+            <a href="#!" class="btn get-started">
+                Get Started
+                <img class="btn-arrow blue" src="{% static 'images/btn-arrow-blue.svg' %}" alt="arrow" />
+                <img class="btn-arrow white" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+            </a>
+        </div>
+        <div class="obj-img">
+            <img src="{% static 'images/object-image.png' %}" alt="obj" />
+        </div>
+    </div>
+</div>
+</section>
+<!-- Ready section End -->
+
+<!-- Earning section Start -->
+<section id="earning" class="earning-section">
+<h2 class="earning-title">
+    Become a LeadEditor.io Affiliate And <br />
+    Earn 30% Recurring Commissions!
+</h2>
+<p class="earning-paragraph">
+    Join the LeadEditor.io affiliate program and earn 30% recurring
+    commissions on every customer you refer. With each payment they make,
+    you get paid — building consistent passive income!
+</p>
+<div class="cards-container">
+    <div class="earnings-card">
+        <span class="number">1</span>
+        <p class="title">Sign Up</p>
+        <p class="text">Free to join, and it only takes a few minutes.</p>
+    </div>
+    <div class="earnings-card">
+        <span class="number">2</span>
+        <p class="title">Share Link</p>
+        <p class="text">Promote LeadEditor.io via your blog, website, or social media.</p>
+    </div>
+    <div class="earnings-card">
+        <span class="number">3</span>
+        <p class="title">Earn Commissions</p>
+        <p class="text">
+            Earn 30% of every payment made by your referred customers for as
+            long as they stay with us.
+        </p>
+    </div>
+</div>
+
+<button>
+    Sign Up Now
+    <img src="{% static 'images/arrow-right.svg' %}" alt="arrow right" />
+</button>
+</section>
+
+<section class="get-tuch-sec" id="contact">
+<div class="container">
+    <div class="heading-block text-center">
+        <h2 class="main-title",style="">Get In Touch</h2>
+        <p class="desc">We’d love to hear from you. Please fill out this form.</p>
+    </div>
+    <form class="form-block" method="POST" id="ContactInfoButton">
+        {% csrf_token %}
+        <div class="custom-margin">
+            <label for="exampleInputName" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Full Name</label>
+        <input type="text" name="full_name" placeholder="Full Name" class="form-control" id="exampleInputName" aria-describedby="name" required />
+        </div>
+        <div class="custom-margin">
+            <label for="exampleInputEmail1" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Email</label>
+        <input type="email" name="email" placeholder="you@company.com" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required />
+        </div>
+        <div class="form-check">
+            <label for="floatingTextarea" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;" >Message</label>
+        <textarea name="message" class="form-control" id="floatingTextarea" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary get-start">
+            Send Message
+        </button>
+    </form>
+    <div id="responseMessage" style="margin-top: 20px;"></div>
+    <script>
+document.getElementById('ContactInfoButton').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission
+
+    const formData = new FormData(this);  // Create a FormData object from the form
+
+    fetch('/contact', {  // Ensure this matches your view's URL
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',  // Optional header for AJAX requests
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();  // Parse the JSON from the response
+    }).then(data => {
+        console.log(data);
+
+        document.getElementById('ContactInfoButton').reset();  // Reset the form
+    })
+    .catch(error => {
+        alert("message is invalid")  // Show error message
+    });
+});
+</script>
+
+</div>
+</section>
+<!-- Get in touch section End -->
+
+{% include "includes/footer.html" %}
+
+<script>
+    function  sendPaymentRequest(formname){
+        document.getElementById(formname).submit();
+    }
+</script>
+
+<!-- Page Wrapper End -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="{% static 'js/custom.js' %}"></script>                 
+</div>  
+
+{% endblock content %}

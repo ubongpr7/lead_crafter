@@ -1,0 +1,202 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block more_css %}
+
+<style>
+    .container-two {
+      width: 80%;
+      margin: 70px auto;
+      padding: 20px;
+      
+    }
+
+    .h1-style {
+      color: #333;
+      max-width: 100%;
+      margin: 20px 0;
+      font-size: 4.8rem;
+
+    }
+
+    .h2-style {
+      color: #333;
+      max-width: 100%;
+      margin: 20px 0;
+      font-size: 2.2rem!important;
+
+    }
+
+    .p-style {
+      margin: 15px 0;
+      max-width: 100%;
+      padding: 0 0;
+    }
+
+    .ul-lst {
+      list-style-type: square;
+      padding-left: 20px;
+      /* color:black; */
+      
+    }
+    .ul-lst li::marker {
+      color:black;
+}
+
+    .ul-lst li {
+      margin: 10px 0;
+      color: #646a69;
+      font-size: 1.5rem;
+    }
+
+    .link-st {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .link-st:hover {
+      text-decoration: underline;
+    }
+
+
+    @media only screen and (min-width: 1200px) {
+        h2 {
+            font-size: 4.8rem;
+            letter-spacing: normal;
+            margin-bottom: 30px;
+        }
+    }
+    
+    @media only screen and (min-width: 992px) {
+        h2 {
+            font-size: 3.6rem;
+            letter-spacing: normal;
+            margin-bottom: 30px;
+        }
+    }
+  </style>
+
+{% endblock more_css %}
+
+
+
+
+{% block content %}
+
+<header class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid justify-content-between">
+                <a class="navbar-brand" href="{% url 'accounts:home' %}">
+                    <img src="{% static 'images/logo.svg' %}" alt="LeadEditor.io" class="img-fluid" />
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="#products">Product</a>
+                        <a class="nav-link" href="#how-it-work">How it Works</a>
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </div>
+                    <div class="header-profile d-flex align-items-center d-none d-lg-flex">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
+                    {% endif  %}
+                        <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+                            Get Started
+                            <img class="btn-arrow" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="container" style="margin-top: 130px; margin-bottom: 130px;">
+    <h1 class="h1-style">Terms of Service for LeadEditor.io</h1>
+  
+    <h2 class="h2-style">1. Introduction</h2>
+    <p class="p-style">
+      Welcome to LeadEditor.io, a platform operated by Crown18 Limited, designed to help marketers optimize Video Sales Letters (VSLs) through seamless editing and split testing without the need for external video editors. These Terms of Service ("Terms") govern your use of LeadEditor.io, including all content, features, and functionality provided. By creating an account or accessing our platform, you agree to these Terms.
+    </p>
+  
+    <h2 class="h2-style">2. Eligibility</h2>
+    <p class="p-style">
+      You must be at least 18 years old and legally permitted to enter into agreements. By using LeadEditor.io, you confirm that you meet these eligibility requirements.
+    </p>
+  
+    <h2 class="h2-style">3. Account Registration and Access</h2>
+    <p class="p-style">
+      To use the platform, you must create an account with accurate and complete information, including a valid email. You are responsible for keeping your login credentials secure and notifying us immediately at <a class="link-st" href="mailto:support@LeadEditor.io">support@LeadEditor.io</a> if you suspect unauthorized access.
+    </p>
+  
+    <h2 class="h2-style">4. Subscription Terms</h2>
+    <p class="p-style">
+      LeadEditor.io offers flexible subscription plans, including a Free Trial, Pro Plan, and Premium Plan. Subscriptions renew automatically each month, with fees charged to your payment method unless canceled before the renewal date. You may upgrade or downgrade plans as needed, with changes taking effect in the following billing cycle.
+    </p>
+  
+    <h2 class="h2-style">5. Refund Policy</h2>
+    <p class="p-style">
+      Refunds are available under specific conditions. Customers may request a refund within the first <b>3 days</b> of subscribing, provided they have not used more than one credit on their account. Please refer to our Refund Policy for detailed terms.
+    </p>
+  
+    <h2 class="h2-style">6. User Conduct</h2>
+    <p class="p-style">Users agree not to misuse LeadEditor.io in any way, including but not limited to:</p>
+    <ul class="ul-lst">
+      <li>Sharing or reselling platform features.</li>
+      <li>Providing false information or impersonating others.</li>
+      <li>Engaging in illegal, misleading, or unethical activities through the platform.</li>
+    </ul>
+    <p class="p-style">
+      Violation of these rules may result in suspension or termination of your account without a refund.
+    </p>
+  
+    <h2 class="h2-style">7. Limitation of Liability</h2>
+    <p class="p-style">
+      LeadEditor.io, its owners, and affiliates are not liable for any indirect, incidental, or consequential damages resulting from the use of the platform, including data loss, service interruptions, or issues beyond our control.
+    </p>
+  
+    <h2 class="h2-style">8. Intellectual Property</h2>
+    <p class="p-style">
+      All content, trademarks, and technology on LeadEditor.io are the property of Crown18 Limited. Users retain rights to the video content they upload, but all tools, templates, and features provided remain the property of LeadEditor.io.
+    </p>
+  
+    <h2 class="h2-style">9. Termination</h2>
+    <p class="p-style">
+      Accounts may be suspended or terminated for violations of these Terms or for non-payment. Users may terminate their account at any time, but subscription fees already paid are non-refundable.
+    </p>
+  
+    <h2 class="h2-style">10. Dispute Resolution</h2>
+    <p class="p-style">
+      Disputes will be resolved under the jurisdiction applicable to Crown18 Limited.
+    </p>
+  
+    <h2 class="h2-style">Contact Us</h2>
+    <p class="p-style">
+      For further assistance or questions regarding our Terms of Service, please contact us at <a class="link-st" href="mailto:support@LeadEditor.io">support@LeadEditor.io</a>.
+    </p>
+  </div>
+  
+
+
+
+
+
+{% include "includes/footer.html" %}
+
+<script>
+    function  sendPaymentRequest(formname){
+        document.getElementById(formname).submit();
+    }
+</script>
+
+<!-- Page Wrapper End -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="{% static 'js/custom.js' %}"></script>                 
+
+
+{% endblock content %}

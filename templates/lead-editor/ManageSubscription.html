@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Dashboard</title>
+  <link rel="shortcut icon" type="x-icon" href="{% static 'favicon.svg'%}" />
+
+  <!-- Preconnecting to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" type="text/css" href="{% static '/css/leadmaker.css'%}" media="screen" />
+  <link rel="stylesheet" type="text/css" href="{% static '/css/Responsivemanage.css'%}" media="screen" />
+</head>
+
+<body>
+  <!-- Header Section Start -->
+  <header class="admin-header">
+    <div class="container">
+      <div class="header-two">
+        <div class="hm-logo text-center">
+          <a href="/submitSubtitle"><img src="{% static 'images/logo.svg'%}" alt="VSL Logo" /></a>
+        </div>
+        <div class="header-profile">
+          {% if user.stripe_subscription_id %}
+          <div class="credit-score">
+            <span>Credits Remaining: </span> <span>{{ user.coins }}</span><span style="margin-left: 10px;margin-right: 10px;"> | </span>
+          </div>
+          {% else %}
+          <div class="credit-score">
+            <span>Free Trial </span> <span>| </span>
+          </div>
+          {% endif %}
+          
+            <a href="/accounts/logout" class="Logout" style="text-decoration: none; margin-left: 0.5rem;" >
+               <span>  Log Out </span>
+            </a>
+
+
+      </div>
+    </div>
+  </header>
+  <!-- Header Section End -->
+
+  <!-- Subscription Information Start -->
+  <div class="content">
+    <div class="text">
+      <p class="sub-p">Subscription Details</p>
+      <p id="linktocustomerbilling" class="bill">Manage Billing Info</p>
+    </div>
+    <div class="for-border">
+      <div class="plan">
+        <p class="cr-text">Current Plan</p>
+        <p class="btn">{{User_plan}}</p>
+      </div>
+      <div class="plan subs">
+        <p class="cr-text">Subscription Status</p>
+        {% if user.subscription_active %}
+          <p class="act">Active</p>
+        {% else %}
+          <p class="notact">Not Active </p>
+        {% endif %}
+      </div>
+      {% if user.stripe_subscription_id %}
+      <div class="credit">
+        <p class="cr-usage">Credit Usage</p>
+        <div class="credit-text">
+          <p>Any unused credit will roll over to the next month</p>
+          <p>Next recharge in {{daysleft}} Days </p>
+        </div>
+
+      </div>
+      {% else %}
+        <div class="credit">
+        <p class="cr-usage">Credit Usage</p>
+        <div class="credit-text">
+          <p>Any unused credit will roll over to the next month</p>
+          <p>{{user.coins}}/{{maxcoins}} Used (Rest in 24 Days) </p>
+        </div>
+        <div class="bar">
+          <div class="bar-fill" style="width: {{ barvalue }}%;"></div>
+        </div>
+      </div>
+       {% endif %}
+    </div>
+  </div>
+  <!-- Subscription Information End -->
+
+  <!-- Additional Credit Purchase Section Start -->
+
+{% if User_plan == 'Pro' %}
+  <div class="second-main">
+    <div class="heading">Need More Lead Edits?</div>
+    <p>
+      Running out of lead edits this month? Add more to your plan, with a minimum of 5, and keep split testing new leads
+      to optimize your VSLs.
+    </p>
+
+  </div>
+    <div class="credit-box">
+      <div class="box-cont">
+        <p class="cr">Buy More Credits</p>
+        <p class="dollar">$19.88 Each</p>
+        <form id="buycoins" method="POST" action="/buycoins">
+        <input type="text" name="credit" id="credit" placeholder="Enter the amount of credits" />
+        <input type="text" name="plan" id="plan" value="Pro" hidden>
+        </form>
+      <button onclick="checkcoins()">Buy</button>
+      </div>
+    </div>
+{% elif User_plan == 'Premuim' %}
+  <div class="second-main">
+    <div class="heading">Need More Lead Edits?</div>
+    <p>
+      Running out of lead edits this month? Add more to your plan, with a minimum of 5, and keep split testing new leads
+      to optimize your VSLs.
+    </p>
+
+  </div>
+    <div class="credit-box">
+      <div class="box-cont">
+        <p class="cr">Buy More Credits</p>
+        <p class="dollar">$13.94 Each</p>
+        <form id="buycoins" method="POST" action="/buycoins">
+        <input type="text" name="credit" id="credit" placeholder="Enter the amount of credits" />
+        <input type="text" name="plan" id="plan" value="Premuim" hidden>
+        </form>
+      <button onclick="checkcoins()">Buy</button>
+      </div>
+    </div>
+{% else %}
+{% endif %}
+
+  <!-- Additional Credit Purchase Section End -->
+
+  <!-- Subscription Plans Section Start -->
+  <div class="main-head">
+    <h1>Choose The Plan That Fits Your Needs</h1>
+  </div>
+
+  <div class="plans">
+  {% if User_plan == 'Pro' %}
+    <div class="box">
+      <p class="box-head box2">Pro Plan</p>
+      <p id="p">Perfect for scaling your video advertising campaigns</p>
+      <div class="price">
+        <h1>$497</h1><span>/Month</span>
+      </div>
+      <p id="p" class="p-marg">$19.88 per video</p>
+      <p id="p"><i class="fa-solid fa-check"></i>25 leads per month</p>
+      <button>Current Subscription</button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="box box-sub">
+      <p class="box-head">Premium plan</p>
+      <p class="p-pro">Ideal for high-volume marketers and agencies</p>
+      <div class="price">
+        <h1>$697</h1><span>/Month</span>
+      </div>
+      <p class="p-pro p-pro2" style="color: white; margin-top: -18px;">$13.94 per video</p>
+      <p class="p-pro"><i class="fa-solid fa-check pro-i"></i>50 leads per month</p>
+      <form id="PremuimPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+        <input hidden name="plan" value="Premuim_Plan">
+      </form>
+      <button id="up" onclick=upgradePayment("PremuimPlan")>Upgrade Subscription</button>
+    </div>
+  </div>
+
+   {% elif User_plan == 'Premuim' %}
+       <div class="box">
+      <p class="box-head box2">Pro Plan</p>
+      <p id="p">Perfect for scaling your video advertising campaigns</p>
+      <div class="price">
+        <h1>$497</h1><span>/Month</span>
+      </div>
+      <p id="p" class="p-marg">$19.88 per video</p>
+      <p id="p"><i class="fa-solid fa-check"></i>25 leads per month</p>
+      <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+        <input hidden name="plan" value="Pro_Plan">
+      </form>
+      <button onclick=upgradePayment("ProPlan") >Downgrade Subscription</button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="box box-sub">
+      <p class="box-head">Premium plan</p>
+      <p class="p-pro">Ideal for high-volume marketers and agencies</p>
+      <div class="price">
+        <h1>$697</h1><span>/Month</span>
+      </div>
+      <p class="p-pro p-pro2" style="color: white; margin-top: -18px;">$13.94 per video</p>
+      <p class="p-pro"><i class="fa-solid fa-check pro-i"></i>50 leads per month</p>
+      <button id="up">Current Subscription</button>
+    </div>
+  </div>
+  {% else %}
+      <div class="box">
+      <p class="box-head box2">Pro Plan</p>
+      <p id="p">Perfect for scaling your video advertising campaigns</p>
+      <div class="price">
+        <h1>$497</h1><span>/Month</span>
+      </div>
+      <p id="p" class="p-marg">$19.88 per video</p>
+      <p id="p"><i class="fa-solid fa-check"></i>25 leads per month</p>
+      <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+        <input hidden name="plan" value="Pro_Plan">
+      </form>
+      <button onclick=upgradePayment("ProPlan") >Upgrade Subscription</button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="box box-sub">
+      <p class="box-head">Premium plan</p>
+      <p class="p-pro">Ideal for high-volume marketers and agencies</p>
+      <div class="price">
+        <h1>$697</h1><span>/Month</span>
+      </div>
+      <p class="p-pro p-pro2" style="color: white; margin-top: -18px;">$13.94 per video</p>
+      <p class="p-pro"><i class="fa-solid fa-check pro-i"></i>50 leads per month</p>
+      <form id="PremuimPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+        <input hidden name="plan" value="Premuim_Plan">
+      </form>
+      <button id="up" onclick=upgradePayment("PremuimPlan")>Upgrade Subscription</button>
+    </div>
+  </div>
+  {% endif %}
+  <script>
+  function upgradePayment(formid){
+    document.getElementById(formid).submit();
+  }
+  function checkcoins(){
+    form=document.getElementById("buycoins");
+    number_of_coins=Number(form.children[0].value)
+    
+    if (number_of_coins>=5){
+        form.submit();
+    }
+      
+    else{
+      alert("test");
+    }
+
+
+  }
+  document.getElementById('linktocustomerbilling').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = 'https://billing.stripe.com/p/login/test_7sI4i8e8gbKA7x6fYY';
+    })
+  </script>
+<!-- Bootstrap JS with Popper -->
+
+  <!-- Subscription Plans Section End -->
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+</html>

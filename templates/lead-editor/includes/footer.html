@@ -1,0 +1,37 @@
+{% load static %}
+
+<!-- Footer Start -->
+<footer class="footer">
+    <div class="container">
+        <div class="primary-footer">
+            <div class="heading-block text-center">
+                <h2 class="main-title">
+                    <a href="{% url 'accounts:home' %}" class="footer-logo">
+                        <img src="{% static 'images/logo.svg' %}" alt="LeadEditor.io" class="img-fluid" />
+                    </a>
+                </h2>
+                <p class="footer-desc">
+                    LeadEditor.io gives you the flexibility to optimize your VSLs
+                    without delays or extra costs.
+                </p>
+            </div>
+            <div class="footer-nav">
+                <a href="#products">Product</a>
+                <a href="#how-it-work">How it works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+        <div class="secondry-footer">
+            <div class="term-condition">
+                <a href="{% url 'accounts:terms_conditions' %}">Terms &amp; Condition</a>
+                <a href="{% url 'accounts:privacy_policy' %}">Privacy Policy</a>
+                <a href="{% url 'accounts:refund_policy' %}">Return Policy</a>
+                <a href="{% url 'accounts:affiliate_terms' %}">Affiliate Program Terms</a>
+            </div>
+            <p class="copy-rgt">&copy; 2024 LeadMaker. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<!-- Footer End -->

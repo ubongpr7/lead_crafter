@@ -1,0 +1,188 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block more_css %}
+
+<style>
+    .container-two {
+      width: 80%;
+      margin: 70px auto;
+      padding: 20px;
+      
+    }
+
+    .h1-style {
+      color: #333;
+      max-width: 100%;
+      margin: 20px 0;
+      font-size: 4.8rem;
+
+    }
+
+    .h2-style {
+      color: #333;
+      max-width: 100%;
+      margin: 20px 0;
+      font-size: 2.2rem!important;
+
+    }
+
+    .p-style {
+      margin: 15px 0;
+      max-width: 100%;
+      padding: 0 0;
+    }
+
+    .ul-lst {
+      list-style-type: square;
+      padding-left: 20px;
+      /* color:black; */
+      
+    }
+    .ul-lst li::marker {
+      color:black;
+}
+
+    .ul-lst li {
+      margin: 10px 0;
+      color: #646a69;
+      font-size: 1.5rem;
+    }
+
+    .link-st {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .link-st:hover {
+      text-decoration: underline;
+    }
+
+
+    @media only screen and (min-width: 1200px) {
+        h2 {
+            font-size: 4.8rem;
+            letter-spacing: normal;
+            margin-bottom: 30px;
+        }
+    }
+    
+    @media only screen and (min-width: 992px) {
+        h2 {
+            font-size: 3.6rem;
+            letter-spacing: normal;
+            margin-bottom: 30px;
+        }
+    }
+  </style>
+
+{% endblock more_css %}
+
+
+
+
+{% block content %}
+
+<header class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid justify-content-between">
+                <a class="navbar-brand" href="{% url 'accounts:home' %}">
+                    <img src="{% static 'images/logo.svg' %}" alt="LeadEditor.io" class="img-fluid" />
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="#products">Product</a>
+                        <a class="nav-link" href="#how-it-work">How it Works</a>
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </div>
+                    <div class="header-profile d-flex align-items-center d-none d-lg-flex">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-login">Login</a>
+                    {% endif  %}
+                        <a href="{% url 'submitSubtitle' %}" class="btn get-start">
+                            Get Started
+                            <img class="btn-arrow" src="{% static 'images/btn-arrow.svg' %}" alt="arrow" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="container" style="margin-top: 130px; margin-bottom: 130px;">
+  <h1 class="h1-style">Privacy Policy for LeadEditor.io</h1>
+
+  <h2 class="h2-style">1. Introduction</h2>
+  <p class="p-style">
+    LeadEditor.io is committed to protecting your privacy. This Privacy Policy explains our data collection practices and your rights regarding your information.
+  </p>
+
+  <h2 class="h2-style">2. Data Collection</h2>
+  <p class="p-style"><b>Account Information:</b> We collect information provided during account creation, such as name, email, and payment details.</p>
+  <p class="p-style"><b>Usage Data:</b> We gather data on interactions with the platform, including IP addresses, cookies, and device information, to enhance the user experience.</p>
+  <p class="p-style"><b>Payment Information:</b> Payments are securely processed through third-party providers, and payment details are not stored on our servers.</p>
+
+  <h2 class="h2-style">3. Data Storage and Processing</h2>
+  <p class="p-style">
+    Data is securely stored on cloud servers, and processing is handled according to industry standards. Access to your data is limited to authorized personnel only.
+  </p>
+
+  <h2 class="h2-style">4. Use of Collected Data</h2>
+  <p class="p-style"><b>Service Enhancement:</b> To personalize your experience and improve platform functionality.</p>
+  <p class="p-style"><b>Customer Support:</b> To assist with inquiries and provide technical support.</p>
+  <p class="p-style"><b>Marketing:</b> We may send occasional promotional content, which you can opt out of at any time by contacting <a class="link-st" href="mailto:support@LeadEditor.io">support@LeadEditor.io</a>.</p>
+
+  <h2 class="h2-style">5. User Rights</h2>
+  <p class="p-style"><b>Access:</b> Users have the right to request access to their data.</p>
+  <p class="p-style"><b>Modification:</b> You may update or correct your information.</p>
+  <p class="p-style"><b>Deletion:</b> Users can request data deletion, subject to legal retention requirements.</p>
+  <p class="p-style">Contact support for any of these requests.</p>
+
+  <h2 class="h2-style">6. Cookie Policy</h2>
+  <p class="p-style">
+    Cookies are used to improve functionality. You may control cookies through your browser settings.
+  </p>
+
+  <h2 class="h2-style">7. Data Security Measures</h2>
+  <p class="p-style">
+    LeadEditor.io uses industry-standard encryption and security protocols to protect your information.
+  </p>
+
+  <h2 class="h2-style">8. Changes to Privacy Policy</h2>
+  <p class="p-style">
+    We may update this policy, and significant changes will be communicated to users.
+  </p>
+
+  <h2 class="h2-style">Contact Information</h2>
+  <p class="p-style">
+    For questions regarding our Privacy Policy, please contact <a class="link-st" href="mailto:support@LeadEditor.io">support@LeadEditor.io</a>.
+  </p>
+</div>
+
+  
+
+
+
+
+
+{% include "includes/footer.html" %}
+
+<script>
+    function  sendPaymentRequest(formname){
+        document.getElementById(formname).submit();
+    }
+</script>
+
+<!-- Page Wrapper End -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="{% static 'js/custom.js' %}"></script>                 
+
+
+{% endblock content %}

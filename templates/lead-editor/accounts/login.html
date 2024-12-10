@@ -1,0 +1,66 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+{% load static %}
+
+<header class="admin-header">
+  <div class="container">
+    <div class="header-two">
+      <div class="vsl-logo text-center">
+        <a href="{% url 'accounts:home' %}">
+          <img src="{% static '/images/logo.svg' %}" class="img-fluid" alt="Logo" />
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+{% include "accounts/new_messages.html" %}
+<section class="login-sec">
+    <div class="login-container">
+        <!-- Logo Section -->
+        <div class="vsl-logo text-center">
+            <a href="{% url 'accounts:home' %}">
+                <img src="{% static 'images/logo-dark.svg' %}" alt="LeadMaker Logo">
+            </a>
+        </div>
+
+       
+
+        <!-- Title -->
+        <h5 class="login-title text-center">Sign in</h5>
+
+        <!-- Login Form -->
+        <form method="POST" id="login-form" class="form-block">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="email"  style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 9px; font-family: 'Plus Jakarta Sans', sans-serif;" >Email address:</label>
+                <input type="email" name="email" value="{{ form.email.value|default:'' }}" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
+            </div>
+
+            <!-- Password Input -->
+            <div class="mb-3">
+                <label for="password" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 9px; font-family: 'Plus Jakarta Sans', sans-serif;">Password:</label>
+                <div class="pwd-input">
+                    <input type="password" name="password" placeholder="Password" class="form-control" id="password">
+                    <span class="show-icn" onclick="togglePasswordVisibility('password')">
+                        <img src="{% static 'images/eye.svg' %}" alt="Toggle Password Visibility">
+                    </span>
+                </div>
+                <a href="{% url 'accounts:reset_password' %}" class="forget-login">Forgot password?</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary get-start">Sign in</button>
+        </form>
+
+    </div>
+        <script>
+    function togglePasswordVisibility(id) {
+        const passwordField = document.getElementById(id);
+        const isPasswordVisible = passwordField.type === "text";
+        passwordField.type = isPasswordVisible ? "password" : "text";
+    }
+</script>
+</section>
+
+{% endblock content %}

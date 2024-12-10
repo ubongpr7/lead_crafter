@@ -1,0 +1,519 @@
+{% extends 'accounts/base.html' %} 
+{% load static%}
+
+{% block content %} 
+{% include "includes/header.html" %}
+
+{% include "accounts/new_messages.html" %}
+
+<div class="content contain">
+  <section class="login-sec voice-subtitle">
+    <div class="container">
+      <ul class="status-bar">
+        <li class="active">
+          <a href="#!">Upload & Customise</a>
+        </li>
+        <li>
+          <a href="#!">Lead Creation</a>
+        </li>
+        <li>
+          <a href="#!">Background Music Selection</a>
+        </li>
+        <li>
+          <a href="#!">Download</a>
+        </li>
+      </ul>
+      <div class="lead-container-new">
+        <h5 class="text-center lead-title"> Create Your Perfect Leads: <br class="d-none d-md-block" /> Upload, Customize, and Download! </h5>
+        <form class="lead-form" id="lead-form" action="/upload_files" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="label-txt">Tutorial Video:</label>
+            <figure class="video-place"></figure>
+            <div class="browse-field">
+                <label for="videoFile" class="label-txt">Upload Your Video:</label>
+                <div class="custum-browse d-flex align-items-center">
+                    <div class="brws">
+                        <input class="br-input" type="file" name="videoFile" id="videoFile" accept=".mp4" required />
+                        <a href="#!" class="btn get-start browse-btn">
+                            <img src="{% static '/images/upload-icn.svg' %}" alt="" /> Choose file
+                        </a>
+                    </div>
+                    <p>No file chosen</p>
+                </div>
+            </div>
+            <p id="video_error" style="color:red; margin-top:-20px; "></p>
+            <div class="browse-field">
+                <label for="transcribedFile" class="label-txt mt-4">Videos Transcribed File:</label>
+                <div class="custum-browse d-flex align-items-center">
+                    <div class="brws">
+                        <input class="br-input" type="file" name="transcribedFile" id="transcribedFile" accept=".txt" required />
+                        <a href="#!" class="btn get-start browse-btn">
+                            <img src="{% static '/images/upload-icn.svg' %}" alt="" /> Choose file
+                        </a>
+                    </div>
+                    <p>No file chosen</p>
+                </div>
+            </div>
+            <p id="subtitle_error" style="color:red; margin-top:-20px; "></p>
+            <div class="browse-field">
+                <label for="apiKey" class="label-txt mt-4">ElevenLabs API Key:</label>
+                <input type="text" name="apiKey" placeholder="ElevenLabs API Key" class="form-control" id="apiKey" required />
+            </div>
+            <p id="api_key_error" style="color:red;"></p>
+            <div class="browse-field">
+                <label for="voiceID" class="label-txt">Voice ID:</label>
+                <input type="text" name="voiceID" placeholder="Voice ID" class="form-control" id="voiceID" required />
+            </div>
+            <p id="voice_id_error" style="color:red; "></p>
+            <div class="sub-design">
+                <h5 class="lead-title">Subtitle Design</h5>
+                <div class="browse-field">
+                    <label for="fontFile" class="label-txt">Upload Font File:</label>
+                    <div class="custum-browse d-flex align-items-center">
+                        <div class="brws">
+                            <input class="br-input" type="file" name="fontFile" id="fontFile" accept=".ttf,.otf,.woff,.woff2" required />
+                            <a href="#!" class="btn get-start browse-btn">
+                                <img src="{% static '/images/upload-icn.svg' %}" alt="" /> Choose file
+                            </a>
+                        </div>
+                        <p>No file chosen</p>
+                    </div>
+                    
+                </div>
+                <p id="font_error" style="color:red; margin-top:-20px; "></p>
+                
+                <div class="browse-field">
+                    <label for="formFileLg" class="label-txt mt-4">Font Color:</label>
+                    <div class="custum-browse clr-fld-wrp d-flex align-items-center">
+                        <div class="color-fld" id="text-picker">
+                            <input type="color" name="textColor" id="text-color" value="#ffffff" />
+                        </div>
+                        <p id="text-code">#ffffff</p>
+                    </div>
+                </div>
+                <div class="browse-field">
+                    <label for="bgColor" class="label-txt">Subtitles Background Color:</label>
+                    <div class="custum-browse clr-fld-wrp d-flex align-items-center">
+                        <div class="color-fld clr-black" id="bg-picker">
+                            <input type="color" name="bgColor" id="bg-color" value="#000000" />
+                        </div>
+                        <p id="bg-code">#000000</p>
+                    </div>
+                </div>
+                <input type="text" id="aspectSize" name="aspectSize" value="4:5" hidden>
+                <div class="browse-field">
+                  <div class="fontSize-Container">
+                    <label for="fontSize" class="label-txt">Font Size: </label>
+                    <div class="slider-value" min id="valueLabel">12</div>
+                    <input type="text" id="fontSize" name="fontSize" value="12" hidden>
+                     <!-- Hidden input -->
+                     </div>
+                    <div class="slider-container">
+                      <div class="slider-track">
+                        <div class="slider-filled" id="slider-filled"></div>
+                      </div>
+                      <div class="slider-thumb" id="sliderThumb"></div>
+                    </div>
+                  </div>
+                <h5 class="lead-title">Preview</h5>
+                <div class="design-preview" id="preview-box" style="margin-bottom: 15px;">
+                    <h3 class="preview-title" id="videoText"> Your Selected Video Scene Will Go Here </h3>
+                    <div class="prev-subtitle" id="text-area">
+                        <h5 id="text-area-font" style="font-size: 10px;"> This Is How Your Original Subtitle Text Will Be Displayed </h5>
+                    </div>
+                </div>
+                <button type="submit" class="btn proceed-btn"   id="submit_form">
+                    <span id="button-text" style="color:white;">
+                        Proceed To Lead Creation
+                    </span>
+                    <img class="btn-arrow" src="{% static '/images/btn-arrow.svg' %}" alt="arrow" />
+                </button>
+                <div class="loading-wrapper" id="loadingWrapper" style="display: none;">
+                    <div class="loading-content">
+                        <p class="dots">Loading</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+</div>
+<!--
+  <footer class="footer">
+    <div class="container">
+      <p>© 2024 LeadMaker.io</p>
+    </div>
+  </footer>
+  -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static '/js/voiceSubtitle.js' %}"></script> 
+
+<script>
+    const submitButton = $('#submit_form');
+    const button_text = $('#button-text')
+    const apiKeyInput = $('#apiKey');
+    const voiceIdInput = $('#voiceID');
+    const apiKeyError = $('#api_key_error');
+    const voiceIdError = $('#voice_id_error');
+    const font_select = document.getElementById('fontFile');
+    
+    const font_error = $('#font_error');
+
+    const videoInput = document.getElementById('videoFile');
+    const subtitleInput = document.getElementById('transcribedFile');
+    const videoErrorTxt = $('#video_error');
+    const subtitleErrorTxt = $('#subtitle_error');
+
+    const text_form = document.getElementById('lead-form');
+
+    // Always enable the submit button
+    submitButton.prop('disabled', false);
+
+
+
+function startProcessingAnimation(selector) {
+  const button_text = $(selector);
+  let dots = 0;
+
+  // Clear any existing interval to avoid multiple intervals running
+  if (button_text.data('intervalId')) {
+    clearInterval(button_text.data('intervalId'));
+  }
+
+  // Set the interval to change the text every 500 milliseconds
+  const intervalId = setInterval(function() {
+    dots = (dots + 1) % 4; // Cycle between 0, 1, 2, and 3
+    let loadingText = 'Processing' + '.'.repeat(dots); // Add dots dynamically
+    button_text.text(loadingText);
+  }, 500); // 500 milliseconds = 0.5 seconds
+
+  // Store the interval ID in the button text element for later use
+  button_text.data('intervalId', intervalId);
+}
+
+// To stop the animation, you can create a separate function
+function stopProcessingAnimation(selector) {
+  const button_text = $(selector);
+  const intervalId = button_text.data('intervalId');
+
+  // Clear the interval if it exists
+  if (intervalId) {
+    clearInterval(intervalId);
+    button_text.data('intervalId', null); // Remove the stored interval ID
+    button_text.text('Proceed To Lead Creation'); // Optionally reset the text or set it to another value
+  }
+}
+
+
+function validateAPIKey(event) {
+  startProcessingAnimation('#button-text'); // Start the processing animation
+
+  event.preventDefault(); // Prevent the default form submission
+
+  const apiKey = apiKeyInput.val().trim();
+  const voiceId = voiceIdInput.val().trim();
+  const font_ = font_select.files[0];
+  const videoFile = videoInput.files[0];
+  const subtitleFile = subtitleInput.files[0];
+
+  // console.log(font_.name);
+
+
+  // Remove any previous error messages
+  apiKeyError.text('');
+  voiceIdError.text('');
+  font_error.text('');
+  videoErrorTxt.text('');
+  subtitleErrorTxt.text('');
+  //text_form.style.height = '2290px';
+
+  let formValid = true
+
+  if (!videoFile){
+    videoInput.focus()
+    videoErrorTxt.text('Please Upload a input video file');
+    formValid = false
+    // stopProcessingAnimation('#button-text');
+  }
+  
+  if (!subtitleFile){
+    subtitleInput.focus()
+    subtitleErrorTxt.text('Please Upload a subtitle text file');
+    formValid = false
+    // stopProcessingAnimation('#button-text');
+  }
+
+
+
+  if (!apiKey) {
+    apiKeyInput.focus();
+    //text_form.style.height = '2325px';
+    apiKeyError.text('API key is required.');
+    formValid = false
+    // stopProcessingAnimation('#button-text');
+  } 
+  
+  if (!voiceId) {
+    voiceIdInput.focus();
+    //text_form.style.height = '2325px';
+    voiceIdError.text('Voice ID is required.');
+    formValid = false
+    // stopProcessingAnimation('#button-text');
+  }
+
+  if(apiKey || voiceId){
+    $.ajax({
+      url: '/validate_api_key/', // URL for the Django view
+      type: 'POST',
+      data: {
+        'eleven_labs_api_key': apiKey,
+        'voice_id': voiceId,
+        'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for security
+      },
+      success: function(response) {
+        console.log(response); // Log the entire response to the console
+
+        if (!response.valid) {
+          formValid = false
+          // If the API key or Voice ID is invalid, show the appropriate error and focus the field
+          // stopProcessingAnimation('#button-text'); // Stop the processing animation
+          if (response.error.includes('API key')) {
+            apiKeyInput.focus();
+            apiKeyError.text(response.error); // Show API key error
+            //text_form.style.height = '2330px';
+          } else if (response.error.includes('Voice')) {
+            voiceIdInput.focus();
+            voiceIdError.text(response.error); // Show Voice ID error
+            //text_form.style.height = '2330px';
+          } else {
+            apiKeyInput.focus();
+            apiKeyError.text(response.error); // Fallback for unknown errors
+            //text_form.style.height = '2340px';
+          }
+        }
+      },
+      error: function(xhr, status, error) {
+        formValid = false
+        console.log("Error Status: ", status); // Log error status
+        console.log("Error: ", error); // Log error message
+        // stopProcessingAnimation('#button-text'); // Stop the processing animation
+        apiKeyError.text('Error validating the API key.');
+        apiKeyInput.focus();
+        // button_text.text('Proceed To Scene Selection');
+      }
+    });
+  }
+  
+  if (!font_) {
+    font_select.required = true;
+    font_select.focus();
+    font_error.text('Please Upload a font file');
+    //text_form.style.height = '2320px';
+    formValid = false
+  }
+
+ 
+
+
+
+  if (formValid) {
+
+    console.log('form is valid now submit will happen');
+    text_form.submit();
+
+  //   console.log('sending api key validation request');
+  //   // Send AJAX request to validate the API key and voice ID
+  //   $.ajax({
+  //     url: '/validate_api_key/', // URL for the Django view
+  //     type: 'POST',
+  //     data: {
+  //       'eleven_labs_api_key': apiKey,
+  //       'voice_id': voiceId,
+  //       'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for security
+  //     },
+  //     success: function(response) {
+  //       console.log(response); // Log the entire response to the console
+
+  //       if (response.valid) {
+  //         // API key and Voice ID are valid, proceed to submit the form
+  //         console.log('form is valid now submit will happen');
+  //         text_form.submit();
+  //       } else {
+  //         // If the API key or Voice ID is invalid, show the appropriate error and focus the field
+  //         stopProcessingAnimation('#button-text'); // Stop the processing animation
+
+  //         // button_text.text('Proceed To Scene Selection');
+
+  //         if (response.error.includes('API key')) {
+  //           apiKeyInput.focus();
+  //           apiKeyError.text(response.error); // Show API key error
+  //           //text_form.style.height = '2330px';
+  //         } else if (response.error.includes('Voice')) {
+  //           voiceIdInput.focus();
+  //           voiceIdError.text(response.error); // Show Voice ID error
+  //           //text_form.style.height = '2330px';
+  //         } else {
+  //           apiKeyInput.focus();
+  //           apiKeyError.text(response.error); // Fallback for unknown errors
+  //           //text_form.style.height = '2340px';
+  //         }
+  //       }
+  //     },
+  //     error: function(xhr, status, error) {
+  //       console.log("Error Status: ", status); // Log error status
+  //       console.log("Error: ", error); // Log error message
+  //       stopProcessingAnimation('#button-text'); // Stop the processing animation
+  //       apiKeyError.text('Error validating the API key.');
+  //       apiKeyInput.focus();
+  //       button_text.text('Proceed To Scene Selection');
+  //     }
+  //   });
+  // } 
+}else{
+  stopProcessingAnimation('#button-text');
+}
+}
+submitButton.on('click', validateAPIKey);
+
+
+function updateFont(currentSize){
+  const minFontSize = 12; // minimum font size
+  const maxFontSize = 48; // maximum font size
+  const sliderThumb = document.getElementById('sliderThumb');
+  const sliderFilled = document.getElementById('slider-filled');
+  const valueLabel = document.getElementById('valueLabel');
+  const textAreaFont = document.getElementById('text-area-font');
+  const textArea = document.getElementById("text-area");
+  const fontSize = document.getElementById('fontSize')
+
+
+  const percent = (currentSize - minFontSize) / (maxFontSize - minFontSize);
+    sliderThumb.style.left = `${percent * 100}%`;
+    sliderFilled.style.width = `${percent * 100}%`;
+
+    textAreaFont.style.fontSize = `${currentSize*0.4}px`;
+
+    valueLabel.textContent = currentSize;
+  
+    // Update the hidden input with the current font size
+    fontSize.value = currentSize;
+
+}
+
+updateFont(39)
+
+function adjustVideoPreviewBox(resolution){
+    // const resolution = box.getAttribute('data-resolution');
+    const previewBox = document.getElementById('preview-box');
+    const videoText = document.getElementById('videoText');
+    const previewText= document.getElementById("text-area-font");
+
+    // Adjust box size and text size based on aspect ratio
+    if (resolution === '1:1') {
+    previewBox.style.width = '600px';
+    previewBox.style.height = '600px';
+    videoText.style.fontSize = '48px';
+
+    updateFont(39)
+    // previewText.style.width = `350px`;
+    // previewBox.style.marginBottom = '50px';
+    previewBox.style.paddingTop = '210px';
+  } else if (resolution === '4:5') {
+    previewBox.style.width = '480px';
+    previewBox.style.height = '600px';
+    videoText.style.fontSize = '42px';
+    updateFont(34)
+    // previewText.style.width = `350px`;
+    previewBox.style.paddingTop = '200px';
+  } else if (resolution === '16:9') {
+    previewBox.style.width = '600px'; // Max width
+    previewBox.style.height = `${(600 / 16) * 9}px`; // Adjusted height for 16:9 aspect ratio
+    videoText.style.fontSize = '32px'; // Adjusted font size
+    // previewText.style.width = `300px`; // Adj
+
+    updateFont(39)
+      
+    previewBox.style.paddingTop = '120px';
+  } else if (resolution === '9:16') {
+    previewBox.style.height = '600px'; // Max height
+    previewBox.style.width = `${(600 / 16) * 9}px`; // Adjusted width for 9:16 aspect ratio
+    videoText.style.fontSize = '28px'; // Adjusted font size
+    // previewText.style.width = `250px`; 
+    updateFont(36)
+        
+      // previewBox.style.paddingTop = '150px';
+      //previewText.style.fontSize = `16px`; // Adjusted font size
+    previewBox.style.paddingTop = '240px';
+  }else{
+    previewBox.style.width = '600px';
+    previewBox.style.height = '600px';
+    videoText.style.fontSize = '48px';
+
+    updateFont(39)
+
+    // previewText.style.width = `350px`;
+    // previewBox.style.marginBottom = '50px';
+    previewBox.style.paddingTop = '210px';
+  }
+    
+    // Center the preview box
+    previewBox.style.marginLeft = 'auto';
+    previewBox.style.marginRight = 'auto';
+}
+
+
+document.getElementById('videoFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    
+    if (!file) {
+        return;
+    }
+
+    // Create a video element to load and inspect the video file
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+
+    video.onloadedmetadata = function() {
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+        const aspectRatio = width / height;
+
+        // Common aspect ratios
+        const ratios = {
+            '1:1': 1,
+            '16:9': 16 / 9,
+            '9:16': 9 / 16,
+            '4:5': 4 / 5
+        };
+
+        let matchedRatio = 'Unknown';
+
+        // Compare the aspect ratio to find the closest match
+        for (const [key, value] of Object.entries(ratios)) {
+            if (Math.abs(aspectRatio - value) < 0.01) {
+                matchedRatio = key;
+                break;
+            }
+        }
+
+        // Display the video dimensions and aspect ratio
+        console.log(`Width: ${width}px, Height: ${height}px, Aspect Ratio: ${matchedRatio}`);
+        const aspectSize = document.getElementById('aspectSize').value = matchedRatio
+        adjustVideoPreviewBox(matchedRatio)
+    };
+
+    video.onerror = function() {
+        document.getElementById('videoInfo').textContent = 'Error loading video.';
+    };
+
+    // Load the video file into the video element
+    const objectURL = URL.createObjectURL(file);
+    video.src = objectURL;
+});
+
+</script>
+{% endblock content %}
