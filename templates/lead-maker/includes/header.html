@@ -41,7 +41,7 @@
                         </div>
                         <div class="profile-body">
                             <div class="profile-nav-item">
-                                <a href="/manageSubscription" style="color:#000;font-weight: 500;">Manage Subscription</a>
+                                <a href="{%url 'accounts:manage_subscription'}" style="color:#000;font-weight: 500;">Manage Subscription</a>
                             </div>
                             <div class="profile-nav-item">
                                 {% if user.stripe_subscription_id != '' %}
