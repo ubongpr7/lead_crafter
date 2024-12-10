@@ -33,7 +33,7 @@ allow_population_by_field_name = True
 populate_by_name = True
 
 
-def text_file_upload_path(instance, filename):
+def video_file_upload_path(instance, filename):
     """Generate a unique file path for each uploaded text file."""
     ext = filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"  # Use UUID to ensure unique file names
@@ -71,11 +71,14 @@ class AudioClip(models.Model):
 
 
 class TextFile(models.Model):
+
     user = models.ForeignKey(
         "accounts.User", on_delete=models.SET_NULL, null=True, editable=False
     )
 
-    video_file = models.FileField(upload_to=text_file_upload_path, null=True, blank=True)
+    video_file = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
+    timestamp_start = models.FloatField(null=True, blank=True)
+    timestamp_end = models.FloatField(null=True, blank=True)
     voice_id = models.CharField(max_length=100)
     processed = models.BooleanField(default=False)
     progress = models.CharField(default="0", max_length=100)
@@ -129,30 +132,6 @@ class TextFile(models.Model):
         self.progress = str(increase)
         self.save()
 
-        # if increase == 100:
-        #     def reset_progress():
-        #         self.progress = '0'
-        #         self.save()
-
-        #     # Start a timer that will call reset_progress after 2 seconds
-        #     Timer(5.0, reset_progress).start()
-
-    def process_text_file(self):
-        """Process the uploaded text file and return lines stripped of extra spaces."""
-        if not self.text_file:
-            raise FileNotFoundError("No text file has been uploaded.")
-
-        try:
-            # Using a file-like object for cloud storage systems
-            with self.text_file.open("r") as f:
-                content = f.read()
-                file_obj = io.StringIO(content)
-                lines = file_obj.readlines()
-            return [line.strip() for line in lines if line.strip()]
-        except IOError as e:
-            raise IOError(f"Error processing file: {e}")
-
-        return self.voice_id
 
 
 def text_clip_upload_path(instance, filename):

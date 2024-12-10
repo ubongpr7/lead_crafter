@@ -27,4 +27,11 @@ urlpatterns = [
     path("add-credits-cancel", views.add_credits_cancel, name="add_credits_cancel"),
     path("billing-portal", views.billing_portal, name="billing_portal"),
     path("cancel-subscription", views.cancel_subscription, name="cancel_subscription"),
+
+    # terms
+
+     path("terms-conditions/", terms_conditions_view, name="terms_conditions"),
+     path("privacy-policy/", privacy_policy_view, name="privacy_policy"),
+     path("refund-policy/", refund_policy_view, name="refund_policy"),
+     path("affiliate-terms/", affiliate_programs_terms_view, name="affiliate_terms"),    
 ]

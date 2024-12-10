@@ -574,3 +574,32 @@ def cancel_subscription(request):
             request, "Something Went Wrong. Couldn't Cancel Your Subscription."
         )
         return redirect(reverse("accounts:manage_subscription"))
+
+
+
+
+def terms_conditions_view(request):
+    context = {
+
+    }
+    return render(request, "lead-maker/accounts/terms-conditions.html", context=context)
+
+
+def privacy_policy_view(request):
+    context = {
+
+    }
+    return render(request, "lead-maker/accounts/privacy-policy.html", context=context)
+
+
+def refund_policy_view(request):
+    context = {
+
+    }
+    return render(request, "lead-maker/accounts/refund-policy.html", context=context)
+
+def affiliate_programs_terms_view(request):
+    context = {
+
+    }
+    return render(request, "lead-maker/accounts/affiliate-terms.html", context=context)
