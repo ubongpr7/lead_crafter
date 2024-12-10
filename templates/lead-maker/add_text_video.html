@@ -148,9 +148,7 @@
     const font_error = $('#font_error');
 
     const videoInput = document.getElementById('videoFile');
-    const subtitleInput = document.getElementById('transcribedFile');
     const videoErrorTxt = $('#video_error');
-    const subtitleErrorTxt = $('#subtitle_error');
 
     const text_form = document.getElementById('lead-form');
 
@@ -201,10 +199,6 @@ function validateAPIKey(event) {
   const voiceId = voiceIdInput.val().trim();
   const font_ = font_select.files[0];
   const videoFile = videoInput.files[0];
-  const subtitleFile = subtitleInput.files[0];
-
-  // console.log(font_.name);
-
 
   // Remove any previous error messages
   apiKeyError.text('');
