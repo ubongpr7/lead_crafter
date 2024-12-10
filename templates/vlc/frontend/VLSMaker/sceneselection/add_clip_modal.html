@@ -1,0 +1,241 @@
+<style>
+#modal-cont{
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 120;
+
+}
+     #popup-modal {
+            position: fixed;
+            top: 50%;
+            left: 25%;
+            width: 100%;
+            height: 100%;
+            /* Semi-transparent background */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            /* pointer-events: none; */
+            transition: opacity 0.3s ease-in-out;
+        }
+     
+
+        /* Modal Content */
+        .sub-div {
+            background: white;
+            border-radius: 8px;
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 750px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: slide-down 0.3s ease-in-out;
+        }
+
+        /* Modal Header */
+        .popup-content .title {
+            background: #864AF9;
+            color: white;
+            border-top: none;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 29.26px;
+            text-align: center;
+        }
+
+        /* Modal Form Elements */
+        .popup-content select,
+        .popup-content input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            /* margin-bottom: 15px; */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Submit Button */
+        #popup-submit {
+            font-family: "Montserrat", sans-serif;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            color: white;
+            background: #864AF9;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 24px;
+            letter-spacing: 0.02em;
+            text-align: left;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s ease-in-out;
+        }
+
+        .close-btn {
+            display: inline-block;
+            margin-left: 775px;
+        }
+
+        #close-popup {
+            background-color: red;
+            color: white;
+            border: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        #close-popup:hover {
+            background-color: darkred;
+        }
+
+
+        #popup-submit {
+            margin-top: 32px;
+            margin-left: 85%;
+        }
+
+        #popup-submit:hover {
+            background: #722df3;
+        }
+
+        /* Animation */
+        @keyframes slide-down {
+            from {
+                transform: translateY(-30px);
+                display:none;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+</style>
+<div class="grid-container hidden" id="popup-modal">
+        <!-- <div class="close-btn">
+            <button id="close-popup">
+                X
+            </button>
+        </div> -->
+        <div class="sub-div">
+    {%include  'vlc/frontend/VLSMaker/sceneselection/add_tags.html' %}
+
+            <div  class="grid-items popup-content" style="grid-template-columns: 0.7fr 1fr;width:100%;display: none;">
+                <div class="grid-item title column-hide column-3"><span>Upload Scene</span></div>
+                <div class="grid-item title right column-hide column-4"><span>Upload Scene From Asset Folder</span></div>
+                <div class="grid-item center column-hide column-3">
+                    <div
+                        style="width: 100%; height: fit-content; padding: 16px 24px; border-radius: 8px; border: 1px dashed #19191980; display: flex; align-items: center; position: relative; font-size: 16px; font-weight: 400; line-height: 23.2px; letter-spacing: 0.02em; text-align: center; gap: 14px;">
+                        <svg id="svg1" class="uploadFileIcon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5M14.1667 6.66667L10 2.5M10 2.5L5.83333 6.66667M10 2.5V12.5"
+                                stroke="#191919B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="uploadText"
+                            style="font-size: 16px; font-weight: 400; line-height: 23.2px; letter-spacing: 0.02em; text-align: center;">
+                            Choose File
+                        </div>
+                        <!-- File input for selecting video -->
+                        <input type="file" accept="video/*" class="upload-input" id="popup-file" name="uploaded_video_0"
+                            style="position: absolute; width: 100%; height: 100%; left: 0; display:none; cursor: pointer;">
+                    </div>
+                    <div class="delete-icon" id="delete-icon" style="display: none; cursor: pointer; margin-left: 16px">&#x2716;</div>
+                </div>
+                <div class="grid-item right free-plan-disabled-overlay-container column-hide column-4">
+                    <div
+                        style="display: flex; width: 100%; height: fit-content; gap: 13px; align-items: center; flex-direction: column;">
+                        <!-- Topic Folder Selection -->
+                        <div style="width: 100%; position: relative;">
+                            <select id="popup-topic" name="topic_folder_0"
+                                onchange="fetchVideoClips(this.value, '0',this)"
+                                style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333;">
+                                <option value="">Select Topic</option>
+                                <option value="745">Female Frustrated Clips</option>
+                              
+                                <option value="748">Male Thinking Clips</option>
+                            
+                                <option value="749">Male Crying Clips</option>
+                            
+                                <option value="750">Male Desperation Clips</option>
+                            
+                                <option value="751">Male Hope Clips</option>
+                            
+                                <option value="768">Back Pain Clips</option>
+                            
+                                <option value="752">Male Surprised Clips</option>
+                            
+                                <option value="753">Millions Of People Clips</option>
+                            
+                                <option value="754">Male Happy Clips</option>
+                            
+                                <option value="755">Female Surprised Clips</option>
+                            
+                                <option value="756">Male Finding Strength Clips </option>
+                            
+                                <option value="757">Male Regret Clips</option>
+                            
+                                <option value="758">Male Research Clips</option>
+                            
+                                <option value="759">Male Waking Up Clips</option>
+                            
+                                <option value="760">Male Anxiety Clips</option>
+                            
+                                <option value="761">Memory Reminiscing Clips</option>
+                            
+                                <option value="762">Money Back Clips</option>
+                            
+                                <option value="763">Male Curiosity Clips</option>
+                            
+                                <option value="764">Female Sleeping Clips</option>
+                            
+                                <option value="765">Female Waking Up Clips</option>
+                            
+                                <option value="766">Painkillers Clips</option>
+                            
+                                <option value="767">Male Sleeping Clips</option>
+                            </select>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                                <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+    
+                        <!-- Video Selection -->
+                        <div id="div_0" style="width: 100%; position: relative;">
+                            <select class="selected_clip" id="popup-video"
+                                style="appearance: none; background: #EEEEEE; width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer; border: none; color: #333; padding-right: 40px;">
+                                <option value="">Select a video</option>
+                            </select>
+                            <svg id="svg_0" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                                <path d="M6 9L12 15L18 9" stroke="#050315" stroke-opacity="0.7" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <!-- Hidden Input -->
+                        <input type="hidden" name="topic_folder_selected_0" id="topicFolder_0_345">
+                    </div>
+                </div>
+            </div>
+            <!-- <button id="popup-submit">Submit</button> -->
+        </div>
+    </div>
+    
