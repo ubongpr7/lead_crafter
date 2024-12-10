@@ -95,7 +95,7 @@
                   <div class="fontSize-Container">
                     <label for="fontSize" class="label-txt">Font Size: </label>
                     <div class="slider-value" min id="valueLabel">12</div>
-                    <input type="text" id="fontSize" name="fontSize" value="12" hidden>
+                    <input type="text" id="fontSize" name="font_size" value="12" hidden>
                      <!-- Hidden input -->
                      </div>
                     <div class="slider-container">
@@ -237,7 +237,7 @@ function validateAPIKey(event) {
 
   if(apiKey || voiceId){
     $.ajax({
-      url: '/validate_api_key/', // URL for the Django view
+      url: '/text/validate_api_key/', // URL for the Django view
       type: 'POST',
       data: {
         'eleven_labs_api_key': apiKey,
