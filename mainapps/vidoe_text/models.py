@@ -145,7 +145,7 @@ class TextLineVideoClip(models.Model):
     )
     text=models.CharField(max_length=100,null=True, blank=True)
     video_file_path = models.FileField(upload_to=text_clip_upload_path,null=True,blank=True)
-    line_number = models.IntegerField(null)
+    line_number = models.IntegerField()
     timestamp_start = models.FloatField(null=True, blank=True)
     timestamp_end = models.FloatField(null=True, blank=True)
 

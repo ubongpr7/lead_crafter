@@ -772,7 +772,7 @@ def add_leads(request,textfile_id):
             print(f"Error processing video: {e}")
 
     if request.method=="POST":
-        n_slides= request.POST.gt('no_of_slides')
+        n_slides= int(request.POST.gt('no_of_slides'))
         slides=[]
         for n in range(1,n_slides+1):
             print("this is is slide: ",n)
