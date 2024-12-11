@@ -77,7 +77,8 @@ function updateSlideNumbers() {
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
-    updateSlideNumbers();
+    // updateSlideNumbers();
+    document.getElementById('no_of_slides').value=document.getElementById('no_of_slides').value-1
 }
 
 const form = document.querySelector('.lead-form');
