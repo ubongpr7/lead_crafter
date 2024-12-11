@@ -285,7 +285,7 @@
     formData.append('start', start.toFixed(1));
     formData.append('end', end.toFixed(1));
 
-    fetch(`/text/trim-video/{{text_file.id}}`, {
+    fetch(`/text/trim-video/{{text_file.id}}/`, {
       method: 'POST',
       body: formData,
     })
