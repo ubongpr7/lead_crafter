@@ -739,13 +739,21 @@ def download_video(
 def trim_video(request,textfile_id):
 
     text_file=TextFile.objects.get(id=textfile_id)
+    def run_trim_command(textfile_id):
+        try:
+            call_command("trim_video", textfile_id)
+        except Exception as e:
+            print(f"Error processing video: {e}")
+
     if request.method=="POST":
         start=float(request.POST.get('start'))
         end=float(request.POST.get('end'))
         text_file.timestamp_start=start
         text_file.timestamp_end=end
         text_file.save()
-        return HttpResponse({'success':True},status=200)
+        run_trim_command(text_file.id)
+    
+        return redirect(f'/text/progress_page/trim/{text_file.id}')
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
 
 

@@ -77,6 +77,7 @@ class TextFile(models.Model):
     )
 
     video_file = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
+    trimmed_video = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
     timestamp_start = models.FloatField(null=True, blank=True)
     timestamp_end = models.FloatField(null=True, blank=True)
     voice_id = models.CharField(max_length=100)
