@@ -737,8 +737,17 @@ def download_video(
 
 @login_required
 def trim_video(request,textfile_id):
+
     text_file=TextFile.objects.get(id=textfile_id)
+    if request.method=="POST":
+        start=float(request.POST.get('start'))
+        end=float(request.POST.get('end'))
+        text_file.timestamp_start=start
+        text_file.timestamp_end=end
+        text_file.save()
+        return HttpResponse({'success':True},status=200)
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
+
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):
