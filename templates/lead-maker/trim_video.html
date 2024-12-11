@@ -95,7 +95,7 @@
       </ul>
       <div class="lead-container-new">
         <h5 class="text-center lead-title"> TrIm Video <br class="d-none d-md-block" /> </h5>
-        <form class="lead-form" id="lead-form" method="POST" enctype="multipart/form-data">
+        <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <figure class="video-place" >
               <div>
@@ -268,48 +268,17 @@
             document.removeEventListener('mousemove', onMouseMove);
           }, { once: true });
         });
-  
-  trimButton.addEventListener('click', () => {
-    if (startPercent >= endPercent) {
-      alert('Invalid trim range!');
-      return;
-    }
+  trimForm=document.getElementById('lead-form')
+  // trimTorm.addEventListener('submit', (e) => {
+  //   e.preventDefault()
+  //   if (startPercent >= endPercent) {
+  //     alert('Invalid trim range!');
+  //     return;
+  //   }
+  //   trimForm.s
 
-    const start = (startPercent / 100) * videoDuration;
-    const end = (endPercent / 100) * videoDuration;
-
-    const loadingScreen = document.getElementById('loadingScreen');
-    loadingScreen.style.display = 'flex';
-
-    const formData = new FormData();
-    formData.append('start', start.toFixed(1));
-    formData.append('end', end.toFixed(1));
-
-    $.ajax({
-      url: `/text/trim-video/{{text_file.id}}/`, 
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': "{{csrf_token}}",
-        'form_data': formData 
-      },
-      processData: false, 
-      contentType: false, 
-      success: function(response) {
-        
-        if (response.ok) {
-          fetchProgress();
-        } else {
-          alert('Failed to start trimming process!');
-          loadingScreen.style.display = 'none';
-        }
-      },
-      error: function(xhr, status, error) {
-        console.error('Error:', error);
-        alert('An error occurred!');
-        loadingScreen.style.display = 'none';
-      }
-    });
-  });
+    
+  // });
 
 
     
