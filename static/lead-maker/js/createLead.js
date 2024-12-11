@@ -32,47 +32,47 @@ function updateSlideNumbers() {
     });
 }
 
-function addSlide() {
-  var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-  var staticRows = table.querySelectorAll('tr:not(:has(textarea))');
-  var inputRows = table.querySelectorAll('tr:has(textarea)');
+// function addSlide() {
+//   var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
+//   var staticRows = table.querySelectorAll('tr:not(:has(textarea))');
+//   var inputRows = table.querySelectorAll('tr:has(textarea)');
 
-  var newRow = table.insertRow(inputRows.length); // Insert after existing input rows
-  var slideCell = newRow.insertCell(0);
+//   var newRow = table.insertRow(inputRows.length); // Insert after existing input rows
+//   var slideCell = newRow.insertCell(0);
   
-  slideCell.innerText = `Slide ${table.rows.length}`;
-  newRow.innerHTML += 
-      `<td>
-        <textarea style="font-size: 19px;" type="text" name="slide_text[]" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
-      </td>
-      <td style="background: none;">
-         <div class="custum-browse custum-browse-v2 d-flex align-items-center">
-           <div class="brws">
-             <input class="br-input" type="file" name="slide_image[]" accept=".mp4,.png"  >
-                <a href="#!" class="btn get-start browse-btn">
-               <img src="./static/images/upload-icn-black.svg" alt=""> Choose file
-             </a>
-           </div>
-         </div>
-       </td>
-       <td>
-              <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
-                <img src='static/images/delete-icn.svg' alt="delete" />
-              </a>
-       </td>`;
+//   slideCell.innerText = `Slide ${table.rows.length}`;
+//   newRow.innerHTML += 
+//       `<td>
+//         <textarea style="font-size: 19px;" type="text" name="slide_text[]" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+//       </td>
+//       <td style="background: none;">
+//          <div class="custum-browse custum-browse-v2 d-flex align-items-center">
+//            <div class="brws">
+//              <input class="br-input" type="file" name="slide_image[]" accept=".mp4,.png"  >
+//                 <a href="#!" class="btn get-start browse-btn">
+//                <img src="{% static /images/upload-icn-black.svg" alt=""> Choose file
+//              </a>
+//            </div>
+//          </div>
+//        </td>
+//        <td>
+//               <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
+//                 <img src="{% static 'lead-maker/images/delete-icn.svg' %} alt="delete" />
+//               </a>
+//        </td>`;
   
-  const fileInputs = newRow.querySelectorAll('.br-input');
-  const noFileTexts = newRow.querySelectorAll('.btn.get-start.browse-btn');
+//   const fileInputs = newRow.querySelectorAll('.br-input');
+//   const noFileTexts = newRow.querySelectorAll('.btn.get-start.browse-btn');
   
-  fileInputs.forEach((input, index) => {
-    input.addEventListener('change', (event) => {
-      const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
-      noFileTexts[index].lastChild.textContent = fileName;
-    });
-  });
+//   fileInputs.forEach((input, index) => {
+//     input.addEventListener('change', (event) => {
+//       const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
+//       noFileTexts[index].lastChild.textContent = fileName;
+//     });
+//   });
   
-  updateSlideNumbers();
-}
+//   updateSlideNumbers();
+// }
 
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
