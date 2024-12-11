@@ -772,7 +772,21 @@ def add_leads(request,textfile_id):
             print(f"Error processing video: {e}")
 
     if request.method=="POST":
-        # TextLineVideoClip
+        n_slides= request.POST.gt('no_of_slides')
+        slides=[]
+        for n in range(1,n_slides+1):
+            print("this is is slide: ",n)
+            video_file_path= request.FILES.get(f'slide_image_{n}')
+            if video_file_path:
+                    
+                clip=TextLineVideoClip(
+                    text_file=text_file,
+                    video_file_path=video_file_path,
+                    line_number=n,
+                )
+                slides.append(clip)
+        clips=TextLineVideoClip.objects.bulk(slides) 
+
 
     return render(request, 'lead-maker/add-leads.html',context)
 
