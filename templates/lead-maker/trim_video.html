@@ -122,8 +122,19 @@
         <input type='number' hidden name='start' id="start" >
         <input type='number' hidden name='end' id="end">
         <div id="actionContainer">
-          <a id="proceedWithoutTrimming" href="/proceed">Proceed without Trimming</a>
-          <button id="trimButton" style="display: none;">Trim Video</button>
+
+          <a  class="btn proceed-btn"href="." style="display: none;"  id="proceedWithoutTrimming">
+            <span id="button-text" style="color:white;">
+              Proceed without Trimming
+            </span>
+            <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+          </a>
+          <button type="submit" class="btn proceed-btn" style="display: none;"  id="trimButton">
+            <span id="button-text" style="color:white;">
+              Trim Video
+            </span>
+            <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+        </button>
         </div>
         
         <video id="trimmedVideo" width="600" controls></video>
