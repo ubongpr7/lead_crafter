@@ -203,11 +203,11 @@
 
     if (thumb === sliderStart && percent < endPercent) {
         startPercent = percent;
-        video.currentTime = (startPercent / 100) * videoDuration +0.1; 
+        video.currentTime = (startPercent / 100) * videoDuration +0.09; 
         startTimeInput.value = (startPercent / 100) * videoDuration;
     } else if (thumb === sliderEnd && percent > startPercent) {
         endPercent = percent;
-        video.currentTime = (endPercent / 100) * videoDuration +0.1; 
+        video.currentTime = (endPercent / 100) * videoDuration +0.09; 
         endTimeInput.value = (endPercent / 100) * videoDuration; 
     } else {
         return; 
