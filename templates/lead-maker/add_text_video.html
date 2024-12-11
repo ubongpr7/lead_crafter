@@ -205,7 +205,6 @@ function validateAPIKey(event) {
   voiceIdError.text('');
   font_error.text('');
   videoErrorTxt.text('');
-  //text_form.style.height = '2290px';
 
   let formValid = true
 
@@ -213,7 +212,6 @@ function validateAPIKey(event) {
     videoInput.focus()
     videoErrorTxt.text('Please Upload a input video file');
     formValid = false
-    // stopProcessingAnimation('#button-text');
   }
   
 
@@ -221,10 +219,8 @@ function validateAPIKey(event) {
 
   if (!apiKey) {
     apiKeyInput.focus();
-    //text_form.style.height = '2325px';
     apiKeyError.text('API key is required.');
     formValid = false
-    // stopProcessingAnimation('#button-text');
   } 
   
   if (!voiceId) {
