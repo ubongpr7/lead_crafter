@@ -143,6 +143,7 @@ class TextLineVideoClip(models.Model):
     text_file = models.ForeignKey(
         TextFile, on_delete=models.CASCADE, related_name="video_clips"
     )
+    text=models.CharField(max_length=100,null=True, blank=True)
     video_file_path = models.FileField(upload_to=text_clip_upload_path,null=True,blank=True)
     line_number = models.IntegerField()
     timestamp_start = models.FloatField(null=True, blank=True)
@@ -159,6 +160,7 @@ class TextLineVideoClip(models.Model):
             "video_path": video_path,  # Return the URL, not the path
             "timestamp_start": self.timestamp_start,
             "timestamp_end": self.timestamp_end,
+            "text":self.text,
         }
 
     def get_file_status(self):

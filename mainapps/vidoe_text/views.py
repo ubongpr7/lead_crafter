@@ -758,7 +758,13 @@ def trim_video(request,textfile_id):
 
 def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
-
+    clips= TextLineVideoClip.objects.filter(text_file=text_file)
+    no_of_slides= len(clips)
+    context={
+        'text_file':text_file,
+        'clips':clips,
+        "no_of_slides":no_of_slides
+        }
     def run_add_lead_command(textfile_id):
         try:
             call_command("ad_lead", textfile_id)
@@ -766,9 +772,9 @@ def add_leads(request,textfile_id):
             print(f"Error processing video: {e}")
 
     if request.method=="POST":
-        pass
+        # TextLineVideoClip
 
-    return render(request, 'lead-maker/add-leads.html',{'text_file':text_file})
+    return render(request, 'lead-maker/add-leads.html',context)
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):

@@ -31,48 +31,15 @@ function updateSlideNumbers() {
         row.cells[0].innerText = `Slide ${index + 1}`;
     });
 }
+let currentNumber = document.getElementById('no_of_slides').value
 
-function addSlide() {
-    var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-    var newRow = table.insertRow(0);
-    var slideCell = newRow.insertCell(0);
-    slideCell.innerText = `Slide ${table.rows.length + 1}`;
-    newRow.innerHTML += 
-        `<td>
-          <textarea style="font-size: 19px;" type="text" name="slide_text[]" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
-        </td>
-        <td style="background: none;">
-           <div class="custum-browse custum-browse-v2 d-flex align-items-center">
-             <div class="brws">
-               <input class="br-input" type="file" name="slide_image[]" accept=".mp4,.png"  >
-                  <a href="#!" class="btn get-start browse-btn">
-                 <img src="./static/images/upload-icn-black.svg" alt=""> Choose file
-               </a>
-             </div>
-            
-           </div>
-         </td>
-         <td>
-                <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
-                  <img src='static/images/delete-icn.svg' alt="delete" />
-                </a>
-         </td>`;
-    const fileInputs = document.querySelectorAll('.br-input');
-    const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
-    console.log(fileInputs,noFileTexts);
-    fileInputs.forEach((input, index) => {
-      input.addEventListener('change', (event) => {
-        const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
-        noFileTexts[index].lastChild.textContent = fileName; // Update the text to show the selected file name
-      });
-    });
-    updateSlideNumbers();
-}
 
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
-    updateSlideNumbers();
+    // updateSlideNumbers();
+    currentNumber++
+    document.getElementById('no_of_slides').value=currentNumber
 }
 
 const form = document.querySelector('.lead-form');
