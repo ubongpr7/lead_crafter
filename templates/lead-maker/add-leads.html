@@ -95,7 +95,7 @@ let currentNumber = document.getElementById('no_of_slides').value
     currentNumber++
     
     document.getElementById('no_of_slides').value=currentNumber
-    slideCell.innerText = `Slide ${table.rows.length + 1}`;
+    slideCell.innerText = `Slide ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
           <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
