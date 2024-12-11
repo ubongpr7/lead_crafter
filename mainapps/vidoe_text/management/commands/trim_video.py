@@ -164,7 +164,7 @@ class Command(BaseCommand):
 
             self.text_file_instance.track_progress(40)
 
-            video_clip.write_videofile(
+            clip.write_videofile(
                 temp_output_video.name,
                 codec="libx264",
                 preset="ultrafast",
