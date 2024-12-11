@@ -756,6 +756,18 @@ def trim_video(request,textfile_id):
         return redirect(f'/text/progress_page/trim/{text_file.id}')
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
 
+def add_leads(request,textfile_id):
+    text_file=TextFile.objects.get(id=textfile_id)
+
+    def run_add_lead_command(textfile_id):
+        try:
+            call_command("ad_lead", textfile_id)
+        except Exception as e:
+            print(f"Error processing video: {e}")
+
+    if request.method=="POST":
+
+    return render(request, 'add-leads.html',{'text_file':text_file})
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):

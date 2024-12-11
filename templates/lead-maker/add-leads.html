@@ -26,11 +26,8 @@
         <h5 class="text-center lead-title">Create Your New Lead</h5>
       </div>
 
-      <!-- Form with new slide addition logic -->
-      <form class="lead-form" method="POST" action="/create-lead"  enctype="multipart/form-data">
+      <form class="lead-form" method="POST" action="/add-leads"  enctype="multipart/form-data">
         <div class="d-flex justify-content-start">
-           <input type="hidden" name="video_path" value="{{ video_path }}">
-            <input type="hidden" name="transcription_path" value="{{ transcription_path }}"> 
           <a href="#!" id="createLeadBtn" class="btn proceed-btn" onclick="addSlide()">
             Add New Slide +
           </a>

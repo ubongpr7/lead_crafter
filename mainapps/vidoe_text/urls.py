@@ -8,6 +8,7 @@ urlpatterns = [
         "process-textfile/<str:textfile_id>/", views.process_textfile, name="process_textfile"
     ),
 
+    path("add-leads/<str:textfile_id>/", views.add_leads, name="add_leads"),
     path("trim-video/<str:textfile_id>/", views.trim_video, name="trim_video"),
     path("download_video/<str:textfile_id>/", views.download_video, name="download_video"),
     path(
