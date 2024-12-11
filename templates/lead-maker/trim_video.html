@@ -87,10 +87,9 @@
         <h5 class="text-center lead-title"> Create Your Perfect Leads: <br class="d-none d-md-block" /> Upload, Customize, and Download! </h5>
         <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <label class="label-txt">Tutorial Video:</label>
             <figure class="video-place">
               <div>
-                <video id="video" width="600" controls>
+                <video id="video" height="400" controls>
                   <source src="{{text_file.video_file.url}}" type="video/mp4">
                   Your browser does not support the video tag.
                 </video>
