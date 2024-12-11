@@ -766,6 +766,7 @@ def add_leads(request,textfile_id):
             print(f"Error processing video: {e}")
 
     if request.method=="POST":
+        pass
 
     return render(request, 'add-leads.html',{'text_file':text_file})
 
