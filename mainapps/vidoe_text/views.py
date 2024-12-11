@@ -785,7 +785,7 @@ def add_leads(request,textfile_id):
                     line_number=n,
                 )
                 slides.append(clip)
-        clips=TextLineVideoClip.objects.bulk(slides) 
+        clips=TextLineVideoClip.objects.bulk_create(slides) 
 
 
     return render(request, 'lead-maker/add-leads.html',context)
