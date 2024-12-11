@@ -768,7 +768,7 @@ def add_leads(request,textfile_id):
     if request.method=="POST":
         pass
 
-    return render(request, 'add-leads.html',{'text_file':text_file})
+    return render(request, 'lead-maker/add-leads.html',{'text_file':text_file})
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):
