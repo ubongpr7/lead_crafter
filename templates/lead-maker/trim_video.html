@@ -119,8 +119,8 @@
           <p>End Time: <span id="endTime" style="display:none;">0</span>s</p>
           <p class="error" id="error" style="display: none;">Start time cannot be greater than or equal to end time!</p>
         </div>
-        <input type='number' hidden name='start' id="start" >
-        <input type='number' hidden name='end' id="end">
+        <input type='number' hidden name='start'step="any" id="start" value="0" >
+        <input type='number' hidden name='end'step="any" id="end" value>
         <div id="actionContainer">
 
           <a  class="btn proceed-btn"href="."   id="proceedWithoutTrimming">
@@ -186,7 +186,8 @@
       // Initialize slider thumbs and range track
       video.addEventListener('loadedmetadata', () => {
         videoDuration = video.duration;
-
+        endTimeInput.value =videoDuration
+        console.log(endTimeInput.value)
         updateSlider();
       });
       function updateSlider() {
@@ -240,6 +241,8 @@
         startPercent = percent;
         video.currentTime = (startPercent / 100) * videoDuration +0.08; 
         startTimeInput.value = (startPercent / 100) * videoDuration;
+        console.log(startTimeInput.value)
+
     } else if (thumb === sliderEnd && percent > startPercent) {
         endPercent = percent;
         video.currentTime = (endPercent / 100) * videoDuration +0.09; 
