@@ -285,24 +285,32 @@
     formData.append('start', start.toFixed(1));
     formData.append('end', end.toFixed(1));
 
-    fetch(`/text/trim-video/{{text_file.id}}/`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
+    $.ajax({
+      url: `/text/trim-video/{{text_file.id}}/`, 
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': "{{csrf_token}}",
+        'form_data': formData 
+      },
+      processData: false, 
+      contentType: false, 
+      success: function(response) {
+        
         if (response.ok) {
           fetchProgress();
         } else {
           alert('Failed to start trimming process!');
-          loadingScreen.style.display = 'none'; 
+          loadingScreen.style.display = 'none';
         }
-      })
-      .catch((error) => {
+      },
+      error: function(xhr, status, error) {
         console.error('Error:', error);
         alert('An error occurred!');
         loadingScreen.style.display = 'none';
-      });
+      }
+    });
   });
+
 
     
   
