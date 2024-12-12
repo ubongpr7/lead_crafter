@@ -366,7 +366,7 @@ class Command(BaseCommand):
             elif self.is_image_clip(clip):
                 try:
                     begin,end= extracted_times[i]
-                    duration = float(end) - float(begin) +1.0
+                    duration = float(self.subriptime_to_seconds(end)) - floatsubriptime_to_seconds((self.begin)) +1.0
 
                     video_clip = self.image_to_video(clip, duration)
                     video_clips.append(video_clip)
@@ -486,6 +486,29 @@ class Command(BaseCommand):
         minutes, seconds = divmod(int(seconds), 60)
         hours, minutes = divmod(minutes, 60)
         return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
+    def srt_time_to_float(self,srt_time):
+        """
+        Converts an SRT time string to a float representing the total seconds.
+
+        Args:
+            srt_time (str): Time string in the format 'HH:MM:SS,mmm'.
+
+        Returns:
+            float: Total time in seconds.
+        """
+        try:
+            hours, minutes, rest = srt_time.split(":")
+            seconds, milliseconds = rest.split(",")
+            
+            total_seconds = (
+                int(hours) * 3600 +
+                int(minutes) * 60 +
+                int(seconds) +
+                int(milliseconds) / 1000
+            )
+            return total_seconds
+        except ValueError:
+            raise ValueError(f"Invalid SRT time format: {srt_time}")
 
     def generate_srt_file(self):
         """
