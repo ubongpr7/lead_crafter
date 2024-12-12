@@ -337,7 +337,7 @@ class Command(BaseCommand):
         for i, clip in enumerate(clips):
             if self.is_video_clip(clip):
                 video_clips.append(clip)
-            elif self.is_image_clip(clip)
+            elif self.is_image_clip(clip):
                 try:
                     fragment = self.sync_map["fragments"][i]
                     begin = float(fragment["begin"])
