@@ -785,7 +785,16 @@ def add_leads(request,textfile_id):
 
     if request.method=="POST":
         n_slides= int(request.POST.get('no_of_slides'))
-
+        for clip in line_clips:
+            clip_text= request.POST.get(f'saved_slide_text_{clip.id}')
+            clip_file= request.FILES.get(f'saved_slide_file_{clip.id}')
+            if clip_text:
+                clip.text=clip_text
+            if clip_file:
+                clip.video_file_path.delete(save=False)
+                clip.video_file_path=clip_file
+            clip.save()
+        
         slides=[]
         for n in range(1,n_slides+1):
             print("this is is slide: ",n)
@@ -801,6 +810,7 @@ def add_leads(request,textfile_id):
                 )
                 slides.append(clip)
         clips=TextLineVideoClip.objects.bulk_create(slides) 
+        
 
 
     return render(request, 'lead-maker/add-leads.html',context)
