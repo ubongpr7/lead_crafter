@@ -1062,7 +1062,7 @@ class Command(BaseCommand):
         """
         if self.is_video_clip(clip):
             return clip
-        elif self.is_image_clip(clip)
+        elif self.is_image_clip(clip):
             if duration <= 0:
                 raise ValueError("Duration must be greater than 0.")
             
