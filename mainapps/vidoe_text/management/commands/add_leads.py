@@ -366,7 +366,7 @@ class Command(BaseCommand):
             elif self.is_image_clip(clip):
                 try:
                     begin,end= extracted_times[i]
-                    duration = float(self.subriptime_to_seconds(end)) - floatsubriptime_to_seconds((self.begin)) +1.0
+                    duration = float(self.srt_time_to_float(end)) - float(self.srt_time_to_float((self.begin))) +1.0
 
                     video_clip = self.image_to_video(clip, duration)
                     video_clips.append(video_clip)
