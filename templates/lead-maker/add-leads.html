@@ -55,7 +55,7 @@
                 <td style="background: none;">
                   <div class="custum-browse custum-browse-v2 d-flex align-items-center">
                     <div class="brws">
-                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" onchange="savedInputChangeFunc('{{clip.id}}')" id="saved_slide_file_{{clip.id}}" accept=".mp4,.png"  >
+                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" onchange="savedInputChangeFunc('{{clip.id}}')" id="saved_slide_file_{{clip.id}}" accept="image/*,video/*"  >
                          <a href="#!" class="btn get-start browse-btn">
                         <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""><span id="saved_span_{{clip.id}}"> Choose file</span>
                       </a>
@@ -136,7 +136,7 @@ function deleteSavedSlide(clipId) {
         <td style="background: none;">
            <div class="custum-browse custum-browse-v2 d-flex align-items-center">
              <div class="brws">
-               <input class="br-input" type="file" name="slide_file_${currentNumber}" accept=".mp4,.png"  >
+               <input class="br-input" type="file" name="slide_file_${currentNumber}"accept="image/*,video/*"  >
                   <a href="#!" class="btn get-start browse-btn">
                  <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
                </a>

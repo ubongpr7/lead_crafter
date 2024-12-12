@@ -126,7 +126,9 @@ class Command(BaseCommand):
                 )
 
             # Create a temporary file to store the downloaded video
-            with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_video:
+            file_extension = os.path.splitext(video_file_field.name)[1].lower()
+
+            with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_video:
                 # Download the video file from S3 and save it to the temporary file
                 video_content = download_from_s3(video_file_field.name, temp_video.name)
 
