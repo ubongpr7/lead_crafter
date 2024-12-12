@@ -34,6 +34,11 @@ urlpatterns = [
         views.delete_background_music,
         name="delete_background_music",
     ),
+    path(
+        "delete-clip/<int:id>/",
+        views.delete_clip,
+        name="delete_clip",
+    ),
     path("validate_api_key/", views.validate_api_keyv, name="validate_api_key"),
     # path("validate_api_key/", views.validate_api_keyv, name="validate_api_key"),
 

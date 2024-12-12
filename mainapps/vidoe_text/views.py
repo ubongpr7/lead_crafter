@@ -38,6 +38,18 @@ def delete_background_music(request, id):
         # Return an error response in case something goes wrong
         return JsonResponse({"error": str(e)}, status=400)
 
+@require_http_methods(["DELETE"])
+def delete_clip(request, id):
+    try:
+        clip = get_object_or_404(TextLineVideoClip, id=id)
+
+        clip.video_file_path.delete()
+        clip.delete()
+
+        return JsonResponse({"message": "Music deleted successfully!"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
 
 def check_credits(api_key):
     # Define the endpoint for fetching user information
