@@ -497,7 +497,7 @@ class Command(BaseCommand):
             self.text_file_instance.track_progress(14)
 
             # Download the audio file from S3 and write it to the temp file
-.s            audio_content = download_from_s3(s3_audio_url, temp_audio.name)
+            audio_content = download_from_s3(s3_audio_url, temp_audio.name)
             if not audio_content:
                 logging.error(f"Failed to download audio file {s3_audio_url}")
                 return False
