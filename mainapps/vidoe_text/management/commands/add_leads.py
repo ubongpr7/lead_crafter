@@ -314,7 +314,7 @@ class Command(BaseCommand):
             main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
 
         logging.info("generated_final_video successful")
-        main_clips=[main_clip,final_video_speeded_up_clip]
+        main_clips=[final_video_speeded_up_clip,main_clip]
         main_clipped_video=self.concatenate_clips(
             main_clips,
             target_resolution=MAINRESOLUTIONS[resolution],
