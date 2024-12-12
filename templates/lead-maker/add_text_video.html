@@ -200,7 +200,6 @@ function validateAPIKey(event) {
   const font_ = font_select.files[0];
   const videoFile = videoInput.files[0];
 
-  // Remove any previous error messages
   apiKeyError.text('');
   voiceIdError.text('');
   font_error.text('');
@@ -287,7 +286,7 @@ function validateAPIKey(event) {
   stopProcessingAnimation('#button-text');
 }
 }
-text_form.on('submit', validateAPIKey);
+text_form.addEventListener('submit', validateAPIKey);
 
 
 function updateFont(currentSize){
