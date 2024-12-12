@@ -317,6 +317,32 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(f"Processing complete for {text_file_id}.")
         )
+    def extract_start_end(self):
+        """
+        Extracts the start and end times from each index in the aligned_output list.
+
+        Args:
+            aligned_output (list): List of formatted SRT entries.
+
+        Returns:
+            list: A list of tuples containing the start and end times for each entry.
+        """
+        aligned_output = self.process_srt_file()
+
+        time_data = []
+
+        for entry in aligned_output:
+            # Split the entry into lines
+            lines = entry.split("\n")
+            
+            # Check if there's a time range in the second line
+            if len(lines) > 1 and '-->' in lines[1]:
+                time_range = lines[1]
+                # Split the time range into start and end
+                start, end = time_range.split(" --> ")
+                time_data.append((start.strip(), end.strip()))
+        
+        return time_data
 
     def convert_clips_to_videos(self, clips):
         """
@@ -328,10 +354,10 @@ class Command(BaseCommand):
         Returns:
             list: List of converted VideoClips with specified durations.
         """
-        aligned_output = self.process_srt_file()
+        extracted_times= self.extract_start_end()
 
-        if not aligned_output:
-            raise ValueError("Failed to process the SRT file and extract durations.")
+        if len(clips) != len(extracted_times):
+            raise ValueError("Mismatch between the number of clips and JSON fragments.")
 
         video_clips = []
         for i, clip in enumerate(clips):
@@ -339,9 +365,7 @@ class Command(BaseCommand):
                 video_clips.append(clip)
             elif self.is_image_clip(clip):
                 try:
-                    fragment = aligned_output["fragments"][i]
-                    begin = float(fragment["begin"])
-                    end = float(fragment["end"])
+                    begin,end= extracted_times[i]
                     duration = end - begin +1.0
 
                     video_clip = self.image_to_video(clip, duration)
