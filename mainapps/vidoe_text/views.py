@@ -785,6 +785,8 @@ def add_leads(request,textfile_id):
             print(f"Error processing video: {e}")
 
     if request.method=="POST":
+        text_file.progress='0'
+        text_file.save()
         n_slides= int(request.POST.get('no_of_slides'))
         for clip in line_clips:
             clip_text= request.POST.get(f'saved_slide_text_{clip.id}')
