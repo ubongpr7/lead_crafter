@@ -789,6 +789,7 @@ def add_leads(request,textfile_id):
             clip_text= request.POST.get(f'saved_slide_text_{clip.id}')
             clip_file= request.FILES.get(f'saved_slide_file_{clip.id}')
             if clip_text:
+                clip.text=""
                 clip.text=clip_text
             if clip_file:
                 clip.video_file_path.delete(save=False)
