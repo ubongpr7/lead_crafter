@@ -974,7 +974,7 @@ class Command(BaseCommand):
                 if file_extension in VIDEO_EXTENSIONS:
                     clip = VideoFileClip(os.path.normpath(temp_file.name))
                 elif file_extension in IMAGE_EXTENSIONS:
-                    clip = ImageClipos.path.normpath(temp_file.name)()
+                    clip = ImageClip(os.path.normpath(temp_file.name))
 
                 # Return the video clip
                 return clip
