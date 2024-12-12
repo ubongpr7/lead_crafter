@@ -799,7 +799,7 @@ def add_leads(request,textfile_id):
         for n in range(1,n_slides+1):
             print("this is is slide: ",n)
             slide_text=request.POST.get(f'slide_text_{n}')
-            video_file_path= request.FILES.get(f'slide_image_{n}')
+            video_file_path= request.FILES.get(f'slide_file_{n}')
             if video_file_path:
                     
                 clip=TextLineVideoClip(
