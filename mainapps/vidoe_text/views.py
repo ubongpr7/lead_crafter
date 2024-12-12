@@ -758,11 +758,11 @@ def trim_video(request,textfile_id):
 
 def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
-    clips= TextLineVideoClip.objects.filter(text_file=text_file)
+    line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
     no_of_slides= len(clips)
     context={
         'text_file':text_file,
-        'clips':clips,
+        'clips':line_clips,
         "no_of_slides":no_of_slides
         }
     def run_add_lead_command(textfile_id):
@@ -773,15 +773,18 @@ def add_leads(request,textfile_id):
 
     if request.method=="POST":
         n_slides= int(request.POST.get('no_of_slides'))
+
         slides=[]
         for n in range(1,n_slides+1):
             print("this is is slide: ",n)
+            slide_text=request.POST.get(f'slide_text_{n}')
             video_file_path= request.FILES.get(f'slide_image_{n}')
             if video_file_path:
                     
                 clip=TextLineVideoClip(
                     text_file=text_file,
                     video_file_path=video_file_path,
+                    text=slide_text ,
                     line_number=n,
                 )
                 slides.append(clip)
