@@ -57,7 +57,7 @@
                     <div class="brws">
                       <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" onchange="savedInputChangeFunc('{{clip.id}}')" id="saved_slide_file_{{clip.id}}" accept=".mp4,.png"  >
                          <a href="#!" class="btn get-start browse-btn">
-                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
+                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""><span id="saved_span_{{clip.id}}"> Choose file</span>
                       </a>
                     </div>
                     <p id='current_{{clip.id}}'>Current: {{ clip.get_video_file_name}}</p>
@@ -92,10 +92,12 @@
 <script src="{% static 'lead-maker/js/createLead.js' %}" defer></script>
 <script>
 function savedInputChangeFunc(id) {
-    console.log(`current_${id}`);
+    const inputFile=document.getElementById(`saved_slide_file_${id}`)
+    const fileName = inputFile.files.length > 0 ? inputFile.files[0].name : 'Choose file';
     const element = document.getElementById(`current_${id}`);
     if (element) {
         element.style.display = 'none';
+        document.getElementById(`saved_span_${id}`).textContent = fileName;
     } else {
         console.error(`Element with ID current_${id} not found.`);
     }
