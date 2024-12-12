@@ -49,19 +49,25 @@
             <tr>
               <td>Slide {{ forloop.counter }}</td>
                 <td  >
-                  {{ clip.text }} <input type="text" name="slid_text_{clip.id}" value="{{ clip.text }}" class="slide-text" readonly hidden onfocus="this.blur()" /></td>
+                  {{ clip.text }} <input type="text" name="saved_slide_text_{clip.id}" value="{{ clip.text }}" class="slide-text" readonly hidden onfocus="this.blur()" /></td>
                 </td> 
                            
+                <td style="background: none;">
+                  <div class="custum-browse custum-browse-v2 d-flex align-items-center">
+                    <div class="brws">
+                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" id="saved_slide_file_{{clip.id}}" accept=".mp4,.png"  >
+                         <a href="#!" class="btn get-start browse-btn">
+                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
+                      </a>
+                    </div>
+                    <p id='current_{{clip.id}}'>Current: {{ clip.get_video_file_name}}</p>
+                   
+                  </div>
+                </td>
+                
               <td>
-                <input hidden type="file" name='video_{{clip.id}}' id='video_{{clip.id}}' >
-              <p>Current: {{ clip.get_video_file_name}}</p>
-              </td>
-              <td>
-                <!-- <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
-                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
-                </a> -->
                 <a href="#!" class="delete-row-btn" onclick="deleteSavedSlide('{{clip.id}}')">
-                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="change" />
+                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
               </td>
             </tr>
@@ -102,10 +108,10 @@ function deleteSavedSlide(clipId) {
         });
     }
   function addSlide() {
-let currentNumber = document.getElementById('no_of_slides').value
+    let currentNumber = document.getElementById('no_of_slides').value
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-    var newRow = table.insertRow(0);
+    var newRow = table.insertRow(-1);
     var slideCell = newRow.insertCell(0);
     currentNumber++
     
@@ -133,8 +139,10 @@ let currentNumber = document.getElementById('no_of_slides').value
          </td>`;
  
          const fileInputs = document.querySelectorAll('.br-input');
-    const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
-    console.log(fileInputs,noFileTexts);
+    
+         const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
+    
+         console.log(fileInputs,noFileTexts);
     fileInputs.forEach((input, index) => {
       input.addEventListener('change', (event) => {
         const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
