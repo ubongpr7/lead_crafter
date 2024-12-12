@@ -308,7 +308,11 @@ class Command(BaseCommand):
             original_audio
         )  # Removed overwriting with blank audio
         final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
-        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+        if  self.text_file_instance.trimmed_video:
+            main_clip=self.load_video_from_file_field(self.text_file_instance.trimmed_video)
+        else:
+            main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+
         logging.info("generated_final_video successful")
         main_clips=[main_clip,final_video_speeded_up_clip]
         main_clipped_video=self.concatenate_clips(
