@@ -49,7 +49,7 @@
             <tr>
               <td>Slide {{ forloop.counter }}</td>
                 <td  >
-                 <textarea  name="saved_slide_text_{clip.id}" value="{{ clip.text }}" class="form-control"   onfocus="this.blur()" ></textarea></td>
+                 <textarea  name="saved_slide_text_{clip.id}" class="form-control tab-textarea" aria-describedby="textarea"   onfocus="this.blur()" >{{clip.text}}</textarea></td>
                 </td> 
                            
                 <td style="background: none;">
