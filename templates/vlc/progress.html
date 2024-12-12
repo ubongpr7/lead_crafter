@@ -85,15 +85,19 @@
                         else {
                             if ("{{al_the_way }}" =='bg_music'){
     
-                                window.location.href = '/text/download_video/{{text_file_id}}';  // Redirect to view video page
+                                window.location.href = '/text/download_video/{{text_file_id}}';  
                             }
                             else if("{{al_the_way }}" =='trim'){
-                                window.location.href = '/text/add-leads/{{text_file_id}}';  // Redirect to view video page
+                                window.location.href = '/text/add-leads/{{text_file_id}}'; 
 
                             }
-                            else {
+                            else if ("{{al_the_way }}" =='add_leads') {
     
-                                window.location.href = '/text/process-background-music/{{text_file_id}}';  // Redirect to view video page
+                                window.location.href = '/text/process-background-music/{{text_file_id}}';  
+                            }
+                            else  {
+    
+                                window.location.href = '/text/process-background-music/{{text_file_id}}';  
                             }
                         }
                     }

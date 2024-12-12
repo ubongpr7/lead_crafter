@@ -780,7 +780,7 @@ def add_leads(request,textfile_id):
         }
     def run_add_lead_command(textfile_id):
         try:
-            call_command("ad_leads", textfile_id)
+            call_command("add_leads", textfile_id)
         except Exception as e:
             print(f"Error processing video: {e}")
 
@@ -817,7 +817,7 @@ def add_leads(request,textfile_id):
         save_clips_to_text_file(text_file)
         run_add_lead_command(textfile_id)
 
-        return redirect(f'/text/progress_page/{textfile_id}') 
+        return redirect(f'/text/progress_page/add_leads/{textfile_id}') 
         
 
 

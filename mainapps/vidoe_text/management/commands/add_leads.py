@@ -351,10 +351,7 @@ class Command(BaseCommand):
         
         return video_clips
 
-        def convert_image_to_audio_vsrt(self,clips):
 
-            resized_video_clips=[self.image_to_video(clip,duration) for clip in resize_clips_to_max_size ]
-            return resized_video_clips
     def save_final_video(self, clip):
         with tempfile.NamedTemporaryFile(
             suffix=".mp4", delete=False
@@ -1035,13 +1032,19 @@ class Command(BaseCommand):
         Returns:
             VideoFileClip: The concatenated video clip.
         """
+        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+
+        clips.insert(0,main_clip)
         final_clip = concatenate_videoclips(clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
 
     def resize_clips_to_max_size(self, clips):
-        max_width = max(clip.w for clip in clips)
-        max_height = max(clip.h for clip in clips)
+        # max_width = max(clip.w for clip in clips)
+        # max_height = max(clip.h for clip in clips)
+        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+        max_width = main_clip.w
+        max_height = main_clip.h
 
         resized_clips = [clip.resize(newsize=(max_width, max_height)) for clip in clips]
 
