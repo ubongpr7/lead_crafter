@@ -1307,7 +1307,7 @@ class Command(BaseCommand):
             # Load the watermark image and resize it to 80% of the video width
             watermark = (
                 ImageClip(watermark_temp_path.name)
-                .resize(width=video.w * 1)
+                .resize(width=video.w * 1.2)
                 .set_opacity(0.7)
             )
         except Exception as e:
