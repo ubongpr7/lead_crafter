@@ -339,7 +339,7 @@ class Command(BaseCommand):
                 video_clips.append(clip)
             elif self.is_image_clip(clip):
                 try:
-                    fragment = self.sync_map["fragments"][i]
+                    fragment = aligned_output["fragments"][i]
                     begin = float(fragment["begin"])
                     end = float(fragment["end"])
                     duration = end - begin +1.0
