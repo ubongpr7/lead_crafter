@@ -75,7 +75,7 @@ class TextFile(models.Model):
     user = models.ForeignKey(
         "accounts.User", on_delete=models.SET_NULL, null=True, editable=False
     )
-
+    text_file = models.FileField(upload_to='lead-maker/text_file', null=True, blank=True)
     video_file = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
     trimmed_video = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
     timestamp_start = models.FloatField(null=True, blank=True)

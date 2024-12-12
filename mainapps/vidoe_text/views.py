@@ -20,6 +20,7 @@ from django.core.files.base import ContentFile
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
+import tempfile
 
 
 @require_http_methods(["DELETE"])
@@ -779,7 +780,7 @@ def add_leads(request,textfile_id):
         }
     def run_add_lead_command(textfile_id):
         try:
-            call_command("ad_lead", textfile_id)
+            call_command("ad_leads", textfile_id)
         except Exception as e:
             print(f"Error processing video: {e}")
 
@@ -813,11 +814,30 @@ def add_leads(request,textfile_id):
                 print("appended clip for: ",n)
 
         clips=TextLineVideoClip.objects.bulk_create(slides)
-        return redirect(f'/text/add-leads/{textfile_id}') 
+        save_clips_to_text_file(text_file)
+        run_add_lead_command(textfile_id)
+
+        return redirect(f'/text/progress_page/{textfile_id}') 
         
 
 
     return render(request, 'lead-maker/add-leads.html',context)
+
+def save_clips_to_text_file(text_file):
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+        for clip in text_file.video_clips.all():
+            if clip.text: 
+                temp_file.write(clip.text + '\n')
+        
+        temp_file.flush()
+        temp_file.seek(0)
+
+        with open(temp_file.name, 'rb') as f:
+            if text_file.text_file:
+                text_file.text_file.delete(save=False)
+            text_file.text_file.save(f'clips_text_{text_file.id}.txt', f)
+
+    
 
 @login_required
 def download_file_from_s3(request, file_key, textfile_id=None):
