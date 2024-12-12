@@ -818,6 +818,8 @@ def add_leads(request,textfile_id):
         clips=TextLineVideoClip.objects.bulk_create(slides)
         save_clips_to_text_file(text_file)
         run_add_lead_command(textfile_id)
+        thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
+        thread.start()
 
         return redirect(f'/text/progress_page/add_leads/{textfile_id}') 
         

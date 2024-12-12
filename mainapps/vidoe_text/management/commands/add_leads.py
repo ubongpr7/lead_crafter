@@ -308,9 +308,15 @@ class Command(BaseCommand):
             original_audio
         )  # Removed overwriting with blank audio
         final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
-
+        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
         logging.info("generated_final_video successful")
-        final_video = self.save_final_video(final_video_speeded_up_clip)
+        main_clips=[main_clip,final_video_speeded_up_clip]
+        main_clipped_video=self.concatenate_clips(
+            main_clips,
+            target_resolution=MAINRESOLUTIONS[resolution],
+            target_fps=30,
+        )
+        final_video = self.save_final_video(main_clipped_video)
         watermarked = self.add_static_watermark_to_instance()
         self.text_file_instance.track_progress(100)
 
@@ -1079,9 +1085,7 @@ class Command(BaseCommand):
         Returns:
             VideoFileClip: The concatenated video clip.
         """
-        # main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
 
-        # clips.insert(0,main_clip)
         final_clip = concatenate_videoclips(clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
