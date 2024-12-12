@@ -809,7 +809,10 @@ def add_leads(request,textfile_id):
                     line_number=n,
                 )
                 slides.append(clip)
-        clips=TextLineVideoClip.objects.bulk_create(slides) 
+                print("appended clip for: ",n)
+
+        clips=TextLineVideoClip.objects.bulk_create(slides)
+        return redirect(f'/text/add-leads/{textfile_id}') 
         
 
 
