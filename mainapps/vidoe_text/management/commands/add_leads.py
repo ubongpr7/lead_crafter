@@ -960,8 +960,8 @@ class Command(BaseCommand):
         """
         try:
             if not file_field or not file_field.name:
-                file_extension = os.path.splitext(file_field.name)[1].lower()
                 raise ValueError("File field is empty or invalid.")
+            file_extension = os.path.splitext(file_field.name)[1].lower()
 
             with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_file:
                 file_content = download_from_s3(file_field.name, temp_file.name)

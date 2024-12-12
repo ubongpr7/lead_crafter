@@ -125,17 +125,14 @@ class Command(BaseCommand):
                     f"Video S3 key is empty for {file_field} in the text_file_instance."
                 )
 
-            # Create a temporary file to store the downloaded video
             file_extension = os.path.splitext(video_file_field.name)[1].lower()
 
             with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_video:
-                # Download the video file from S3 and save it to the temporary file
                 video_content = download_from_s3(video_file_field.name, temp_video.name)
 
                 if not video_content:
                     raise ValueError("Failed to download the video from S3.")
 
-                # Write the video content to the temp file
                 with open(temp_video.name, "wb") as video_file:
                     video_file.write(video_content)
 
