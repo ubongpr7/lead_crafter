@@ -55,7 +55,7 @@
                 <td style="background: none;">
                   <div class="custum-browse custum-browse-v2 d-flex align-items-center">
                     <div class="brws">
-                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" id="saved_slide_file_{{clip.id}}" accept=".mp4,.png"  >
+                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" onchange='savedInputChangeFunc(clip.id)' id="saved_slide_file_{{clip.id}}" accept=".mp4,.png"  >
                          <a href="#!" class="btn get-start browse-btn">
                         <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
                       </a>
@@ -91,6 +91,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script src="{% static 'lead-maker/js/createLead.js' %}" defer></script>
 <script>
+  // document.onload()
+function savedInputChangeFunc(id){
+  document.getElementById(`current_${id}`).style.display='none'
+}
 let currentNumber = document.getElementById('no_of_slides').value
 function deleteSavedSlide(clipId) {
         $.ajax({
