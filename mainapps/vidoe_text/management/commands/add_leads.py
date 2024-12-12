@@ -1079,9 +1079,9 @@ class Command(BaseCommand):
         Returns:
             VideoFileClip: The concatenated video clip.
         """
-        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+        # main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
 
-        clips.insert(0,main_clip)
+        # clips.insert(0,main_clip)
         final_clip = concatenate_videoclips(clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
