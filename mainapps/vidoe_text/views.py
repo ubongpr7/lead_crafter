@@ -759,7 +759,7 @@ def trim_video(request,textfile_id):
 def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
-    no_of_slides= len(clips)
+    no_of_slides= len(line_clips)
     context={
         'text_file':text_file,
         'clips':line_clips,
