@@ -304,7 +304,7 @@ window.addEventListener("scroll", () => {
 // Wait until the DOM is fully loaded
 
 
-const sliderThumb = document.getElementById("sliderThumb");
+const sliderThumb = document.getElementById("sliderThumb-");
       const sliderFilled = document.getElementById("slider-filled");
       const valueLabel = document.getElementById("valueLabel");
       const valuescrollId = document.getElementById("valuescrollId");
@@ -318,7 +318,7 @@ const sliderThumb = document.getElementById("sliderThumb");
       const minValue = 0;
       const maxValue = 100;
 // Set initial value (20% of maxValue)
-      function updateSliderPosition(event) {
+function updateSliderPosition(event) {
   if (isDragging) {
     const rect = sliderContainer.getBoundingClientRect();
     const offsetX = event.clientX - rect.left; // Get the mouse position relative to the slider
