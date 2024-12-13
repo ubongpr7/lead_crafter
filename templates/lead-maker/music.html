@@ -56,9 +56,9 @@
                 <div class="brws">
                   <input class="br-input fileInput"  name="mp3-1" id="mp3-{{textfile.id}}-1" type="file" accept=".mp3" />
                   <a href="#!" class="btn get-start browse-btn">
-                    <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span id="uploadText-1" style="color: inherit;">Choose file</span>  </a>
+                    <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" />Choose file </a>
                 </div>
-                <p></p>
+                <p id="uploadText-1" style="color: inherit;"></p>
               </div>
             </div>
             
@@ -152,6 +152,9 @@
 <script>
   const evt1 = document.getElementById("addMoreBtn");
 let currentNumber = n_musics.value;
+const inputs = document.querySelectorAll('.fileInput');
+const submitForm = document.getElementById('submit_form');
+const proceed = document.getElementById('proceed');
 
 evt1?.addEventListener("click", function (e) {
   e.preventDefault();
@@ -184,10 +187,10 @@ evt1?.addEventListener("click", function (e) {
       <div class="brws">
         <input class="br-input fileInput" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
         <a href="#!" class="btn get-start browse-btn">
-          <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span  style="color:inherit;" id="uploadText-${currentNumber}">Choose file</span>
+          <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" />Choose file
         </a>
       </div>
-      <p></p>
+      <p   id="uploadText-${currentNumber}"></p>
     </div>`;
 
   const newSection2 = document.createElement("div");
@@ -232,19 +235,11 @@ evt1?.addEventListener("click", function (e) {
   newSection.appendChild(newSection3);
   sectionContainer.appendChild(newSection);
 
-  // const deleteButton = newSection1.querySelector(".delete-music");
-  // deleteButton.addEventListener("click", function () {
-  //   sectionContainer.removeChild(newSection);
-  //   currentNumber--; 
-  //   updateMP3Numbers(); 
-  // });
-  
 
 
   addInputValidation(currentNumber);
   //   inputHander(currentNumber)
   //   handleSlider(currentNumber)
-  // handleFileInputChange(currentNumber)
   inputHander(currentNumber)
 });
 
@@ -262,20 +257,22 @@ function handleFileInputChange(number) {
 }
 
 
-
 function inputHander(c_number) {
   const fileInput = document.getElementById(`mp3-${textFileId}-${c_number}`);
   const uploadText = document.getElementById(`uploadText-${c_number}`);
   const startTimeInput = document.getElementById(`starts-${textFileId}-${c_number}`);
   const endTimeInput = document.getElementById(`ends-${textFileId}-${c_number}`);
   const currentFileP = document.getElementById(`mp3_${c_number}_current`)
-  // const clearBtn = document.getElementById('clear-btn')
 
 fileInput.addEventListener('change', function() {
+
+
   if (fileInput.files.length > 0) {
     uploadText.textContent = fileInput.files[0].name.slice(0, 15);
     startTimeInput.required = true;
     endTimeInput.required = true;
+    submitForm.style.display = 'flex';
+    proceed.style.display = 'none';
     if (currentFileP) {
       currentFileP.remove();
     };
@@ -337,23 +334,20 @@ const endTimeInput = document.getElementById(`ends-${textFileId}-${number}`);
 });
 }
 
-function checkInputs() {
-const inputs = document.querySelectorAll('.fileInput');
-const submitForm = document.getElementById('submit_form');
-const proceed = document.getElementById('proceed');
+// function checkInputs() {
 
-// Check if any file input is not empty
-let anyFilled = Array.from(inputs).some(input => input.files.length > 0);
+// // Check if any file input is not empty
+// let anyFilled = Array.from(inputs).some(input => input.files.length > 0);
 
-if (anyFilled) {
-  submitForm.style.display = 'flex';
-  proceed.style.display = 'none';
-} else {
-  submitForm.style.display = 'none';
-  proceed.style.display = 'flex';
-}
-}
-checkInputs()
+// if (anyFilled) {
+//   submitForm.style.display = 'flex';
+//   proceed.style.display = 'none';
+// } else {
+//   submitForm.style.display = 'none';
+//   proceed.style.display = 'flex';
+// }
+// }
+
 </script>
 {% if textfile.background_musics.all %}
 {% else %}
