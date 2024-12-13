@@ -178,7 +178,6 @@ class Command(BaseCommand):
         voice_id = text_file_instance.voice_id
         api_key = text_file_instance.api_key
         audio_file = None
-        # if not text_file_instance.generated_audio:
         output_audio_file = os.path.join(
             base_path, "audio", f"{timestamp}_{text_file_id}_audio.mp3"
         )
@@ -1040,6 +1039,37 @@ class Command(BaseCommand):
             logging.error(f"Error loading video from file field: {e}")
             raise
 
+    def add_black_background(self,clip, aspect_ratio):
+        """
+        Adds a black background to a video clip if its aspect ratio 
+        doesn't match the specified aspect ratio.
+
+        Args:
+            clip (VideoClip): The MoviePy VideoClip to process.
+            aspect_ratio (float): The desired aspect ratio (width/height).
+
+        Returns:
+            VideoClip: The processed clip with a black background if needed.
+        """
+        original_width, original_height = clip.size
+        original_aspect_ratio = original_width / original_height
+
+        if abs(original_aspect_ratio - aspect_ratio) < 0.01:  
+            return clip  
+
+        if original_aspect_ratio > aspect_ratio:
+            new_height = original_width / aspect_ratio
+            new_width = original_width
+        else:
+            new_width = original_height * aspect_ratio
+            new_height = original_height
+
+        black_bg = CompositeVideoClip([
+            clip.set_position("center")
+        ], size=(int(new_width), int(new_height)), bg_color=(0, 0, 0))
+
+        return black_bg
+
     def crop_to_aspect_ratio_(self, clip, desired_aspect_ratio):
         original_width, original_height = clip.size
 
@@ -1049,23 +1079,26 @@ class Command(BaseCommand):
             abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
         ):  
             return clip
+        else:
+            clip= self.add_black_background(clip,desired_aspect_ratio)
+            return clip
 
         
-        if original_aspect_ratio > desired_aspect_ratio:
-            new_width = int(original_height * desired_aspect_ratio)
-            new_height = original_height
-            x1 = (original_width - new_width) // 2 
-            y1 = 0
-        else:
-            new_width = original_width
-            new_height = int(original_width / desired_aspect_ratio)
-            x1 = 0
-            y1 = (original_height - new_height) // 2  
+        # if original_aspect_ratio > desired_aspect_ratio:
+        #     new_width = int(original_height * desired_aspect_ratio)
+        #     new_height = original_height
+        #     x1 = (original_width - new_width) // 2 
+        #     y1 = 0
+        # else:
+        #     new_width = original_width
+        #     new_height = int(original_width / desired_aspect_ratio)
+        #     x1 = 0
+        #     y1 = (original_height - new_height) // 2  
 
-        x2 = x1 + new_width
-        y2 = y1 + new_height
+        # x2 = x1 + new_width
+        # y2 = y1 + new_height
 
-        return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
+        # return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
     def is_image_clip(self,clip):
         """
         Checks if the provided MoviePy clip is an ImageClip.
