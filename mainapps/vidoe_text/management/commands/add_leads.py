@@ -1039,7 +1039,7 @@ class Command(BaseCommand):
             logging.error(f"Error loading video from file field: {e}")
             raise
 
-    def add_black_background(clip, aspect_ratio):
+    def add_black_background(self, clip, aspect_ratio):
         """
         Adds a black background to a video clip if its aspect ratio 
         doesn't match the specified aspect ratio.
@@ -1073,36 +1073,36 @@ class Command(BaseCommand):
 
         return final_clip
 
-    def add_black_background(self,clip, aspect_ratio):
-        """
-        Adds a black background to a video clip if its aspect ratio 
-        doesn't match the specified aspect ratio.
+    # def add_black_background(self,clip, aspect_ratio):
+    #     """
+    #     Adds a black background to a video clip if its aspect ratio 
+    #     doesn't match the specified aspect ratio.
 
-        Args:
-            clip (VideoClip): The MoviePy VideoClip to process.
-            aspect_ratio (float): The desired aspect ratio (width/height).
+    #     Args:
+    #         clip (VideoClip): The MoviePy VideoClip to process.
+    #         aspect_ratio (float): The desired aspect ratio (width/height).
 
-        Returns:
-            VideoClip: The processed clip with a black background if needed.
-        """
-        original_width, original_height = clip.size
-        original_aspect_ratio = original_width / original_height
+    #     Returns:
+    #         VideoClip: The processed clip with a black background if needed.
+    #     """
+    #     original_width, original_height = clip.size
+    #     original_aspect_ratio = original_width / original_height
 
-        if abs(original_aspect_ratio - aspect_ratio) < 0.01:  
-            return clip  
+    #     if abs(original_aspect_ratio - aspect_ratio) < 0.01:  
+    #         return clip  
 
-        if original_aspect_ratio > aspect_ratio:
-            new_height = original_width / aspect_ratio
-            new_width = original_width
-        else:
-            new_width = original_height * aspect_ratio
-            new_height = original_height
+    #     if original_aspect_ratio > aspect_ratio:
+    #         new_height = original_width / aspect_ratio
+    #         new_width = original_width
+    #     else:
+    #         new_width = original_height * aspect_ratio
+    #         new_height = original_height
 
-        black_bg = CompositeVideoClip([
-            clip.set_position("center")
-        ], size=(int(new_width), int(new_height)), bg_color=(0, 0, 0))
+    #     black_bg = CompositeVideoClip([
+    #         clip.set_position("center")
+    #     ], size=(int(new_width), int(new_height)), bg_color=(0, 0, 0))
 
-        return black_bg
+    #     return black_bg
 
     def crop_to_aspect_ratio_(self, clip, desired_aspect_ratio):
         original_width, original_height = clip.size
