@@ -462,163 +462,6 @@ def add_text_video(request):
     return render(request, "lead-maker/add_text_video.html",)
 
 
-# @login_required
-# def add_video_clips(request, textfile_id):
-#     text_file = get_object_or_404(TextFile, id=textfile_id)
-#     text_file.progress = "0"
-#     text_file.save()
-#     key = LogoModel.objects.get(id=2).logo.name
-#     existing_clips = TextLineVideoClip.objects.filter(text_file=text_file)
-#     if text_file.user != request.user:
-#         messages.error(
-#             request, "You Do Not Have Access To The Resources You Requested "
-#         )
-#         return render(request, "permission_denied.html")
-#     video_categories = ClipCategory.objects.filter(user=request.user)
-#     if request.method == "POST":
-#         if text_file.text_file and request.POST.get("purpose") == "process":
-#             if text_file.video_clips.all():
-#                 for video_clip in TextLineVideoClip.objects.filter(text_file=text_file):
-#                     video_clip.delete()
-#                     print("Deleted a video_clip")
-
-#             lines = text_file.process_text_file()
-#             print(lines)
-#             video_clips_data = []
-#             print('=================> post method',request.POST)
-#             for index, line in enumerate(lines):
-#                 print('=============>index',index)
-#                 video_file = request.FILES.get(f"uploaded_video_{index}")
-#                 print('video file form input ============>',video_file)
-#                 video_clip_id = request.POST.get(f"selected_video_{index}")
-#                 print(video_clip_id)
-#                 if video_clip_id:
-#                     video_clip = get_object_or_404(VideoClip, id=video_clip_id)
-#                     print(video_clip.title)
-#                 else:
-#                     video_clip = None
-                
-#                 if video_file or video_clip:
-#                     video_clips_data.append(
-#                         TextLineVideoClip(
-#                             text_file=text_file,
-#                             video_file=video_clip,
-#                             video_file_path=video_file,
-#                             line_number=index + 1,
-#                         )
-#                     )
-#                 else:
-#                     messages.error(request, "You Did Not Choose The Clips Completely")
-#                     return redirect(reverse("video:add_scenes", args=[textfile_id]))
-
-#             TextLineVideoClip.objects.bulk_create(video_clips_data)
-
-#             return redirect(f"/text/process-textfile/{textfile_id}")
-
-#         elif text_file.text_file and request.POST.get("purpose") == "update":
-#             for i, clip in enumerate(existing_clips):
-#                 video_file = request.FILES.get(f"uploaded_video_{i}")
-#                 video_clip_id = request.POST.get(f"selected_video_{i}")
-#                 if video_clip_id:
-#                     video_clip = get_object_or_404(VideoClip, id=video_clip_id)
-#                 else:
-#                     video_clip = None
-#                 clip.video_file = video_clip
-#                 if request.POST.get(f"video_{i}_status") == "filled":
-#                     pass
-#                 elif (
-#                     request.POST.get(f"video_{i}_status") == "empty"
-#                     and clip.video_file_path
-#                 ):
-#                     clip.video_file_path.delete()
-#                 if video_file and request.POST.get(f"video_{i}_status") == "changed":
-#                     clip.video_file_path = video_file
-#                 clip.save()
-#             messages.success(request, "TextFile updated successfully")
-#             # return redirect(reverse('video:add_scenes', args=[textfile_id]))
-#             return redirect(f"/text/process-textfile/{textfile_id}")
-
-#         elif request.POST.get("purpose") == "text_file":
-#             if request.FILES.get("text_file"):
-#                 if request.user.subscription.plan.name.lower() == "free":
-#                     slides_count = 0
-#                     for _ in request.FILES.get("text_file"):
-#                         slides_count += 1
-
-#                     if slides_count > 10:
-#                         messages.error(
-#                             request,
-#                             "Adding More Than 10 Slides Is Only Available On Paid Plans. Please Delete Some Slides From Txt File",
-#                         )
-#                         return redirect(reverse("video:add_scenes", args=[textfile_id]))
-
-#                 if text_file.video_clips:
-#                     for video_clip in TextLineVideoClip.objects.filter(
-#                         text_file=text_file
-#                     ):
-#                         video_clip.delete()
-#                         print("Deleted a video_clip")
-
-#                 text_file.text_file = request.FILES.get("text_file")
-#                 text_file.save()
-#                 return redirect(reverse("video:add_scenes", args=[textfile_id]))
-
-#             messages.error(request, "You Did Not Upload Text File")
-#             return redirect(reverse("video:add_scenes", args=[textfile_id]))
-
-#     else:
-#         if text_file.text_file and not existing_clips:
-#             lines = text_file.process_text_file()
-#             n_lines = len(lines)
-#             # Create a list of dictionaries with line numbers for the form
-#             form_data = [
-#                 {"line_number": i + 1, "line": lines[i], "i": i}
-#                 for i in range(len(lines))
-#             ]
-#             return render(
-#                 request,
-#                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-#                 {
-#                     "n_lines": n_lines,
-#                     "key": key,
-#                     "text_file": text_file,
-#                     "video_categories": video_categories,
-#                     "textfile_id": textfile_id,
-#                     "form_data": form_data,
-#                 },
-#             )
-#         elif text_file.text_file and existing_clips:
-#             lines = text_file.process_text_file()
-#             n_lines = len(lines)
-#             form_data = [
-#                 {
-#                     "line_number": i + 1,
-#                     "line": lines[i],
-#                     "i": i,
-#                     "clip": existing_clips[i],
-#                 }
-#                 for i in range(len(lines))
-#             ]
-#             return render(
-#                 request,
-#                 "vlc/frontend/VLSMaker/sceneselection/index.html",
-#                 {
-#                     "n_lines": n_lines,
-#                     "key": key,
-#                     "text_file": text_file,
-#                     "video_categories": video_categories,
-#                     "textfile_id": textfile_id,
-#                     "form_data": form_data,
-#                 },
-#             )
-
-#         return render(
-#             request,
-#             "vlc/frontend/VLSMaker/sceneselection/index.html",
-#             {"key": key, "text_file": text_file, "textfile_id": textfile_id},
-#         )
-
-
 @login_required
 @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def download_video(
@@ -668,6 +511,11 @@ def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
     no_of_slides= len(line_clips)
+    if line_clips:
+        clip_line_nums=[clip.line_number for clip in line_clips ]
+        max_lin_num=max(clip_line_nums)
+    else: 
+        max_lin_num=0
     context={
         'text_file':text_file,
         'clips':line_clips,
@@ -705,7 +553,7 @@ def add_leads(request,textfile_id):
                     text_file=text_file,
                     video_file_path=video_file_path,
                     text=slide_text ,
-                    line_number=n,
+                    line_number=n+max_lin_num,
                 )
                 slides.append(clip)
                 print("appended clip for: ",n)
