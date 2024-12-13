@@ -144,8 +144,8 @@ def serve_file(request, file_name):
         return response
 
 
+# @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 @login_required
-@check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def process_background_music(request, textfile_id):
     # Run process_video command in a new thread
     def run_process_command(textfile_id):
