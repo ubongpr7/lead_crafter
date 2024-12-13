@@ -54,7 +54,7 @@
               <br />
               <div class="custum-browse custum-browse-v2 d-flex align-items-center">
                 <div class="brws">
-                  <input class="br-input"  name="mp3-1" id="mp3-{{textfile.id}}-1" type="file" accept=".mp3" />
+                  <input class="br-input fileInput"  name="mp3-1" id="mp3-{{textfile.id}}-1" type="file" accept=".mp3" />
                   <a href="#!" class="btn get-start browse-btn">
                     <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span id="uploadText-1" style="color: inherit;">Choose file</span>  </a>
                 </div>
@@ -183,7 +183,7 @@ evt1?.addEventListener("click", function (e) {
     <br>
     <div class="custum-browse custum-browse-v2 d-flex align-items-center">
       <div class="brws">
-        <input class="br-input" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
+        <input class="br-input fileInput" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
         <a href="#!" class="btn get-start browse-btn">
           <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span  style="color:inherit;" id="uploadText-${currentNumber}">Choose file</span>
         </a>
