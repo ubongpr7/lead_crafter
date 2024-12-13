@@ -238,6 +238,7 @@ evt1?.addEventListener("click", function (e) {
 
 
   addInputValidation(currentNumber);
+  handleSliding(currentNumber)
   //   inputHander(currentNumber)
   //   handleSlider(currentNumber)
   inputHander(currentNumber)
@@ -333,58 +334,47 @@ const endTimeInput = document.getElementById(`ends-${textFileId}-${number}`);
   });
 });
 }
+
 function handleSliding(sliderNumber) {
   const sliderThumb = document.getElementById("sliderThumb-" + sliderNumber);
   const sliderFilled = document.getElementById("slider-filled-" + sliderNumber);
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
   const valuescrollId = document.getElementById("valuescrollId-" + sliderNumber);
   const sliderContainer = document.querySelector(".slider-container");
-  // const textAreaFont = document.getElementById("textAreaFont-" + sliderNumber); 
   const trackWidth = sliderContainer.offsetWidth;
 
   let isDragging = false;
   
-  // Set initial position and value
   sliderThumb.style.left = "20%";
   sliderFilled.style.width = "20%";
 
-  // Define min and max values for the slider
   const minValue = 0;
   const maxValue = 100;
 
   function updateSliderPosition(event) {
     if (isDragging) {
       const rect = sliderContainer.getBoundingClientRect();
-      const offsetX = event.clientX - rect.left; // Get the mouse position relative to the slider
-      const percentage = Math.max(0, Math.min(offsetX / trackWidth, 1)); // Calculate the percentage
+      const offsetX = event.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(offsetX / trackWidth, 1));
       const value = Math.round(
         percentage * (maxValue - minValue) + minValue
-      ); // Convert to 0-100 scale
+      ); 
 
-      // Update the thumb position and the label value
       sliderThumb.style.left = `${percentage * 100}%`;
       sliderFilled.style.width = `${percentage * 100}%`;
-      valueLabel.innerHTML = `${value}%`; // Append percentage symbol
+      valueLabel.innerHTML = `${value}%`; 
       valuescrollId.value = `${value}`;
 
-      // Optionally update other elements, e.g., the font size of an element
-      // if (textAreaFont) {
-      //   // textAreaFont.style.fontSize = `${value}px`;
-      // }
     }
   }
-
-  // Mouse down event to start dragging
   sliderThumb.addEventListener("mousedown", () => {
     isDragging = true;
   });
 
-  // Mouse up event to stop dragging
   document.addEventListener("mouseup", () => {
     isDragging = false;
   });
 
-  // Mouse move event to update the slider
   document.addEventListener("mousemove", updateSliderPosition);
 }
 
