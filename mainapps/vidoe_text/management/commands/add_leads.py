@@ -1077,26 +1077,26 @@ class Command(BaseCommand):
             abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
         ):  
             return clip
-        else:
-            clip= self.add_margin_based_on_aspect_ratio(clip,desired_aspect_ratio)
-            return clip
+        # else:
+        #     clip= self.add_margin_based_on_aspect_ratio(clip,desired_aspect_ratio)
+        #     return clip
 
         
-        # if original_aspect_ratio > desired_aspect_ratio:
-        #     new_width = int(original_height * desired_aspect_ratio)
-        #     new_height = original_height
-        #     x1 = (original_width - new_width) // 2 
-        #     y1 = 0
-        # else:
-        #     new_width = original_width
-        #     new_height = int(original_width / desired_aspect_ratio)
-        #     x1 = 0
-        #     y1 = (original_height - new_height) // 2  
+        if original_aspect_ratio > desired_aspect_ratio:
+            new_width = int(original_height * desired_aspect_ratio)
+            new_height = original_height
+            x1 = (original_width - new_width) // 2 
+            y1 = 0
+        else:
+            new_width = original_width
+            new_height = int(original_width / desired_aspect_ratio)
+            x1 = 0
+            y1 = (original_height - new_height) // 2  
 
-        # x2 = x1 + new_width
-        # y2 = y1 + new_height
+        x2 = x1 + new_width
+        y2 = y1 + new_height
 
-        # return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
+        return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
     def is_image_clip(self,clip):
         """
         Checks if the provided MoviePy clip is an ImageClip.
