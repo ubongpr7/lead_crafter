@@ -127,7 +127,7 @@
                 <div class="fontSize-Container">
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
                   <div class="slider-value" min id="valueLabel-1">20%</div>
-                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId--{{textfile.id}}-1"  name="volume-1" type="number" value="20" hidden />
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-{{textfile.id}}-1"  name="volume-1" type="number" value="20" hidden />
                 </div>
                 <div class="slider-container">
                   <div class="slider-track">
@@ -394,7 +394,7 @@ function handleSliding(sliderNumber) {
   const sliderThumb = document.getElementById("sliderThumb-" + sliderNumber);
   const sliderFilled = document.getElementById("slider-filled-" + sliderNumber);
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
-  const valuescrollId = document.getElementById("valuescrollId-"+textFileId +'-' + sliderNumber);
+  const valuescrollId = document.getElementById(`valuescrollId-${textFileId}-${sliderNumber}`);
   const sliderContainer = document.querySelector(".slider-container");
   const trackWidth = sliderContainer.offsetWidth;
 
