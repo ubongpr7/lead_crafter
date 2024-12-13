@@ -33,7 +33,7 @@
               </video>
             </div> 
 
-        <form class="lead-form"  method="POST" action="."  enctype="multipart/form-data">
+        <form class="lead-form"id="lead-form"  method="POST" action="."  enctype="multipart/form-data">
           {% csrf_token %}
           <div id="repeatable-block">
             {% if textfile.background_musics.all %}
@@ -448,7 +448,7 @@ function deleteButton(c_number) {
 {% if textfile.background_musics.all %}
 <script>
   window.onload = function() {
-      document.getElementById('bg_form').reset()
+      document.getElementById('lead-form').reset()
       const inputs = document.querySelectorAll('input');
 
       inputs.forEach(input => {
@@ -459,13 +459,16 @@ function deleteButton(c_number) {
           if (storedValue) {
             input.value = storedValue;
 
-            // if (input.id.startsWith('mySlider')) {
-            //   const idParts = input.id.split('_');
-            //   const currentNumber = idParts[idParts.length - 1]; 
-
-            //   document.getElementById('SliderValue_' + currentNumber).textContent = storedValue + '%'
-            //   document.getElementById(input.id).style.background = `linear-gradient(to right, #864AF9 ${storedValue}%, #D9D9D9 ${storedValue}%)`;
-            // }
+            if (input.id.startsWith('valuescrollId')) {
+              const idParts = input.id.split('_');
+              const currentNumber = idParts[idParts.length - 1]; 
+              const sliderThumb = document.getElementById("sliderThumb-" + currentNumber);
+              const sliderFilled = document.getElementById("slider-filled-" + currentNumber);
+              sliderThumb.style.left = `${storedValue}%`;
+              sliderFilled.style.width = `${storedValue}%`;
+              document.getElementById('SliderValue_' + currentNumber).textContent = storedValue + '%'
+              // document.getElementById(input.id).style.background = `linear-gradient(to right, #864AF9 ${storedValue}%, #D9D9D9 ${storedValue}%)`;
+            }
           }
         }
       });
