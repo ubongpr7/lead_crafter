@@ -151,7 +151,6 @@
 
 <script>
   const evt1 = document.getElementById("addMoreBtn");
-let currentNumber = n_musics.value;
 const inputs = document.querySelectorAll('.fileInput');
 const submitForm = document.getElementById('submit_form');
 const proceed = document.getElementById('proceed');
@@ -159,6 +158,7 @@ const proceed = document.getElementById('proceed');
 evt1?.addEventListener("click", function (e) {
   e.preventDefault();
 // let currentNumber = n_musics.value;
+let currentNumber = n_musics.value;
 
   currentNumber++
   n_musics.value=currentNumber
@@ -382,6 +382,8 @@ function deleteButton(c_number) {
 
     if (container) {
       container.remove();
+    n_musics.value=n_musics.value-1
+
     }
   }
 </script>
