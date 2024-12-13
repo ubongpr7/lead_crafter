@@ -56,7 +56,7 @@
                 <div class="brws">
                   <input class="br-input"  name="mp3-1" id="mp3-{{textfile.id}}-1" type="file" accept=".mp3" />
                   <a href="#!" class="btn get-start browse-btn">
-                    <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /> Choose file </a>
+                    <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span id="uploadText-1" style="color: inherit;">Choose file</span>  </a>
                 </div>
                 <p></p>
               </div>
@@ -230,7 +230,6 @@ evt1?.addEventListener("click", function (e) {
   newSection.appendChild(newSection3);
   sectionContainer.appendChild(newSection);
 
-  // Add event listener to the delete button
   const deleteButton = newSection1.querySelector(".delete-music");
   deleteButton.addEventListener("click", function () {
     sectionContainer.removeChild(newSection); // Remove the specific section
@@ -247,24 +246,22 @@ evt1?.addEventListener("click", function (e) {
     });
   });
   
-  // Initialize slider for the new MP3
-  initSlider(sliderId, sliderFilledId, sliderThumbId, valueLabelId,valuescrollId);
-  
-  // currentNumber++;
 
 
-  // Remove previous event listeners
-  const inputs = document.querySelectorAll('input[name="starts[]"], input[name="ends[]"]');
-  inputs.forEach(input => {
-      const newInput = input.cloneNode(true); // Clone the input to remove previous listeners
-      input.parentNode.replaceChild(newInput, input); // Replace the old input with the cloned one
-  });
-  
-  // Reapply the event listener to the new inputs
-  const newInputs = document.querySelectorAll('input[name="starts[]"], input[name="ends[]"]');
-  newInputs.forEach(input => {
-      input.addEventListener('input', formatTimeInput);
-  });
+  addInputValidation(currentNumber);
+    inputHander(currentNumber)
+    handleSlider(currentNumber)
+
+    const fileInput = document.getElementById(`mp3-${textFileId}-${currentNumber}`);
+    const uploadText = document.getElementById(`uploadText${currentNumber}`);
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        uploadText.textContent = fileInput.files[0].name;
+      } else {
+        uploadText.textContent = 'Choose File';
+      }
+    });
+
 });
 </script>
 {% endblock content %}
