@@ -68,7 +68,7 @@
                 <div class="fontSize-Container">
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
                   <div class="slider-value" min id="valueLabel-1">20%</div>
-                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-1" name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden />
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-1"  name="volume-1" type="number" value="20" hidden />
                   <!-- <input class="slider-value-input"  name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden /> -->
                 </div>
                 <div class="slider-container">
@@ -205,7 +205,7 @@ let currentNumber = n_musics.value;
                         >MP3 ${currentNumber}: Volume:</label
                       >
           <div class="slider-value" min id="${valueLabelId}">20%</div>
-          <input  onchange="saveInput(this)" class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}" id="volume-${textFileId}-${currentNumber}" value="20" hidden />
+          <input  onchange="saveInput(this)" class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}"  type="number" value="20" hidden />
         </div>
         <div class="slider-container">
           <div class="slider-track">
@@ -256,7 +256,6 @@ function handleFileInputChange(number) {
     });
 }
 
-
 function inputHander(c_number) {
   const fileInput = document.getElementById(`mp3-${textFileId}-${c_number}`);
   const uploadText = document.getElementById(`uploadText-${c_number}`);
@@ -299,7 +298,6 @@ function saveInput(inputElement) {
 if (inputElement.type === 'file') {
   // For file inputs, save the file name
   if (inputElement.files.length > 0) {
-    // sessionStorage.setItem(inputElement.id, inputElement.files[0].name);
   }
 } else {
   // For other inputs, save the value
@@ -340,12 +338,14 @@ function handleSliding(sliderNumber) {
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
   const valuescrollId = document.getElementById("valuescrollId-" + sliderNumber);
   const sliderContainer = document.querySelector(".slider-container");
+  const sliderInput=document.getElementById(`sliderInput-${textFileId}-${sliderNumber}`)
   const trackWidth = sliderContainer.offsetWidth;
 
   let isDragging = false;
   
   sliderThumb.style.left = "20%";
   sliderFilled.style.width = "20%";
+  sliderInput.value=20;
 
   const minValue = 0;
   const maxValue = 100;
@@ -363,6 +363,7 @@ function handleSliding(sliderNumber) {
       sliderFilled.style.width = `${percentage * 100}%`;
       valueLabel.innerHTML = `${value}%`; 
       valuescrollId.value = `${value}`;
+      console.log(valuescrollId.id,valuescrollId.value)
 
     }
   }
@@ -386,6 +387,7 @@ function deleteButton(c_number) {
 
     }
   }
+
 </script>
 {% if textfile.background_musics.all %}
 {% else %}
