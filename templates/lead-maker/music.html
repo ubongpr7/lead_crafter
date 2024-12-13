@@ -248,7 +248,7 @@ evt1?.addEventListener("click", function (e) {
 
 function handleFileInputChange(number) {
     const fileInput = document.getElementById(`mp3-${textFileId}-${number}`);
-    const uploadText = document.getElementById(`uploadText${number}`);
+    const uploadText = document.getElementById(`uploadText-${number}`);
 
     fileInput.addEventListener('change', function () {
         if (fileInput.files.length > 0) {
