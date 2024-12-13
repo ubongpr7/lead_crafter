@@ -33,7 +33,7 @@
               </video>
             </div> 
 
-        <form class="lead-form" method="POST" action="."  enctype="multipart/form-data">
+        <form class="lead-form"  method="POST" action="."  enctype="multipart/form-data">
           {% csrf_token %}
           <div id="repeatable-block">
             {% if textfile.background_musics.all %}
@@ -68,7 +68,7 @@
                 <div class="fontSize-Container">
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
                   <div class="slider-value" min id="valueLabel-1">20%</div>
-                  <input class="slider-value-input" id="valuescrollId-1" name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden />
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-1" name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden />
                   <!-- <input class="slider-value-input"  name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden /> -->
                 </div>
                 <div class="slider-container">
@@ -87,11 +87,11 @@
             <div class="time-fld d-flex justify-content-between align-items-start">
               <div class="browse-field">
                 <label for="starts{{textfile.id}}-1"  class="label-txt">Start:</label>
-                <input type="text" name="starts-1" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-1" aria-describedby="emailHelp" />
+                <input onchange="saveInput(this)" type="text" name="starts-1" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-1" aria-describedby="emailHelp" />
               </div>
               <div class="browse-field">
                 <label for="ends-{{textfile.id}}-1" class="label-txt">End:</label>
-                <input type="text"  name="ends-1" placeholder="00:00" class="form-control"id="ends-{{textfile.id}}-1"  aria-describedby="emailHelp" />
+                <input type="text" onchange="saveInput(this)"  name="ends-1" placeholder="00:00" class="form-control"id="ends-{{textfile.id}}-1"  aria-describedby="emailHelp" />
               </div>
             </div>
 
@@ -103,9 +103,12 @@
           <div class="d-flex justify-content-start" style="margin-top: 30px">
             <a href="#!" id="addMoreBtn" class="btn proceed-btn"> + Upload Another MP3 </a>
           </div>
-          <div class="create-video d-flex justify-content-end">
-            <button  type="submit"  class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+          <div class="create-video d-flex justify-content-end" style="display: none;">
+            <button  type="submit"id="submit_form"  class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </button>
+          <div class="create-video d-flex justify-content-end">
+            <a  id="submit_form" id="proceed"  class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            </a>
           </div>
         </form>
       </div>
@@ -199,7 +202,7 @@ evt1?.addEventListener("click", function (e) {
                         >MP3 ${currentNumber}: Volume:</label
                       >
           <div class="slider-value" min id="${valueLabelId}">20%</div>
-          <input class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}" id="volume-${textFileId}-${currentNumber}" value="20" hidden />
+          <input  onchange="saveInput(this)" class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}" id="volume-${textFileId}-${currentNumber}" value="20" hidden />
         </div>
         <div class="slider-container">
           <div class="slider-track">
@@ -217,11 +220,11 @@ evt1?.addEventListener("click", function (e) {
   newSection3.innerHTML = `
     <div class="browse-field">
       <label for="starts[]" class="label-txt">Start:</label>
-      <input type="text" placeholder="00:00"  name="starts-${currentNumber}" class="form-control" id="starts-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
+      <input onchange="saveInput(this)" type="text" placeholder="00:00"  name="starts-${currentNumber}" class="form-control" id="starts-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
     </div>
     <div class="browse-field">
       <label for="ends" class="label-txt">End:</label>
-      <input type="text" placeholder="00:00"  name="ends-${currentNumber}" class="form-control" id="ends-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
+      <input onchange="saveInput(this)" type="text" placeholder="00:00"  name="ends-${currentNumber}" class="form-control" id="ends-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
     </div>`;
 
   // Append the heading and inputs to the new section
