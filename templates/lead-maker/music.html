@@ -396,14 +396,12 @@ function handleSliding(sliderNumber) {
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
   const valuescrollId = document.getElementById("valuescrollId-"+textFileId +'-' + sliderNumber);
   const sliderContainer = document.querySelector(".slider-container");
-  const sliderInput=document.getElementById(`sliderInput-${textFileId}-${sliderNumber}`)
   const trackWidth = sliderContainer.offsetWidth;
 
   let isDragging = false;
   
   sliderThumb.style.left = "20%";
   sliderFilled.style.width = "20%";
-  sliderInput.value=20;
 
   const minValue = 0;
   const maxValue = 100;
