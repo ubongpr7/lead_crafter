@@ -1039,6 +1039,40 @@ class Command(BaseCommand):
             logging.error(f"Error loading video from file field: {e}")
             raise
 
+    def add_black_background(clip, aspect_ratio):
+        """
+        Adds a black background to a video clip if its aspect ratio 
+        doesn't match the specified aspect ratio.
+
+        Args:
+            clip (VideoClip): The MoviePy VideoClip to process.
+            aspect_ratio (float): The desired aspect ratio (width/height).
+
+        Returns:
+            VideoClip: The processed clip with a black background if needed.
+        """
+        original_width, original_height = clip.size
+        original_aspect_ratio = original_width / original_height
+
+        if abs(original_aspect_ratio - aspect_ratio) < 0.01:
+            return clip
+
+        if original_aspect_ratio > aspect_ratio:
+            new_height = int(original_width / aspect_ratio)
+            new_width = original_width
+        else:
+            new_width = int(original_height * aspect_ratio)
+            new_height = original_height
+
+        black_bg = ColorClip(size=(new_width, new_height), color=(0, 0, 0), duration=clip.duration)
+
+        centered_clip = clip.set_position("center").resize(height=new_height if new_width == original_width else None,
+                                                        width=new_width if new_height == original_height else None)
+
+        final_clip = CompositeVideoClip([black_bg, centered_clip])
+
+        return final_clip
+
     def add_black_background(self,clip, aspect_ratio):
         """
         Adds a black background to a video clip if its aspect ratio 
