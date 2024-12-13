@@ -164,6 +164,7 @@ evt1?.addEventListener("click", function (e) {
   n_musics.value=currentNumber
   const sectionContainer = document.getElementById("repeatable-block");
   const newSection = document.createElement("div");
+  newSection.id=`upload-${currentNumber}`
   newSection.classList.add("section");
 
   // Create a new section for the MP3 upload
@@ -180,7 +181,7 @@ evt1?.addEventListener("click", function (e) {
   newSection1.innerHTML = `
     <div class="col-md-12" style="justify-content: space-between; display: flex; margin-top: 40px;">
       <label for="formFileLg" class="label-txt" style="padding-top: 5px;">Upload MP3 ${currentNumber}:</label>
-      <a href="#!" class="delete-music" style="padding: 10px 10px; border: 1px solid #3663ff; text-align: right;" id="blue-delete">Delete</a>
+      <a href="#!" class="delete-music" onclick="deleteButton(${currentNumber})" style="padding: 10px 10px; border: 1px solid #3663ff; text-align: right;" >Delete</a>
     </div>
     <br>
     <div class="custum-browse custum-browse-v2 d-flex align-items-center">
@@ -239,8 +240,6 @@ evt1?.addEventListener("click", function (e) {
 
   addInputValidation(currentNumber);
   handleSliding(currentNumber)
-  //   inputHander(currentNumber)
-  //   handleSlider(currentNumber)
   inputHander(currentNumber)
 });
 
@@ -378,6 +377,13 @@ function handleSliding(sliderNumber) {
   document.addEventListener("mousemove", updateSliderPosition);
 }
 
+function deleteButton(c_number) {
+    const container = document.getElementById(`upload-${c_number}`);
+
+    if (container) {
+      container.remove();
+    }
+  }
 </script>
 {% if textfile.background_musics.all %}
 {% else %}
