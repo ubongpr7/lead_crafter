@@ -268,7 +268,7 @@ fileInput.addEventListener('change', function() {
 
 
   if (fileInput.files.length > 0) {
-    uploadText.textContent = fileInput.files[0].name.slice(0, 15);
+    uploadText.textContent = fileInput.files[0].name.slice(0, 25);
     startTimeInput.required = true;
     endTimeInput.required = true;
     submitForm.style.display = 'flex';
