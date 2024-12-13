@@ -465,6 +465,8 @@ function deleteButton(c_number) {
               const currentNumber = idParts[idParts.length - 1]; 
               const sliderThumb = document.getElementById("sliderThumb-" + currentNumber);
               const sliderFilled = document.getElementById("slider-filled-" + currentNumber);
+              const valueLabel = document.getElementById("valueLabel-" + currentNumber);
+              valueLabel.textContent=`${storedValue}%`;
               sliderThumb.style.left = `${storedValue}%`;
               sliderFilled.style.width = `${storedValue}%`;
             }
