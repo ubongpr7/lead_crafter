@@ -1,8 +1,12 @@
 const evt1 = document.getElementById("addMoreBtn");
-let mp3Counter = 2;// Initialize counter for MP3 uploads
+let currentNumber = n_musics.value;
 
 evt1?.addEventListener("click", function (e) {
   e.preventDefault();
+// let currentNumber = n_musics.value;
+
+  currentNumber++
+  n_musics.value=currentNumber
   const sectionContainer = document.getElementById("repeatable-block");
   const newSection = document.createElement("div");
   newSection.classList.add("section");
@@ -12,21 +16,21 @@ evt1?.addEventListener("click", function (e) {
   newSection1.classList.add("browse-field");
   
   // Use the counter to create unique IDs for the slider components
-  const sliderId = `slider-${mp3Counter}`;
-  const sliderFilledId = `slider-filled-${mp3Counter}`;
-  const sliderThumbId = `sliderThumb-${mp3Counter}`;
-  const valueLabelId = `valueLabel-${mp3Counter}`;
-  const valuescrollId=`valuescrollId-${mp3Counter}`
+  const sliderId = `slider-${currentNumber}`;
+  const sliderFilledId = `slider-filled-${currentNumber}`;
+  const sliderThumbId = `sliderThumb-${currentNumber}`;
+  const valueLabelId = `valueLabel-${currentNumber}`;
+  const valuescrollId=`valuescrollId-${currentNumber}`
 
   newSection1.innerHTML = `
     <div class="col-md-12" style="justify-content: space-between; display: flex; margin-top: 40px;">
-      <label for="formFileLg" class="label-txt" style="padding-top: 5px;">Upload MP3 ${mp3Counter}:</label>
+      <label for="formFileLg" class="label-txt" style="padding-top: 5px;">Upload MP3 ${currentNumber}:</label>
       <a href="#!" class="delete-music" style="padding: 10px 10px; border: 1px solid #3663ff; text-align: right;" id="blue-delete">Delete</a>
     </div>
     <br>
     <div class="custum-browse custum-browse-v2 d-flex align-items-center">
       <div class="brws">
-        <input class="br-input" name="mp3[]" id="mp3[]" type="file" accept=".mp3" />
+        <input class="br-input" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
         <a href="#!" class="btn get-start browse-btn">
           <img src="/static/images/upload-icn-black.svg" alt="" /> Choose file
         </a>
@@ -43,10 +47,10 @@ evt1?.addEventListener("click", function (e) {
       <div>
         <div class="fontSize-Container">
           <label for="${sliderId}" class="label-txt" style="font-weight: bold;"
-                        >MP3 ${mp3Counter}: Volume:</label
+                        >MP3 ${currentNumber}: Volume:</label
                       >
           <div class="slider-value" min id="${valueLabelId}">20%</div>
-          <input class="slider-value-input" id="${valuescrollId}" name="volume[]" id="volume[]" value="20" hidden />
+          <input class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}" id="volume-${textFileId}-${currentNumber}" value="20" hidden />
         </div>
         <div class="slider-container">
           <div class="slider-track">
@@ -64,11 +68,11 @@ evt1?.addEventListener("click", function (e) {
   newSection3.innerHTML = `
     <div class="browse-field">
       <label for="starts[]" class="label-txt">Start:</label>
-      <input type="text" placeholder="00:00"  name="starts[]" class="form-control" id="starts[]" aria-describedby="emailHelp" />
+      <input type="text" placeholder="00:00"  name="starts-${currentNumber}" class="form-control" id="starts-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
     </div>
     <div class="browse-field">
       <label for="ends" class="label-txt">End:</label>
-      <input type="text" placeholder="00:00"  name="ends[]" class="form-control" id="ends[]" aria-describedby="emailHelp" />
+      <input type="text" placeholder="00:00"  name="ends-${currentNumber}" class="form-control" id="ends-${textFileId}-${currentNumber}" aria-describedby="emailHelp" />
     </div>`;
 
   // Append the heading and inputs to the new section
@@ -81,7 +85,7 @@ evt1?.addEventListener("click", function (e) {
   const deleteButton = newSection1.querySelector(".delete-music");
   deleteButton.addEventListener("click", function () {
     sectionContainer.removeChild(newSection); // Remove the specific section
-    mp3Counter--; // Decrease the counter
+    currentNumber--; // Decrease the counter
     updateMP3Numbers(); // Update remaining sections' numbers
   });
   const fileInputs = document.querySelectorAll('.br-input');
@@ -97,7 +101,7 @@ evt1?.addEventListener("click", function (e) {
   // Initialize slider for the new MP3
   initSlider(sliderId, sliderFilledId, sliderThumbId, valueLabelId,valuescrollId);
   
-  mp3Counter++;
+  // currentNumber++;
 
 
   // Remove previous event listeners

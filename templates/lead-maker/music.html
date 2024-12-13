@@ -37,7 +37,10 @@
           {% csrf_token %}
           <div id="repeatable-block">
             {% if textfile.background_musics.all %}
+            <input type="number" hidden name="no_of_mp3" id="no_of_mp3" value="{{n_musics}}">
+
         
+            {% else %}
             <div class="browse-field">
               <div style="
                       justify-content: space-between;
@@ -51,7 +54,7 @@
               <br />
               <div class="custum-browse custum-browse-v2 d-flex align-items-center">
                 <div class="brws">
-                  <input class="br-input"  name="mp3[]" id="mp3[]" type="file" accept=".mp3" />
+                  <input class="br-input"  name="mp3-1" id="mp3-{{textfile.id}}-1" type="file" accept=".mp3" />
                   <a href="#!" class="btn get-start browse-btn">
                     <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /> Choose file </a>
                 </div>
@@ -60,19 +63,19 @@
             </div>
             
             <br />
-            <!-- Volume Slider -->
             <div class="browse-field">
               <div>
                 <div class="fontSize-Container">
-                  <label for="formFileLg"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
-                  <div class="slider-value" min id="valueLabel">20%</div>
-                  <input class="slider-value-input" id="valuescrollId" name="volume[]" id="volume[]" value="20" hidden />
+                  <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
+                  <div class="slider-value" min id="valueLabel-1">20%</div>
+                  <input class="slider-value-input" id="valuescrollId-1" name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden />
+                  <!-- <input class="slider-value-input"  name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden /> -->
                 </div>
                 <div class="slider-container">
                   <div class="slider-track">
-                    <div class="slider-filled" id="slider-filled"></div>
+                    <div class="slider-filled" id="slider-filled-1"></div>
                   </div>
-                  <div class="slider-thumb" id="sliderThumb"></div>
+                  <div class="slider-thumb" id="sliderThumb-1"></div>
                 </div>
               </div>
             </div>
@@ -83,16 +86,16 @@
             </div>
             <div class="time-fld d-flex justify-content-between align-items-start">
               <div class="browse-field">
-                <label for="starts[]"  class="label-txt">Start:</label>
-                <input type="text" name="starts[]" placeholder="00:00" class="form-control" id="starts[]" aria-describedby="emailHelp" />
+                <label for="starts{{textfile.id}}-1"  class="label-txt">Start:</label>
+                <input type="text" name="starts-1" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-1" aria-describedby="emailHelp" />
               </div>
               <div class="browse-field">
-                <label for="ends[]" class="label-txt">End:</label>
-                <input type="text"  name="ends[]" placeholder="00:00" class="form-control" name="ends[]" aria-describedby="emailHelp" />
+                <label for="ends-{{textfile.id}}-1" class="label-txt">End:</label>
+                <input type="text"  name="ends-1" placeholder="00:00" class="form-control"id="ends-{{textfile.id}}-1"  aria-describedby="emailHelp" />
               </div>
             </div>
-            {% else %}
 
+            <input type="number" hidden name="no_of_mp3" id="no_of_mp3" value="2">
             {% endif %}
           </div>
         
@@ -133,9 +136,11 @@
     </div>
   </section>
 </div>
-<!-- <div class="blob"></div> -->
-<!--Page Wrapper End-->
-<script></script>
+
+<script>
+  const textFileId="{{textfile.id}}"
+  const n_musics= document.getElementById('no_of_mp3')
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script src="{% static 'lead-maker/js/music.js' %}" defer></script>undefined</body>undefined</html> 
