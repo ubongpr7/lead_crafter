@@ -38,7 +38,66 @@
           <div id="repeatable-block">
             {% if textfile.background_musics.all %}
             <input type="number" hidden name="no_of_mp3" id="no_of_mp3" value="{{n_musics}}">
+            {% for  music in musics %}
+            <div id="upload">
+              <a href="#!" class="delete-music" onclick="deleteMusicButton('{{music.id}}')" style="padding: 10px 10px; border: 1px solid #3663ff; text-align: right;" >Delete</a>
 
+            </div>
+            <div class="browse-field">
+              <div style="
+                      justify-content: space-between;
+                      width: 100%;
+                      display: flex;
+                    ">
+        
+
+                <label for="formFileLg" class="label-txt" id="musicLabel-{{ forloop.counter}}" style="padding-top: 10px">Upload MP3 {{ forloop.counter}}:</label>
+              </div>
+              <br />
+              <div class="custum-browse custum-browse-v2 d-flex align-items-center">
+                <div class="brws">
+                  <input class="br-input fileInput"  name="saved-mp3-{{music.id}}" id="mp3-{{textfile.id}}-{{ forloop.counter}}" type="file" accept=".mp3" />
+                  <a href="#!" class="btn get-start browse-btn">
+                    <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" />Choose file </a>
+                </div>
+                <p id="uploadText-{{ forloop.counter}}" style="color: inherit;"></p>
+              </div>
+            </div>
+            
+            <br />
+            <div class="browse-field">
+              <div>
+                <div class="fontSize-Container">
+                  <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 {{ forloop.counter}} Volume:</label>
+                  <div class="slider-value" min id="valueLabel-{{ forloop.counter}}">20%</div>
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId--{{textfile.id}}-{{ forloop.counter}}"  name="saved-volume-{{music.id}}" type="number" value="20" hidden />
+                </div>
+                <div class="slider-container">
+                  <div class="slider-track">
+                    <div class="slider-filled" id="slider-filled-{{ forloop.counter}}"></div>
+                  </div>
+                  <div class="slider-thumb" id="sliderThumb-{{ forloop.counter}}"></div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="browse-field" style="margin-bottom: 5px">
+              <label for="exampleInput" class="label-txt">What Second Should This MP3 Play? <small>in minutes</small>
+              </label>
+            </div>
+            <div class="time-fld d-flex justify-content-between align-items-start">
+              <div class="browse-field">
+                <label for="starts{{textfile.id}}-1"  class="label-txt">Start:</label>
+                <input onchange="saveInput(this)" type="text" name="saved-starts-{{music.id}}" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-1" aria-describedby="emailHelp" />
+              </div>
+              <div class="browse-field">
+                <label for="ends-{{textfile.id}}-1" class="label-txt">End:</label>
+                <input type="text" onchange="saveInput(this)"  name="saved-ends-{{music.id}}" placeholder="00:00" class="form-control"id="ends-{{textfile.id}}-{{ forloop.counter}}"  aria-describedby="emailHelp" />
+              </div>
+            </div>
+
+
+            {% endfor %}
         
             {% else %}
             <div class="browse-field">
@@ -69,7 +128,6 @@
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
                   <div class="slider-value" min id="valueLabel-1">20%</div>
                   <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId--{{textfile.id}}-1"  name="volume-1" type="number" value="20" hidden />
-                  <!-- <input class="slider-value-input"  name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden /> -->
                 </div>
                 <div class="slider-container">
                   <div class="slider-track">
@@ -202,7 +260,7 @@ let currentNumber = n_musics.value;
       <div>
         <div class="fontSize-Container">
           <label for="${sliderId}" class="label-txt" style="font-weight: bold;"
-                        >MP3 ${currentNumber}: Volume:</label
+                        >MP3 ${currentNumber} Volume:</label
                       >
           <div class="slider-value" min id="${valueLabelId}">20%</div>
           <input  onchange="saveInput(this)" class="slider-value-input" id="${valuescrollId}" name="volume-${currentNumber}"  type="number" value="20" hidden />
@@ -390,6 +448,47 @@ function deleteButton(c_number) {
 
 </script>
 {% if textfile.background_musics.all %}
+<script>
+  window.onload = function() {
+      document.getElementById('bg_form').reset()
+      const inputs = document.querySelectorAll('input');
+
+      inputs.forEach(input => {
+        if (input.type === 'file') {
+
+        } else {
+          const storedValue = sessionStorage.getItem(input.id);
+          if (storedValue) {
+            input.value = storedValue;
+
+            // if (input.id.startsWith('mySlider')) {
+            //   const idParts = input.id.split('_');
+            //   const currentNumber = idParts[idParts.length - 1]; 
+
+            //   document.getElementById('SliderValue_' + currentNumber).textContent = storedValue + '%'
+            //   document.getElementById(input.id).style.background = `linear-gradient(to right, #864AF9 ${storedValue}%, #D9D9D9 ${storedValue}%)`;
+            // }
+          }
+        }
+      });
+    };
+
+  function deleteMusicButton(musicId) {
+        $.ajax({
+            url: '/text/delete-background-music/' + musicId + '/',  
+            type: 'DELETE',  
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'  
+            },
+            success: function(response) {
+                location.reload();  
+            },
+            error: function(xhr, status, error) {
+                alert("Error deleting music: " + error);
+            }
+        });
+    }
+</script>
 {% else %}
 <script>
   addInputValidation(1)

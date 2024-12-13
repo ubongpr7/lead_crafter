@@ -17,7 +17,7 @@ def bg_music_file_upload_path(instance, filename):
     """Generate a unique file path for each uploaded text file."""
     unique_name = f"{uuid.uuid4()}"  # Use UUID to ensure unique file names
 
-    return os.path.join("text_clip", str(instance.text_file.id), unique_name, filename)
+    return os.path.join("laed-maker","text_clip", str(instance.text_file.id), unique_name, filename)
 
 
 class BackgroundMusic(models.Model):
