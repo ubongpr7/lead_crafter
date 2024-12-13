@@ -487,11 +487,11 @@ function deleteButton(c_number) {
             }
         });
     }
-for (let i = 1; i < "{{n_musics}}" +1; i++) {
-  
-  addInputValidation(i)
-  inputHander(i)
-  handleSliding(i)
+for (let i = 0; i < "{{n_musics}}" ; i++) {
+  console.log(i, "{{n_musics}}" )
+  addInputValidation(i+1)
+  inputHander(i+1)
+  handleSliding(i+1)
 }
 </script>
 {% else %}
