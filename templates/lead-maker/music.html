@@ -230,20 +230,20 @@ evt1?.addEventListener("click", function (e) {
   newSection.appendChild(newSection3);
   sectionContainer.appendChild(newSection);
 
-  const deleteButton = newSection1.querySelector(".delete-music");
-  deleteButton.addEventListener("click", function () {
-    sectionContainer.removeChild(newSection);
-    currentNumber--; 
-    updateMP3Numbers(); 
-  });
+  // const deleteButton = newSection1.querySelector(".delete-music");
+  // deleteButton.addEventListener("click", function () {
+  //   sectionContainer.removeChild(newSection);
+  //   currentNumber--; 
+  //   updateMP3Numbers(); 
+  // });
   
 
 
-  // addInputValidation(currentNumber);
+  addInputValidation(currentNumber);
   //   inputHander(currentNumber)
   //   handleSlider(currentNumber)
-  handleFileInputChange(currentNumber)
-
+  // handleFileInputChange(currentNumber)
+  inputHander(currentNumber)
 });
 
 function handleFileInputChange(number) {
@@ -259,11 +259,106 @@ function handleFileInputChange(number) {
     });
 }
 
+
+
+function inputHander(c_number) {
+  const fileInput = document.getElementById(`mp3-${textFileId}-${number}`);
+  const uploadText = document.getElementById(`uploadText-${number}`);
+  const startTimeInput = document.getElementById(`starts-${textFileId}-${number}`);
+  const endTimeInput = document.getElementById(`ends-${textFileId}-${number}`);
+  const currentFileP = document.getElementById(`mp3_${c_number}_current`)
+  // const clearBtn = document.getElementById('clear-btn')
+
+fileInput.addEventListener('change', function() {
+  if (fileInput.files.length > 0) {
+    uploadText.textContent = fileInput.files[0].name.slice(0, 15);
+    startTimeInput.required = true;
+    endTimeInput.required = true;
+    if (currentFileP) {
+      currentFileP.remove();
+    };
+
+    if (c_number === 1){
+      // clearBtn.style.display = 'block'
+
+    }
+
+  } else {
+    uploadText.textContent = 'Choose File';
+    startTimeInput.required = false
+    endTimeInput.required = false
+
+    if (c_number === 1){
+      // clearBtn.style.display = 'none'
+
+    }
+  }
+});
+};
+
+function saveInput(inputElement) {
+if (inputElement.type === 'file') {
+  // For file inputs, save the file name
+  if (inputElement.files.length > 0) {
+    // sessionStorage.setItem(inputElement.id, inputElement.files[0].name);
+  }
+} else {
+  // For other inputs, save the value
+  sessionStorage.setItem(inputElement.id, inputElement.value);
+}
+}
+
+function addInputValidation(number) {
+const startTimeInput = document.getElementById(`starts-${textFileId}-${number}`);
+const endTimeInput = document.getElementById(`ends-${textFileId}-${number}`);
+
+[startTimeInput, endTimeInput].forEach(input => {
+  input.addEventListener('input', function() {
+    let value = input.value.replace(/[^0-9:]/g, ''); // Remove unwanted characters
+    if (value.length === 2 && !value.includes(':')) {
+      value += ':';
+    }
+    if (value.length > 5) {
+      value = value.substring(0, 5);
+    }
+    input.value = value;
+
+    // Validate numbers on each side of the colon
+    const parts = value.split(':');
+    if (parts[0] && parseInt(parts[0], 10) > 59) {
+      input.value = `59:${parts[1] || ''}`;
+    }
+    if (parts[1] && parseInt(parts[1], 10) > 59) {
+      input.value = `${parts[0] || ''}:59`;
+    }
+  });
+});
+}
+
+function checkInputs() {
+const inputs = document.querySelectorAll('.fileInput');
+const submitForm = document.getElementById('submit_form');
+const proceed = document.getElementById('proceed');
+
+// Check if any file input is not empty
+let anyFilled = Array.from(inputs).some(input => input.files.length > 0);
+
+if (anyFilled) {
+  submitForm.style.display = 'flex';
+  proceed.style.display = 'none';
+} else {
+  submitForm.style.display = 'none';
+  proceed.style.display = 'flex';
+}
+}
+
 </script>
 {% if textfile.background_musics.all %}
 {% else %}
 <script>
-  handleFileInputChange(1)
+  addInputValidation(1)
+  // handleFileInputChange(1)
+  inputHander(1)
 </script>
 {% endif %}
 {% endblock content %}
