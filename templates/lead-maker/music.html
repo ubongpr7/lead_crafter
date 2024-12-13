@@ -182,13 +182,12 @@ evt1?.addEventListener("click", function (e) {
       <div class="brws">
         <input class="br-input" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
         <a href="#!" class="btn get-start browse-btn">
-          <img src="/static/images/upload-icn-black.svg" alt="" /> Choose file
+          <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /> Choose file
         </a>
       </div>
       <p></p>
     </div>`;
 
-  // Create a new section for time input
   const newSection2 = document.createElement("div");
   newSection2.classList.add("browse-field");
   newSection2.innerHTML = `
