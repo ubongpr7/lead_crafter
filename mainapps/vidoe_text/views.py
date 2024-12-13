@@ -179,7 +179,7 @@ def process_background_music(request, textfile_id):
             if end:
                 music.end_time=convert_to_seconds(end)
             if volume:
-                music.bg_level=float(volume)/100
+                music.bg_level=float(volume)/1000.0
             music.save()
 
 

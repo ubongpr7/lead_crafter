@@ -120,6 +120,8 @@
                 <p id="uploadText-1" style="color: inherit;"></p>
               </div>
             </div>
+            <p style="font-size: 10px; font-family: 'Montserrat'; display: flex; position: relative; top: 55%;left: 0;" id="mp3_{{ forloop.counter }}_current">Current: {{ music.get_music_file_name}}</p>                          
+
             
             <br />
             <div class="browse-field">
@@ -208,7 +210,7 @@
 
 
 <script>
-  const evt1 = document.getElementById("addMoreBtn");
+const evt1 = document.getElementById("addMoreBtn");
 const inputs = document.querySelectorAll('.fileInput');
 const submitForm = document.getElementById('submit_form');
 const proceed = document.getElementById('proceed');
@@ -496,9 +498,48 @@ for (let i = 0; i < "{{n_musics}}" ; i++) {
   inputHander(i+1)
   handleSliding(i+1)
 }
+// function inputHanderSaved(c_number) {
+//   const fileInput = document.getElementById(`mp3-${textFileId}-${c_number}`);
+//   const uploadText = document.getElementById(`uploadText-${c_number}`);
+//   const startTimeInput = document.getElementById(`starts-${textFileId}-${c_number}`);
+//   const endTimeInput = document.getElementById(`ends-${textFileId}-${c_number}`);
+//   const currentFileP = document.getElementById(`mp3_${c_number}_current`)
+
+// fileInput.addEventListener('change', function() {
+
+
+//   if (fileInput.files.length > 0) {
+//     uploadText.textContent = fileInput.files[0].name.slice(0, 25);
+//     startTimeInput.required = true;
+//     endTimeInput.required = true;
+//     submitForm.style.display = 'flex';
+//     proceed.style.display = 'none';
+//     if (currentFileP) {
+//       currentFileP.remove();
+//     };
+
+//     if (c_number === 1){
+//       // clearBtn.style.display = 'block'
+
+//     }
+
+//   } else {
+//     uploadText.textContent = 'Choose File';
+//     startTimeInput.required = false
+//     endTimeInput.required = false
+
+//     if (c_number === 1){
+//       // clearBtn.style.display = 'none'
+
+//     }
+//   }
+// });
+// };
+
 </script>
 {% else %}
 <script>
+
   addInputValidation(1)
   inputHander(1)
   handleSliding(1)
