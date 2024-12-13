@@ -419,6 +419,7 @@ function handleSliding(sliderNumber) {
       sliderFilled.style.width = `${percentage * 100}%`;
       valueLabel.innerHTML = `${value}%`; 
       valuescrollId.value = `${value}`;
+      saveInput(valuescrollId)
       console.log(valuescrollId.id,valuescrollId.value)
 
     }
