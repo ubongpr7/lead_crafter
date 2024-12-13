@@ -165,11 +165,18 @@
             <a href="#!" id="addMoreBtn" class="btn proceed-btn"> + Upload Another MP3 </a>
           </div>
           <div class="create-video d-flex justify-content-end" >
+            {% if textfile.background_musics.all %}
+
+            <button  type="submit"id="submit_form" class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            </button>
+            <a   id="proceed"  style="display: none;" class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            </a>
+            {%else %}
             <button  type="submit"id="submit_form" style="display: none;" class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </button>
             <a   id="proceed"  class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </a>
-          
+          {% endif %}
         </form>
       </div>
     </div>
