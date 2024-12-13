@@ -68,7 +68,7 @@
                 <div class="fontSize-Container">
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 1 Volume:</label>
                   <div class="slider-value" min id="valueLabel-1">20%</div>
-                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-1"  name="volume-1" type="number" value="20" hidden />
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId--{{textfile.id}}-1"  name="volume-1" type="number" value="20" hidden />
                   <!-- <input class="slider-value-input"  name="volume-1" id="volume-{{textfile.id}}-1" value="20" hidden /> -->
                 </div>
                 <div class="slider-container">
@@ -176,7 +176,7 @@ let currentNumber = n_musics.value;
   const sliderFilledId = `slider-filled-${currentNumber}`;
   const sliderThumbId = `sliderThumb-${currentNumber}`;
   const valueLabelId = `valueLabel-${currentNumber}`;
-  const valuescrollId=`valuescrollId-${currentNumber}`
+  const valuescrollId=`valuescrollId-${textFileId}-${currentNumber}`
 
   newSection1.innerHTML = `
     <div class="col-md-12" style="justify-content: space-between; display: flex; margin-top: 40px;">
@@ -336,7 +336,7 @@ function handleSliding(sliderNumber) {
   const sliderThumb = document.getElementById("sliderThumb-" + sliderNumber);
   const sliderFilled = document.getElementById("slider-filled-" + sliderNumber);
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
-  const valuescrollId = document.getElementById("valuescrollId-" + sliderNumber);
+  const valuescrollId = document.getElementById("valuescrollId-"+textFileId +'-' + sliderNumber);
   const sliderContainer = document.querySelector(".slider-container");
   const sliderInput=document.getElementById(`sliderInput-${textFileId}-${sliderNumber}`)
   const trackWidth = sliderContainer.offsetWidth;
