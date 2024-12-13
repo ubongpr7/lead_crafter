@@ -1040,7 +1040,7 @@ class Command(BaseCommand):
             raise
 
 
-    def add_margin_based_on_aspect_ratio(clip, target_aspect_ratio):
+    def add_margin_based_on_aspect_ratio(self,clip, target_aspect_ratio):
         """
         Adds margins to a video clip to achieve the desired aspect ratio.
         
