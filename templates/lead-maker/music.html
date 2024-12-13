@@ -338,8 +338,8 @@ function handleSliding(sliderNumber) {
   const sliderFilled = document.getElementById("slider-filled-" + sliderNumber);
   const valueLabel = document.getElementById("valueLabel-" + sliderNumber);
   const valuescrollId = document.getElementById("valuescrollId-" + sliderNumber);
-  const sliderContainer = document.querySelector(".slider-container-" + sliderNumber);
-  const textAreaFont = document.getElementById("textAreaFont-" + sliderNumber); // Optional element for font size update
+  const sliderContainer = document.querySelector(".slider-container");
+  // const textAreaFont = document.getElementById("textAreaFont-" + sliderNumber); 
   const trackWidth = sliderContainer.offsetWidth;
 
   let isDragging = false;
@@ -368,9 +368,9 @@ function handleSliding(sliderNumber) {
       valuescrollId.value = `${value}`;
 
       // Optionally update other elements, e.g., the font size of an element
-      if (textAreaFont) {
-        textAreaFont.style.fontSize = `${value}px`;
-      }
+      // if (textAreaFont) {
+      //   // textAreaFont.style.fontSize = `${value}px`;
+      // }
     }
   }
 
