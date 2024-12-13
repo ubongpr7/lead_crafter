@@ -70,7 +70,7 @@
                 <div class="fontSize-Container">
                   <label for="slide-1"  class="label-txt" style="font-weight: bold">MP3 {{ forloop.counter}} Volume:</label>
                   <div class="slider-value" min id="valueLabel-{{ forloop.counter}}">20%</div>
-                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId--{{textfile.id}}-{{ forloop.counter}}"  name="saved-volume-{{music.id}}" type="number" value="20" hidden />
+                  <input onchange="saveInput(this)" class="slider-value-input" id="valuescrollId-{{textfile.id}}-{{ forloop.counter}}"  name="saved-volume-{{music.id}}" type="number" value="20" hidden />
                 </div>
                 <div class="slider-container">
                   <div class="slider-track">
@@ -88,7 +88,7 @@
             <div class="time-fld d-flex justify-content-between align-items-start">
               <div class="browse-field">
                 <label for="starts{{textfile.id}}-1"  class="label-txt">Start:</label>
-                <input onchange="saveInput(this)" type="text" name="saved-starts-{{music.id}}" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-1" aria-describedby="emailHelp" />
+                <input onchange="saveInput(this)" type="text" name="saved-starts-{{music.id}}" placeholder="00:00" class="form-control" id="starts-{{textfile.id}}-{{forloop.counter}}" aria-describedby="emailHelp" />
               </div>
               <div class="browse-field">
                 <label for="ends-{{textfile.id}}-1" class="label-txt">End:</label>
