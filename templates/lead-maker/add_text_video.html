@@ -62,7 +62,7 @@
                         <div class="brws">
                             <input class="br-input" type="file" name="fontFile" id="fontFile" accept=".ttf,.otf,.woff,.woff2" required />
                             <a href="#!" class="btn get-start browse-btn">
-                                <img src="{% static 'lead-maker/images/upload-icn.svg' %}" alt="" /> Choose file
+                                <img src="{% static 'lead-maker/images/upload-icn.svg' %}" alt="" /><span id="fontFileName">Choose file</span> 
                             </a>
                         </div>
                         <p>No file chosen</p>
@@ -184,16 +184,22 @@ function stopProcessingAnimation(selector) {
   // Clear the interval if it exists
   if (intervalId) {
     clearInterval(intervalId);
-    button_text.data('intervalId', null); // Remove the stored interval ID
-    button_text.text('Proceed To Lead Creation'); // Optionally reset the text or set it to another value
+    button_text.data('intervalId', null); 
+    button_text.text('Proceed To Lead Creation'); 
   }
 }
+font_select.addEventListener('change',(e)=>{
+  
+  const fileName = e.target.files.length > 0 ? inputFile.files[0].name : 'Choose file';
+  document.getElementById(`fontFileName`).textContent = fileName;
+
+})
 
 
 function validateAPIKey(event) {
-  startProcessingAnimation('#button-text'); // Start the processing animation
+  startProcessingAnimation('#button-text'); 
 
-  event.preventDefault(); // Prevent the default form submission
+  event.preventDefault(); 
 
   const apiKey = apiKeyInput.val().trim();
   const voiceId = voiceIdInput.val().trim();
