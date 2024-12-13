@@ -461,7 +461,7 @@ function deleteButton(c_number) {
             input.value = storedValue;
 
             if (input.id.startsWith('valuescrollId')) {
-              const idParts = input.id.split('_');
+              const idParts = input.id.split('-');
               const currentNumber = idParts[idParts.length - 1]; 
               const sliderThumb = document.getElementById("sliderThumb-" + currentNumber);
               const sliderFilled = document.getElementById("slider-filled-" + currentNumber);
