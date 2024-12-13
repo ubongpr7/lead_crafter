@@ -182,7 +182,7 @@ evt1?.addEventListener("click", function (e) {
       <div class="brws">
         <input class="br-input" name="mp3-${currentNumber}" id="mp3-${textFileId}-${currentNumber}" type="file" accept=".mp3" />
         <a href="#!" class="btn get-start browse-btn">
-          <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /> Choose file
+          <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" /><span  style="color:inherit;" id="uploadText-${currentNumber}">Choose file</span>
         </a>
       </div>
       <p></p>
@@ -232,36 +232,38 @@ evt1?.addEventListener("click", function (e) {
 
   const deleteButton = newSection1.querySelector(".delete-music");
   deleteButton.addEventListener("click", function () {
-    sectionContainer.removeChild(newSection); // Remove the specific section
-    currentNumber--; // Decrease the counter
-    updateMP3Numbers(); // Update remaining sections' numbers
-  });
-  const fileInputs = document.querySelectorAll('.br-input');
-  const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
-  console.log(fileInputs,noFileTexts);
-  fileInputs.forEach((input, index) => {
-    input.addEventListener('change', (event) => {
-      const fileName = event.target.files.length > 0 ? event.target.files[0].name.slice(0,12) : 'Choose file';
-      noFileTexts[index].lastChild.textContent = fileName; // Update the text to show the selected file name
-    });
+    sectionContainer.removeChild(newSection);
+    currentNumber--; 
+    updateMP3Numbers(); 
   });
   
 
 
-  addInputValidation(currentNumber);
-    inputHander(currentNumber)
-    handleSlider(currentNumber)
-
-    const fileInput = document.getElementById(`mp3-${textFileId}-${currentNumber}`);
-    const uploadText = document.getElementById(`uploadText${currentNumber}`);
-    fileInput.addEventListener('change', function() {
-      if (fileInput.files.length > 0) {
-        uploadText.textContent = fileInput.files[0].name;
-      } else {
-        uploadText.textContent = 'Choose File';
-      }
-    });
+  // addInputValidation(currentNumber);
+  //   inputHander(currentNumber)
+  //   handleSlider(currentNumber)
+  handleFileInputChange(currentNumber)
 
 });
+
+function handleFileInputChange(number) {
+    const fileInput = document.getElementById(`mp3-${textFileId}-${number}`);
+    const uploadText = document.getElementById(`uploadText${number}`);
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            uploadText.textContent = fileInput.files[0].name;
+        } else {
+            uploadText.textContent = 'Choose File';
+        }
+    });
+}
+
 </script>
+{% if textfile.background_musics.all %}
+{% else %}
+<script>
+  handleFileInputChange(1)
+</script>
+{% endif %}
 {% endblock content %}
