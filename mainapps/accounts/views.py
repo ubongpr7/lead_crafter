@@ -115,7 +115,7 @@ def register(request):
             messages.error(request, "Passwords Do Not Match.")
             return render(
                 request,
-                "accounts/register.html",
+                "lead-makeraccounts/signup.html",
                 context={"session_id": checkout_session_id},
             )
 
@@ -124,7 +124,7 @@ def register(request):
             messages.error(request, "This Email Is Already Registered.")
             return render(
                 request,
-                "accounts/register.html",
+                "lead-makeraccounts/signup.html",
                 context={"session_id": checkout_session_id},
             )
 
