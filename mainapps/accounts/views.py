@@ -88,7 +88,7 @@ def login(request):
     request.session["next"] = next
     return render(
         request,
-        "accounts/login.html",
+        "lead-maker/accounts/login.html",
     )
 
 
