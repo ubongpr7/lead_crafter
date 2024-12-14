@@ -14,9 +14,10 @@
             <li><a href="#!">Background Music Selection</a></li>
             <li><a href="#!">Download</a></li>
           </ul>
+
           <div class="lead-container loading-block">
             <h5 class="text-center lead-title">
-              Loading <span class="dots">.</span> <span style="font-size: 2.4rem;font-weight: 700;color: #111111;" id="progress-count">0%</span>
+              Loading <span class="dots">.</span> <span style="font-size: 2.4rem;font-weight: 700;color: #111111;" id="percent">0%</span>
             </h5>
           </div>
         </div>
@@ -35,5 +36,49 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
-    <script src="{% static 'lead-maker//js/loading.js' %}" defer></script>
+    <!-- <script src="{% static 'lead-maker//js/loading.js' %}" defer></script> -->
+    
+    <script>
+      function fetchProgress() {
+          fetch('/text/progress/{{text_file_id}}')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.error){
+                      window.location.href = '/text';  
+
+                  }else {
+
+                      let progress = data.progress;
+                      const percent =document.getElementById('percent');
+                      percent.innerText= progress +'%'
+                      if (progress < 100) {
+                          setTimeout(fetchProgress, 1000); // Poll every second
+                      } 
+                      else {
+                          if ("{{al_the_way }}" =='bg_music'){
+  
+                              window.location.href = '/text/download_video/{{text_file_id}}';  
+                          }
+                          else if("{{al_the_way }}" =='trim'){
+                              window.location.href = '/text/add-leads/{{text_file_id}}'; 
+
+                          }
+                          else if ("{{al_the_way }}" =='add_leads') {
+  
+                              window.location.href = '/text/process-background-music/{{text_file_id}}';  
+                          }
+                          else  {
+  
+                              window.location.href = '/text/process-background-music/{{text_file_id}}';  
+                          }
+                      }
+                  }
+              });
+      }
+
+      // Start fetching progress when the page loads
+      window.onload = function() {
+          fetchProgress();
+      };
+  </script>
 {% endblock content %}
