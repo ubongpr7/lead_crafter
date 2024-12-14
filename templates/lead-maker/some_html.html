@@ -1,0 +1,83 @@
+<div class="content load" style="display: none;">
+    <section class="login-sec voice-subtitle">
+        <div class="container">
+            <ul class="status-bar">
+                <li class="active loading loaded"><a href="#!">Upload & Customise</a></li>
+                <li class="active loading"><a href="#!">Lead Creation</a></li>
+                <li><a href="#!">Background Music Selection</a></li>
+                <li><a href="#!">Download</a></li>
+            </ul>
+            <div class="lead-container loading-block">
+                <h5 class="text-center lead-title">Loading <span class="dots">.</span></h5>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<div class="modal fade" id="plansModal" tabindex="-1" aria-labelledby="plansModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body">
+            <section class="plan-sec2" id="pricing">
+                <div class="container">
+                    <h2 class="plan-title text-center">
+                        Choose The Plan That Fits <br />
+                        Your Needs
+                    </h2>
+                    <div class="crd-wrp">
+                        <div class="plan-crd premium-crd">
+                            <h2>
+                                Pro Plan
+                        
+                            </h2>
+                            <div class="price">
+                                <strong>$497</strong>
+                                <span>/month</span>
+                                <p class="per-amount">$19.88 per video</p>
+                                <ul class="checklist">
+                                    <li>25 leads per month</li>
+                                </ul>
+                                <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+                                    <input hidden name="plan" value="Pro_Plan">
+                                </form>
+                                <a href="#!" onclick="upgradePayment('ProPlan')" class="btn get-started">
+                                    Get Started
+                                    <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                    <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="plan-crd premium-crd">
+                            <h2>Premium Plan</h2>
+                            <div class="price">
+                                <strong>$997</strong>
+                                <span>/month</span>
+                                <p class="per-amount">$13.94 per video</p>
+                                <ul class="checklist">
+                                    <li>60 leads per month</li>
+                                </ul>
+                                <form id="Premuimredirection" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
+                                    <input hidden name="plan" value="Premuim_Plan">
+                                </form>
+                                <a href="#!" onclick="upgradePayment('Premuimredirection')" class="btn get-started">
+                                    Get Started
+                                    <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
+                                    <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        </div>
+    </div>
+</div>
+</div>
+
+                    {% if user.coins == 0 %}
+                        <a href="#plansModal" data-bs-toggle="modal" class="btn get-started">Download
+                        <img class="btn-arrow" src="{% static 'lead-maker/images/download-icn.svg' %}" alt="Download Arrow" /></a>
+                    {% else %}
+                    {% endif %}

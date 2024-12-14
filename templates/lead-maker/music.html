@@ -169,12 +169,12 @@
 
             <button  type="submit"id="submit_form" class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </button>
-            <a   id="proceed"  style="display: none;" class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            <a   id="proceed" href="{% url 'video_text:download_video' textfile_id %}?bg_music=false" style="display: none;" class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </a>
             {%else %}
             <button  type="submit"id="submit_form" style="display: none;" class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </button>
-            <a   id="proceed"  class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            <a href="{% url 'video_text:download_video' textfile_id %}?bg_music=false"   id="proceed"  class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </a>
           {% endif %}
         </form>

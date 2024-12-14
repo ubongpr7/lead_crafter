@@ -474,7 +474,7 @@ def download_video(
 
         return render(
             request,
-            "vlc/download.html",
+            "lead-maker/Download.html",
             {
                 "textfile_id": textfile_id,
                 "bg_music": bg_music,

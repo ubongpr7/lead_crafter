@@ -4,16 +4,42 @@
 {% include "lead-maker/includes/header.html" %}
 
     <div class="content">
+
       <section class="login-sec voice-subtitle">
         <div class="container">
-          <ul class="status-bar">
-            <li class="active loading loaded">
-              <a href="#!">Upload & Customise</a>
-            </li>
-            <li class="active loading"><a href="#!">Lead Creation</a></li>
-            <li><a href="#!">Background Music Selection</a></li>
-            <li><a href="#!">Download</a></li>
-          </ul>
+    {% if al_the_way == 'trim' %}
+
+    <ul class="status-bar">
+      <li class="active loading loaded">
+        <a href="#!">Upload & Customise</a>
+      </li>
+      <li class="active loading"><a href="#!">Lead Trimming</a></li>
+      <li><a href="#!">Background Music Selection</a></li>
+      <li><a href="#!">Download</a></li>
+    </ul>
+    {% elif al_the_way == 'add_leads' %}
+    <ul class="status-bar">
+      <li class="active loading loaded">
+        <a href="#!">Upload & Customise</a>
+      </li>
+      <li class="active loading">
+        <a href="#!">Lead Trimming</a>
+      </li>
+      <li class=""><a href="#!">Background Music Selection</a></li>
+      <li><a href="#!">Download</a></li>
+    </ul>
+    {% elif al_the_way == 'bg_music' %}
+    <ul class="status-bar">
+      <li class="active loading loaded">
+        <a href="#!">Upload & Customise</a>
+      </li>
+      <li class="active loading loaded">
+        <a href="#!">Lead Trimming</a>
+      </li>
+      <li class="active loading"><a href="#!">Background Music Selection</a></li>
+      <li><a href="#!">Download</a></li>
+    </ul>
+    {%endif }
 
           <div class="lead-container loading-block">
             <h5 class="text-center lead-title">
