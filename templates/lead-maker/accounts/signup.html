@@ -1,4 +1,4 @@
-{% extends 'accounts/base.html' %}
+{% extends 'lead-maker/accounts/base.html' %}
 {% block content %}
 {% load static %}
 <header class="admin-header">
@@ -6,7 +6,7 @@
     <div class="header-two">
       <div class="vsl-logo text-center">
         <a href="/">
-          <img src="{% static 'lead-maker//images/logo.svg' %}" class="img-fluid" alt="Logo" />
+          <img src="{% static 'lead-maker/images/logo.svg' %}" class="img-fluid" alt="Logo" />
         </a>
       </div>
     </div>
@@ -50,7 +50,7 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label for="email" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Email address:</label>
-                <input type="email" name="email" value="{{ form.email.value|default:'' }}" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
+                <input type="email" name="email" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
             </div>
 
             <!-- Password Input -->
