@@ -228,7 +228,7 @@ def register(request):
 
         return render(
             request,
-            "accounts/register.html",
+            "lead-maker/accounts/signup.html",
             context={"session_id": checkout_session_id},
         )
 
