@@ -34,6 +34,7 @@
     </div>
 </header>
 
+
 <div class="content">
     <section class="banner-sec text-center">
         <div class="container">
@@ -277,7 +278,7 @@
                     <input hidden name="plan" value="FreeTrial">
 
                 </form>
-                <a href="#!" onclick="sendPaymentRequest('FreeTrial')" class="btn get-started">
+                <a href="/accounts/register/"  class="btn get-started">
                     Get Started
                     <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
                     <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
@@ -299,7 +300,7 @@
                 <form id="ProPlan" action="/product_page" method="POST" class="btn get-started" style="display: none;">
                     <input hidden name="plan" value="Pro_Plan">
                 </form>
-                <a href="#!" onclick="sendPaymentRequest('ProPlan')" class="btn get-started">
+                <a href="/accounts/subscribe/{{ price_ids.growth }}?success_path={% url 'accounts:register' %}&cancel_path={% url 'home:home' %}" class="btn get-started">
                     Get Started
                     <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
                     <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
@@ -318,7 +319,7 @@
                 <form id="Premuimredirection" action="/product_page" method="POST" class="btn get-started" style="display: none;">
                     <input hidden name="plan" value="Premuim_Plan">
                 </form>
-                <a href="#!" onclick="sendPaymentRequest('Premuimredirection')" class="btn get-started">
+                <a href="/accounts/subscribe/{{ price_ids.pro }}?success_path={% url 'accounts:register' %}&cancel_path={% url 'home:home' %}" class="btn get-started">
                     Get Started
                     <img class="btn-arrow blue" src="{% static 'lead-maker/images/btn-arrow-blue.svg' %}" alt="arrow" />
                     <img class="btn-arrow white" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
