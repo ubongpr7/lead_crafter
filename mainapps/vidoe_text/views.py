@@ -502,7 +502,9 @@ def trim_video(request,textfile_id):
         text_file.timestamp_start=start
         text_file.timestamp_end=end
         text_file.save()
-        run_trim_command(text_file.id)
+        thread = threading.Thread(target=run_trim_command, args=(textfile_id,))
+        thread.start()
+
     
         return redirect(f'/text/progress_page/trim/{text_file.id}')
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
