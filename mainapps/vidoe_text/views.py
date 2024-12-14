@@ -462,8 +462,8 @@ def add_text_video(request):
     return render(request, "lead-maker/add_text_video.html",)
 
 
+# @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 @login_required
-@check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def download_video(
     request,
     textfile_id,
