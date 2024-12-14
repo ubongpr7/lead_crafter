@@ -107,7 +107,7 @@ def register(request):
             messages.error(request, "At Least 6 Characters Are Required")
             return render(
                 request,
-                "accounts/register.html",
+                "lead-maker/accounts/register.html",
                 context={"session_id": checkout_session_id},
             )
 
@@ -115,7 +115,7 @@ def register(request):
             messages.error(request, "Passwords Do Not Match.")
             return render(
                 request,
-                "lead-makeraccounts/signup.html",
+                "lead-maker/accounts/signup.html",
                 context={"session_id": checkout_session_id},
             )
 
@@ -124,7 +124,7 @@ def register(request):
             messages.error(request, "This Email Is Already Registered.")
             return render(
                 request,
-                "lead-makeraccounts/signup.html",
+                "lead-maker/accounts/signup.html",
                 context={"session_id": checkout_session_id},
             )
 
@@ -169,7 +169,7 @@ def register(request):
 
             return render(
                 request,
-                "accounts/register.html",
+                "lead-maker/accounts/register.html",
                 context={"price_id": "free", "success": True},
             )
         else:
