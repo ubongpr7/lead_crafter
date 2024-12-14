@@ -100,8 +100,8 @@ def register(request):
 
         name = request.POST.get("name")
         email = request.POST.get("email")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
+        password1 = request.POST.get("password")
+        password2 = request.POST.get("Confirmpassword")
 
         if len(password1) < 6:
             messages.error(request, "At Least 6 Characters Are Required")
