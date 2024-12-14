@@ -21,9 +21,9 @@
                     </div>
                     <div class="header-profile d-flex align-items-center d-none d-lg-flex">
                     {% if not user.is_authenticated %}
-                        <a href="/" class="btn btn-login">Login</a>
+                        <a href="/account/login" class="btn btn-login">Login</a>
                     {% endif  %}
-                        <a href="/text" class="btn get-start">
+                        <a href="/#pricing" class="btn get-start">
                             Get Started
                             <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
                         </a>
