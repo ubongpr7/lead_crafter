@@ -48,14 +48,15 @@
         <!-- Login Form -->
         <form method="POST" id="login-form" class="form-block">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="email" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Email address:</label>
-                <input type="email" name="email" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
-            </div>
+            
             <div class="mb-3">
                 <label for="name" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Name:</label>
                 <input type="text" name="name" placeholder="Name" class="form-control" id="name" aria-describedby="emailHelp">
             </div>
+            <div class="mb-3">
+              <label for="email" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Email address:</label>
+              <input type="email" name="email" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
+          </div>
 
             <!-- Password Input -->
             <div class="mb-3">
