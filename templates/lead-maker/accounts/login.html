@@ -6,7 +6,7 @@
   <div class="container">
     <div class="header-two">
       <div class="vsl-logo text-center">
-        <a href="{% url 'accounts:home' %}">
+        <a href="{% url 'home:home' %}">
           <img src="{% static '/images/logo.svg' %}" class="img-fluid" alt="Logo" />
         </a>
       </div>
@@ -18,7 +18,7 @@
     <div class="login-container">
         <!-- Logo Section -->
         <div class="vsl-logo text-center">
-            <a href="{% url 'accounts:home' %}">
+            <a href="{% url 'home:home' %}">
                 <img src="{% static 'images/logo-dark.svg' %}" alt="LeadMaker Logo">
             </a>
         </div>
@@ -34,7 +34,7 @@
             
             <div class="mb-3">
                 <label for="email"  style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 9px; font-family: 'Plus Jakarta Sans', sans-serif;" >Email address:</label>
-                <input type="email" name="email" value="{{ form.email.value|default:'' }}" placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
+                <input type="email" name="email"  placeholder="Email" class="form-control" id="email" aria-describedby="emailHelp">
             </div>
 
             <!-- Password Input -->
@@ -46,7 +46,7 @@
                         <img src="{% static 'images/eye.svg' %}" alt="Toggle Password Visibility">
                     </span>
                 </div>
-                <a href="{% url 'accounts:reset_password' %}" class="forget-login">Forgot password?</a>
+                <a href="auth/password_reset" class="forget-login">Forgot password?</a>
             </div>
 
             <!-- Submit Button -->
