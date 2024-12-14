@@ -107,7 +107,7 @@ def register(request):
             messages.error(request, "At Least 6 Characters Are Required")
             return render(
                 request,
-                "lead-maker/accounts/register.html",
+                "lead-maker/accounts/signup.html",
                 context={"session_id": checkout_session_id},
             )
 
@@ -169,7 +169,7 @@ def register(request):
 
             return render(
                 request,
-                "lead-maker/accounts/register.html",
+                "lead-maker/accounts/signup.html",
                 context={"price_id": "free", "success": True},
             )
         else:
