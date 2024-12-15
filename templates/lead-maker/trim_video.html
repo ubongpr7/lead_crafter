@@ -97,7 +97,7 @@
         <h5 class="text-center lead-title"> TrIm Video <br class="d-none d-md-block" /> </h5>
         <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <figure class="video-place" >
+            <figure class="video-place" style="background-color: none;" >
               <div>
                 <video id="video" height="400" controls>
                   <source src="{{text_file.video_file.url}}" type="video/mp4">

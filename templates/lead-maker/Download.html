@@ -288,7 +288,7 @@
     document.getElementById('download').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent the default anchor behavior
 
-            if ('{{ request.user.subscription.plan.name }}' == 'free') {
+            if ('{{ request.user.subscription.plan.name }}' == 'Free') {
               document.querySelector('.plans-popup-container').classList.remove('hidden');
             } else {
               // Fetch the URL to start the download
