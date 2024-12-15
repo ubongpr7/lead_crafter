@@ -1287,7 +1287,6 @@ class Command(BaseCommand):
 
             if not file_content:
                 raise ValueError("Failed to download the video from S3.")
-            clip=None
             with open(temp_file.name, "wb") as font_file:
                 font_file.write(file_content)
 
