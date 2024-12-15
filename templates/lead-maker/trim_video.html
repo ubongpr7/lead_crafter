@@ -124,6 +124,7 @@
         </div>
         <input type='number' hidden name='start'step="any" id="start" value="0" >
         <input type='number' hidden name='end'step="any" id="end" value>
+        <button type="button" id="undo" style="display: none;" onclick=removeTrimmming()>Undo Trimming/button>
         <div id="actionContainer">
 
           <a  class="btn proceed-btn"href="/text/add-leads/{{text_file.id}}"   id="proceedWithoutTrimming">
@@ -169,24 +170,34 @@
       const errorDisplay = document.getElementById('error');
       const trimButton = document.getElementById('trimButton');
       const trimmedVideo = document.getElementById('trimmedVideo');
-  
+      const undoBtn=document.getElementById('undo')
       let videoDuration = 0;
       let startPercent = 0;
       let endPercent = 100;
       const proceedLink = document.getElementById('proceedWithoutTrimming');
       const actionContainer = document.getElementById('actionContainer');
+    function removeTrimming() {
+    startPercent = 0;
+    endPercent = 100;
+    updateSlider();
 
-      // Function to handle user interaction
+    document.getElementById('startTimeInput').value = '';
+    document.getElementById('endTimeInput').value = '';
+
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    video.currentTime = 0;
+}
       function handleInteraction() {
-        proceedLink.style.display = 'none'; // Hide the proceed link
-        trimButton.style.display = 'inline-block'; // Show the trim button
+        proceedLink.style.display = 'none'; 
+        document.getElementById('undo').style.display = 'inline-block';
+
+        trimButton.style.display = 'inline-block';
       }
 
-      // Add event listeners to trimming components
       sliderStart.addEventListener('mousedown', handleInteraction);
       sliderEnd.addEventListener('mousedown', handleInteraction);
-
-      // Initialize slider thumbs and range track
       video.addEventListener('loadedmetadata', () => {
         videoDuration = video.duration;
         endTimeInput.value =videoDuration
@@ -263,7 +274,7 @@
             document.removeEventListener('mousemove', onMouseMove);
           }, { once: true });
         });
-  
+
         sliderEnd.addEventListener('mousedown', () => {
           const onMouseMove = (e) => moveSlider(e, sliderEnd);
           document.addEventListener('mousemove', onMouseMove);
