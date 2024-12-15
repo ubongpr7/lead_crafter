@@ -203,7 +203,7 @@ def register(request):
 
                 try:
 
-                    subscription = Subscription(
+                    subscription = Subscription.objects.create(
                     plan=plan,
                     credits=plan.vsl_limit,
                     customer=new_customer,
