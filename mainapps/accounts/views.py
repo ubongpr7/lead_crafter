@@ -182,59 +182,61 @@ def register(request):
                 product_id = subscription["items"]["data"][0]["price"]["product"]
                 print("Product ID:", product_id)
 
-            customer_id = 0
-            plan=Plan.objects.get(stripe_price_id=product_id)
-            try:
-                customer = StripeCustomer.objects.get(
-                    stripe_customer_id=stripe_customer_id
+                customer_id = 0
+                plan=Plan.objects.get(stripe_price_id=product_id)
+                try:
+                    customer = StripeCustomer.objects.get(
+                        stripe_customer_id=stripe_customer_id
+                    )
+
+                    if customer is not None:
+                        customer.user = user
+                        customer.save()
+
+                        customer_id = customer.id
+                except StripeCustomer.DoesNotExist:
+                    new_customer = StripeCustomer(
+                        user=user, stripe_customer_id=stripe_customer_id
+                    )
+                    new_customer.save()
+
+                    customer_id = new_customer.id
+
+                try:
+                    subscription = Subscription.objects.get(customer_id=customer_id)
+
+                    if subscription is not None:
+                        user.subscription = subscription
+                        user.save()
+                    else:
+                        subscription = Subscription(
+                        plan=plan,
+                        credits=plan.vsl_limit,
+                        customer=new_customer,
+                        stripe_subscription_id=subscription_id,
+                        )   
+
+                except Exception as _:
+                    messages.error(request, "Subscription Failed. Please Try Again Later.")
+                    return redirect(f'/accounts/register/?session_id={checkout_session_id}'
+                    )
+
+                send_html_email2(
+                    subject="Welcome to VideoCrafter.io",
+                    message=None,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to_email=user.email,
+                    html_file="accounts/welcome.html",
+                    context={
+                        "user_name": user.first_name,
+                        "login_url": settings.DOMAIN_NAME + reverse("video_text:add_text"),
+                    },
                 )
 
-                if customer is not None:
-                    customer.user = user
-                    customer.save()
-
-                    customer_id = customer.id
-            except StripeCustomer.DoesNotExist:
-                new_customer = StripeCustomer(
-                    user=user, stripe_customer_id=stripe_customer_id
-                )
-                new_customer.save()
-
-                customer_id = new_customer.id
-
-            try:
-                subscription = Subscription.objects.get(customer_id=customer_id)
-
-                if subscription is not None:
-                    user.subscription = subscription
-                    user.save()
-                else:
-                    subscription = Subscription(
-                    plan=plan,
-                    credits=plan.vsl_limit,
-                    customer=new_customer,
-                    stripe_subscription_id=None,
-                    )   
-
-            except Exception as _:
-                messages.error(request, "Subscription Failed. Please Try Again Later.")
-                return redirect(f'/accounts/register/?session_id={checkout_session_id}'
-                )
-
-            send_html_email2(
-                subject="Welcome to VideoCrafter.io",
-                message=None,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                to_email=user.email,
-                html_file="accounts/welcome.html",
-                context={
-                    "user_name": user.first_name,
-                    "login_url": settings.DOMAIN_NAME + reverse("video_text:add_text"),
-                },
-            )
-
-            auth_login(request, user)
-            return redirect(reverse("video_text:add_text"))
+                auth_login(request, user)
+                return redirect(reverse("video_text:add_text"))
+            return redirect(f'/accounts/register/?session_id={checkout_session_id}')
+            
     elif request.method == "GET":
         stripe.api_key = settings.STRIPE_SEC_KEY
 
