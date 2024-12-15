@@ -1287,11 +1287,11 @@ class Command(BaseCommand):
 
             if not file_content:
                 raise ValueError("Failed to download the file from S3.")
-            
+            os.chmod(temp_file.name, 0o644)
             temp_subtitle_clip = TextClip(
                 wrapped_text,
                 fontsize=font_size,
-                font=os.path.normpath(temp_file.name),
+                font=temp_file.name, 
             )
             longest_line_width, text_height = temp_subtitle_clip.size
             subtitle_clip = TextClip(
@@ -1300,7 +1300,8 @@ class Command(BaseCommand):
                 color=color,
                 # stroke_color="white",
                 stroke_width=0,
-                font=os.path.normpath(temp_file.name),
+                # font=os.path.normpath(temp_file.name),
+                font=temp_file.name, 
                 method="caption",
                 align="center",
                 size=(
@@ -1332,7 +1333,6 @@ class Command(BaseCommand):
             subtitle_clip = subtitle_clip.set_position(subtitle_position)
 
             return CompositeVideoClip([clip, box_clip, subtitle_clip])
-        # return clip
 
     def add_static_watermark_to_instance(
         self,
