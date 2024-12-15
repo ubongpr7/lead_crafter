@@ -202,18 +202,15 @@ def register(request):
                     customer_id = new_customer.id
 
                 try:
-                    subscription = Subscription.objects.get(customer_id=customer_id)
 
-                    if subscription is not None:
-                        user.subscription = subscription
-                        user.save()
-                    else:
-                        subscription = Subscription(
-                        plan=plan,
-                        credits=plan.vsl_limit,
-                        customer=new_customer,
-                        stripe_subscription_id=subscription_id,
-                        )   
+                    subscription = Subscription(
+                    plan=plan,
+                    credits=plan.vsl_limit,
+                    customer=new_customer,
+                    stripe_subscription_id=subscription_id,
+                    )   
+                    user.subscription = subscription
+                    user.save()
 
                 except Exception as _:
                     messages.error(request, f"Subscription Failed. Please Try Again Later. {_}")
