@@ -216,7 +216,7 @@ def register(request):
                         )   
 
                 except Exception as _:
-                    messages.error(request, "Subscription Failed. Please Try Again Later.")
+                    messages.error(request, f"Subscription Failed. Please Try Again Later. {_}")
                     return redirect(f'/accounts/register/?session_id={checkout_session_id}'
                     )
 
