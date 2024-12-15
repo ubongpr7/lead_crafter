@@ -23,7 +23,7 @@
             <div class="header-profile">
             {% if user.stripe_subscription_id != '' %}
                 <div class="credit-score">
-                    <span>Credits Remaining: </span> <span>{{ user.coins }}</span>
+                    <span>Credits Remaining: </span> <span>{{ user.subscription.credits }}</span>
                 </div>
             {% else %}
             <div class="credit-score">
