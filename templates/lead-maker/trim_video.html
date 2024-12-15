@@ -124,7 +124,7 @@
         </div>
         <input type='number' hidden name='start'step="any" id="start" value="0" >
         <input type='number' hidden name='end'step="any" id="end" value>
-        <button type="button" id="undo" style="display: none;" onclick="removeTrimming()">Undo Trimming</button>
+        <button type="button" class="btn" id="undo" style="display: none;" onclick="removeTrimming()">Undo Trimming</button>
         <div id="actionContainer">
 
           <a  class="btn proceed-btn"href="/text/add-leads/{{text_file.id}}"   id="proceedWithoutTrimming">
@@ -133,7 +133,7 @@
             </span>
             <!-- <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" /> -->
           </a>
-          <button type="submit" class="btn proceed-btn" style="display: none;"  id="trimButton">
+          <button type="submit" class="btn proceed-btn" style="display: none;margin-top: 10px;"  id="trimButton">
             <span id="button-text" style="color:white;">
               Trim Video
             </span>
@@ -184,6 +184,7 @@
     startTimeInput.value = '';
     endTimeInput.value = '';
 
+    trimButton.style.display = 'none';
     document.getElementById('undo').style.display = 'none';
     document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
 
