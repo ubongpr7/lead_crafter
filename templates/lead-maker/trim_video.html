@@ -197,7 +197,7 @@
       const startTime = (startPercent / 100) * videoDuration;
       const endTime = (endPercent / 100) * videoDuration;
   
-      startTimeDisplay.textContent = startTime.toFixed(1);
+      startTimeDisplay.textContent = startTime.toFixed(6);
       endTimeDisplay.textContent = endTime.toFixed(1);
       sliderStart.style.left = startPercent + '%';
       sliderEnd.style.left = endPercent + '%';
