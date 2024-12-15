@@ -93,6 +93,7 @@ def login(request):
 
 
 def register(request):
+    
     if request.method == "POST":
         stripe.api_key = settings.STRIPE_SEC_KEY
 
@@ -201,6 +202,10 @@ def register(request):
                 if subscription is not None:
                     user.subscription = subscription
                     user.save()
+                else:
+                    
+                    subscription = Subscription.create(customer_id=customer_id)
+
             except Exception as _:
                 messages.error(request, "Subscription Failed. Please Try Again Later.")
                 return redirect(
@@ -224,6 +229,8 @@ def register(request):
             auth_login(request, user)
             return redirect(reverse("video_text:add_text"))
     elif request.method == "GET":
+        stripe.api_key = settings.STRIPE_SEC_KEY
+
         checkout_session_id = request.GET.get("session_id")
         if checkout_session_id and request.user.is_authenticated:
             user= request.user
@@ -263,7 +270,7 @@ def register(request):
         return render(
             request,
             "lead-maker/accounts/signup.html",
-            context={"session_id": checkout_session_id},
+            context={"session_id": checkout_session_id,},
         )
 
 
