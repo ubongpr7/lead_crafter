@@ -293,38 +293,6 @@ def progress_page(request, al_the_way, text_file_id):
     )
 
 
-@login_required
-@check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
-def process_textfile(request, textfile_id):
-    try:
-        # Fetch the TextFile instance
-        textfile = TextFile.objects.get(pk=textfile_id)
-        if textfile.user != request.user:
-            messages.error(
-                request, "You do not have access to the resources you requested."
-            )
-            return render(request, "permission_denied.html")
-    except TextFile.DoesNotExist:
-        raise Http404("Text file not found")
-
-    if not textfile_id:
-        return JsonResponse({"error": "text_file_id is required."}, status=400)
-
-    # Run process_video command in a new thread
-    def run_process_command(textfile_id):
-        try:
-            call_command("process_video", textfile_id)
-        except Exception as e:
-            # Handle the exception as needed (e.g., log it)
-            print(f"Error processing video: {e}")
-
-    # Start the background process
-    thread = threading.Thread(target=run_process_command, args=(textfile_id,))
-    thread.start()
-
-    # Redirect to another page while the process runs in the background
-    return redirect(f"/text/progress_page/build/{textfile_id}")
-
 
 def validate_api_key(api_key, voice_id):
     # Try making a request to Eleven Labs API to validate the key
