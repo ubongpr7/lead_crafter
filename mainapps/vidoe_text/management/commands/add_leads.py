@@ -1269,13 +1269,13 @@ class Command(BaseCommand):
             )
 
 
-        temp_subtitle_clip = TextClip(
-            wrapped_text,
-            fontsize=font_size,
-            font=font_path_,
-        )
-        longest_line_width, text_height = temp_subtitle_clip.size
-# i'm 
+#         temp_subtitle_clip = TextClip(
+#             wrapped_text,
+#             fontsize=font_size,
+#             font=font_path_,
+#         )
+#         longest_line_width, text_height = temp_subtitle_clip.size
+# # i'm 
         file_field=self.text_file_instance.font_file
         if not file_field or not file_field.name:
             raise ValueError("File field is empty or invalid.")
@@ -1291,7 +1291,7 @@ class Command(BaseCommand):
             temp_subtitle_clip = TextClip(
                 wrapped_text,
                 fontsize=font_size,
-                font=temp_file.name, 
+                font=font_path_, 
             )
             longest_line_width, text_height = temp_subtitle_clip.size
             subtitle_clip = TextClip(
