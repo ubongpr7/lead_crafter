@@ -183,7 +183,7 @@ def register(request):
                 print("Product ID:", product_id)
 
             customer_id = 0
-            plan=Plan.objcts.get(stripe_price_id=product_id)
+            plan=Plan.objects.get(stripe_price_id=product_id)
             try:
                 customer = StripeCustomer.objects.get(
                     stripe_customer_id=stripe_customer_id
