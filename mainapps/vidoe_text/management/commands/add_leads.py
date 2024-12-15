@@ -1269,12 +1269,12 @@ class Command(BaseCommand):
             )
 
 
-#         temp_subtitle_clip = TextClip(
-#             wrapped_text,
-#             fontsize=font_size,
-#             font=font_path_,
-#         )
-#         longest_line_width, text_height = temp_subtitle_clip.size
+        temp_subtitle_clip = TextClip(
+            wrapped_text,
+            fontsize=font_size,
+            font=font_path_,
+        )
+        longest_line_width, text_height = temp_subtitle_clip.size
 # # i'm 
         file_field=self.text_file_instance.font_file
         if not file_field or not file_field.name:
@@ -1288,12 +1288,7 @@ class Command(BaseCommand):
             if not file_content:
                 raise ValueError("Failed to download the file from S3.")
             os.chmod(temp_file.name, 0o644)
-            temp_subtitle_clip = TextClip(
-                wrapped_text,
-                fontsize=font_size,
-                font=font_path_, 
-            )
-            longest_line_width, text_height = temp_subtitle_clip.size
+           
             subtitle_clip = TextClip(
                 wrapped_text,
                 fontsize=adjusted_font_size,
