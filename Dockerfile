@@ -17,6 +17,7 @@ RUN apt -y install \
   libfreetype6-dev \
   ffmpeg \
   espeak \
+  ghostscript \
   imagemagick \
   git \
   postgresql \
