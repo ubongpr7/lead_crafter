@@ -5,7 +5,7 @@ from django.db import models
 class Plan(models.Model):
     stripe_price_id = models.CharField(max_length=255, null=True)
     name = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     price_per_vsl = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     vsl_limit = models.IntegerField(default=0)
 
@@ -24,6 +24,21 @@ class Subscription(models.Model):
 
 
 
+# class CustomUserManager(BaseUserManager):
+#     def create_user(self, email, password=None, **extra_fields):
+#         if not email:
+#             raise ValueError("The Email field must be set")
+#         email = self.normalize_email(email)
+#         user = self.model(email=email, **extra_fields)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+
+#     def create_superuser(self, email, password=None, **extra_fields):
+#         extra_fields.setdefault("is_staff", True)
+#         extra_fields.setdefault("is_superuser", True)
+#         return self.create_user(email, password, **extra_fields)
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -37,8 +52,31 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-        return self.create_user(email, password, **extra_fields)
 
+        if not extra_fields.get("is_staff"):
+            raise ValueError("Superuser must have is_staff=True.")
+        if not extra_fields.get("is_superuser"):
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        user = self.create_user(email, password, **extra_fields)
+
+        try:
+            admin_plan = Plan.objects.get(id=4) 
+        except Plan.DoesNotExist:
+            raise ValueError("Admin plan with ID=4 does not exist. Please create it first.")
+
+        stripe_customer = StripeCustomer.objects.create(user=user, stripe_customer_id=f"admin_{user.id}")
+        subscription = Subscription.objects.create(
+            plan=admin_plan,
+            stripe_subscription_id=f"sub_admin_{user.id}",
+            customer=stripe_customer,
+            credits=admin_plan.vsl_limit,  
+        )
+
+        user.subscription = subscription
+        user.save()
+
+        return user
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)

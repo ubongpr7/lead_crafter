@@ -1286,10 +1286,8 @@ class Command(BaseCommand):
             file_content = download_from_s3(file_field.name, temp_file.name)
 
             if not file_content:
-                raise ValueError("Failed to download the video from S3.")
-            with open(temp_file.name, "wb") as font_file:
-                font_file.write(file_content)
-
+                raise ValueError("Failed to download the file from S3.")
+            
             temp_subtitle_clip = TextClip(
                 wrapped_text,
                 fontsize=font_size,
