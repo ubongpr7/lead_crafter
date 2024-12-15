@@ -23,6 +23,7 @@ class Subscription(models.Model):
     current_period_end = models.IntegerField(default=0)
 
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -43,8 +44,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)
     api_key = models.CharField(max_length=255, blank=True, null=True)
     verification_token = models.CharField(max_length=100, blank=True, null=True)
-    subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True)
-
+    subscription = models.OneToOneField(Subscription,related_name='user', on_delete=models.SET_NULL, null=True, blank=True)  
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
