@@ -36,7 +36,7 @@
                     </button>
                     <div class="profile-dropdown dropdown-menu dropdown-menu-end">
                         <div class="profile-head">
-                            <h4>{{user.username}}</h4>
+                            <h4>{{user.first_name}}</h4>
                             <span class="email">{{ user.email }}</span>
                         </div>
                         <div class="profile-body">
@@ -44,14 +44,14 @@
                                 <a href="{% url 'accounts:manage_subscription'%}" style="color:#000;font-weight: 500;">Manage Subscription</a>
                             </div>
                             <div class="profile-nav-item">
-                                {% if user.stripe_subscription_id != '' %}
                                 <div class="profile-nav-left">
                                     <a href="#" style="color:#000;font-weight: 500;">Credit Left</a>
                                 </div>
                                 <div class="profile-nav-right">
-                                    <span class="count" style="color:#000;font-weight: 500;">{{ user.coins }}</span>
+                                    <span class="count" style="color:#000;font-weight: 500;">{{ user.subscription.credits }}</span>
                                 </div>
-                                {% else %}
+                                  {% if request.user.subscription.plan.name|lower == 'free' %}
+
                                   <div class="profile-nav-left">
                                     <a href="#" style="color:#000;font-weight: 500;">Free Trial</a>
                                 </div>
