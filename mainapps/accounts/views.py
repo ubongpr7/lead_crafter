@@ -225,6 +225,40 @@ def register(request):
             return redirect(reverse("video_text:add_text"))
     elif request.method == "GET":
         checkout_session_id = request.GET.get("session_id")
+        if request.user.is_authenticated:
+            user= request.user
+            
+            checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
+            stripe_customer_id = checkout_session.customer
+
+            customer_id = 0
+            try:
+                customer = StripeCustomer.objects.get(
+                    stripe_customer_id=stripe_customer_id
+                )
+
+                if customer is not None:
+                    customer.user = user
+                    customer.save()
+
+                    customer_id = customer.id
+            except StripeCustomer.DoesNotExist:
+                new_customer = StripeCustomer(
+                    user=user, stripe_customer_id=stripe_customer_id
+                )
+                new_customer.save()
+
+                customer_id = new_customer.id
+
+            try:
+                subscription = Subscription.objects.get(customer_id=customer_id)
+
+                if subscription is not None:
+                    user.subscription = subscription
+            except Exception as e:
+                print(e)
+
+            return redirect('/text')
 
         return render(
             request,
@@ -232,6 +266,8 @@ def register(request):
             context={"session_id": checkout_session_id},
         )
 
+def handle_saved_user_subscription(request,user_id,checkout_session_id):
+    return redirect('/text')
 
 def verify(request, token):
     try:
