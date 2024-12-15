@@ -12,7 +12,6 @@ urlpatterns = [
         views.progress_page,
         name="progress_page",
     ),
-    path('handle_saved_user_subscription/<str:user_id>/<str:checkout_session_id>/',views.handle_saved_user_subscription,name="handle_saved_user_subscription"),
     path("progress/<str:text_file_id>/", views.progress, name="progress"),
     path(
         "process-background-music/<str:textfile_id>/",

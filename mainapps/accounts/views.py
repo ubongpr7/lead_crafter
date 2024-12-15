@@ -225,7 +225,7 @@ def register(request):
             return redirect(reverse("video_text:add_text"))
     elif request.method == "GET":
         checkout_session_id = request.GET.get("session_id")
-        if request.user.is_authenticated:
+        if checkout_session_id and request.user.is_authenticated:
             user= request.user
             
             checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
@@ -266,8 +266,6 @@ def register(request):
             context={"session_id": checkout_session_id},
         )
 
-def handle_saved_user_subscription(request,user_id,checkout_session_id):
-    return redirect('/text')
 
 def verify(request, token):
     try:
