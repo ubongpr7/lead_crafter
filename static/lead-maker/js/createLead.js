@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateSlideNumbers() {
     const rows = document.querySelectorAll('#leadsTable tbody tr');
     rows.forEach((row, index) => {
-        row.cells[0].innerText = `Slide ${index + 1}`;
+        row.cells[0].innerText = `Subtitle ${index + 1}`;
     });
 }
 
