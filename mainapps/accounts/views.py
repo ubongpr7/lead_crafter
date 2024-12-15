@@ -179,11 +179,10 @@ def register(request):
             subscription_id = checkout_session.get("subscription")
             if subscription_id:
                 subscription = stripe.Subscription.retrieve(subscription_id)
-                product_id = subscription["items"]["data"][0]["price"]["product"]
-                print("Product ID:", product_id)
-
+                price_id = subscription["items"]["data"][0]["price"]["id"]
+                print("Price ID:", price_id)
                 customer_id = 0
-                plan=Plan.objects.get(stripe_price_id=product_id)
+                plan=Plan.objects.get(stripe_price_id=price_id)
                 try:
                     customer = StripeCustomer.objects.get(
                         stripe_customer_id=stripe_customer_id
