@@ -476,6 +476,10 @@ def trim_video(request,textfile_id):
 
     
         return redirect(f'/text/progress_page/trim/{text_file.id}')
+    else:
+        if text_file.trimmed_video:
+            text_file.trimmed_video.delete(save=True)
+            text_file.save()
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
 
 @login_required
