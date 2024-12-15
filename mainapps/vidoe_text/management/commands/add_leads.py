@@ -1268,7 +1268,6 @@ class Command(BaseCommand):
                 font_size,
             )
 
-        # Create a temporary TextClip to measure the width of the longest line
 
         temp_subtitle_clip = TextClip(
             wrapped_text,
@@ -1292,13 +1291,19 @@ class Command(BaseCommand):
             with open(temp_file.name, "wb") as font_file:
                 font_file.write(file_content)
 
+            temp_subtitle_clip = TextClip(
+                wrapped_text,
+                fontsize=font_size,
+                font=os.path.normpath(temp_file.name),
+            )
+            longest_line_width, text_height = temp_subtitle_clip.size
             subtitle_clip = TextClip(
                 wrapped_text,
                 fontsize=adjusted_font_size,
                 color=color,
                 # stroke_color="white",
                 stroke_width=0,
-                font=font_file,
+                font=os.path.normpath(temp_file.name),
                 method="caption",
                 align="center",
                 size=(
