@@ -176,8 +176,14 @@ def register(request):
         else:
             checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
             stripe_customer_id = checkout_session.customer
+            subscription_id = checkout_session.get("subscription")
+            if subscription_id:
+                subscription = stripe.Subscription.retrieve(subscription_id)
+                product_id = subscription["items"]["data"][0]["price"]["product"]
+                print("Product ID:", product_id)
 
             customer_id = 0
+            plan=Plan.objcts.get(stripe_price_id=product_id)
             try:
                 customer = StripeCustomer.objects.get(
                     stripe_customer_id=stripe_customer_id
@@ -203,8 +209,12 @@ def register(request):
                     user.subscription = subscription
                     user.save()
                 else:
-                    
-                    subscription = Subscription.create(customer_id=customer_id)
+                    subscription = Subscription(
+                    plan=plan,
+                    credits=plan.vsl_limit,
+                    customer=new_customer,
+                    stripe_subscription_id=None,
+                    )   
 
             except Exception as _:
                 messages.error(request, "Subscription Failed. Please Try Again Later.")
