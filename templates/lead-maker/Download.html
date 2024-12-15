@@ -193,17 +193,22 @@
                     <h5 class="text-center lead-title">Your Video Has Been Generated Successfully</h5>
                     <div class="video-container">
                         <video height="400"  controls>
+                    {% if bg_music == 'false' %}
+
                             <source src="{{ text_file.generated_watermarked_video.url }}"
                             type="video/mp4" />
-    
+                            {% else %}
+                            <source src="{{ text_file.generated_final_bgmw_video.url }}"
+                            type="video/mp4" />
+                      
+                      {%endif%}
                                 Your browser does not support the video tag.
                         </video> 
                     </div>
                     {% if bg_music == 'false' %}
                     
-                    
-
-                     <a href="{% url 'video_text:download_file' file_key=text_file.generated_final_bgm_video.name textfile_id=text_file.id %}"  class="btn proceed-btn" id="download">
+          
+                     <a href="{% url 'video_text:download_file' file_key=text_file.generated_final_video.name textfile_id=text_file.id %}"  class="btn proceed-btn" id="download">
                         Download
                         <img class="btn-arrow" src="{% static 'lead-maker/images/download-icn.svg' %}" alt="Download Arrow" />
                         </a> 
