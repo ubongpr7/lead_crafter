@@ -34,23 +34,23 @@
         {% csrf_token %}
         <div class="d-flex justify-content-start">
           <a href="#!" id="createLeadBtn" class="btn proceed-btn" onclick="addSlide()">
-            Add New Slide +
+            Add New Subtitle +
           </a>
         </div>
-        <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="{{no_of_slides}}">
         <table id="leadsTable" class="lead-table">
           <thead>
             <tr>
-              <th class="slide-first">Slide</th>
-              <th>Slide Text</th>
+              <th class="slide-first">Subtitle</th>
+              <th>Subtitle Text</th>
               <th>Upload Scene</th>
               <th class="slide-last">Action</th>
             </tr>
           </thead>
           <tbody>
+            {% if clips %}
             {% for clip in clips %}
             <tr>
-              <td>Slide {{ forloop.counter }}</td>
+              <td>Subtitle {{ forloop.counter }}</td>
                 <td  >
                  <textarea  name="saved_slide_text_{{clip.id}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
                 </td> 
@@ -75,6 +75,34 @@
               </td>
             </tr>
             {% endfor %}
+        <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="{{no_of_slides}}">
+            {% else %}
+        <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="1">
+        <tr>
+              <td>Subtitle 1</td>
+                <td  >
+                 <textarea  name="saved_slide_text_1" class="form-control tab-textarea" aria-describedby="textarea"    ></textarea></td>
+                </td> 
+                           
+                <td style="background: none;">
+                  <div class="custum-browse custum-browse-v2 d-flex align-items-center">
+                    <div class="brws">
+                      <input class="br-input" type="file" name="saved_slide_file_1" onchange="savedInputChangeFunc(1)" id="saved_slide_file_1" accept="image/*,video/*"  >
+                         <a href="#!" class="btn get-start browse-btn">
+                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""><span id="saved_span_1"> Choose file</span>
+                      </a>
+                    </div>
+                   
+                  </div>
+                </td>
+                
+              <td>
+                <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
+                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
+                </a>
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
 
@@ -131,7 +159,7 @@ function deleteSavedSlide(clipId) {
     currentNumber++
     
     document.getElementById('no_of_slides').value=currentNumber
-    slideCell.innerText = `Slide ${currentNumber}`;
+    slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
           <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
