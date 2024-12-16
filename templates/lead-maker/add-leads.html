@@ -77,30 +77,8 @@
             {% endfor %}
         <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="{{no_of_slides}}">
             {% else %}
-        <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="1">
-        <!-- <tr>
-              <td>Subtitle 1</td>
-                <td  >
-                 <textarea placeholder="Type Your Sentence Here" name="slide_text_1" class="form-control tab-textarea" aria-describedby="textarea"    ></textarea></td>
-                </td> 
-                           
-                <td style="background: none;">
-                  <div class="custum-browse custum-browse-v2 d-flex align-items-center">
-                    <div class="brws">
-                      <input class="br-input" type="file" name="slide_file_1"  id="slide_file_1" accept="image/*,video/*"  >
-                         <a href="#!" class="btn get-start browse-btn">
-                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="">Choose file
-                      </a>
-                    </div>
-                  </div>
-                </td>
-              <td>
-                <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
-                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
-                </a>
-              </td>
-        </tr> -->
-            {% endif %}
+        <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="0">
+        {% endif %}
           </tbody>
         </table>
 
@@ -132,7 +110,7 @@ function savedInputChangeFunc(id) {
     }
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  if (document.getElementById('no_of_slides').value == 1){
+  if (document.getElementById('no_of_slides').value == 0){
     addSlide()
   }
 })
