@@ -78,7 +78,7 @@
         <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="{{no_of_slides}}">
             {% else %}
         <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="1">
-        <tr>
+        <!-- <tr>
               <td>Subtitle 1</td>
                 <td  >
                  <textarea placeholder="Type Your Sentence Here" name="slide_text_1" class="form-control tab-textarea" aria-describedby="textarea"    ></textarea></td>
@@ -99,7 +99,7 @@
                   <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
               </td>
-        </tr>
+        </tr> -->
             {% endif %}
           </tbody>
         </table>
@@ -122,7 +122,7 @@
 <script>
 function savedInputChangeFunc(id) {
     const inputFile=document.getElementById(`saved_slide_file_${id}`)
-    const fileName = inputFile.files.length > 0 ? inputFile.files[0].name : 'Choose file';
+    const fileName = inputFile.files.length > 0 ? inputFile.files[0].name.slice(20) : 'Choose file';
     const element = document.getElementById(`current_${id}`);
     if (element) {
         element.style.display = 'none';
@@ -131,7 +131,11 @@ function savedInputChangeFunc(id) {
         console.error(`Element with ID current_${id} not found.`);
     }
 }
-
+document.addEventListener('documentLoaded',()=>{
+  if (document.getElementById('no_of_slides').value==1){
+    addSlide()
+  }
+})
 let currentNumber = document.getElementById('no_of_slides').value
 function deleteSavedSlide(clipId) {
         $.ajax({
