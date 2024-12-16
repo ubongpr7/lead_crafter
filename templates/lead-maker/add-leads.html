@@ -131,8 +131,8 @@ function savedInputChangeFunc(id) {
         console.error(`Element with ID current_${id} not found.`);
     }
 }
-document.addEventListener('documentLoaded',()=>{
-  if (document.getElementById('no_of_slides').value==1){
+document.addEventListener('DOMContentLoaded',()=>{
+  if (document.getElementById('no_of_slides').value == 1){
     addSlide()
   }
 })
