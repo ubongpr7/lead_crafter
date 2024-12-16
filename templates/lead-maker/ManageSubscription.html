@@ -383,36 +383,6 @@
 
 
   <div class="second-main">
-    <div class="heading">Need More Lead Edits?</div>
-    <p>
-      Running out of lead edits this month? Add more to your plan, with a minimum of 5, and keep split testing new leads
-      to optimize your VSLs.
-    </p>
-    {% if cur_plan.name|lower == 'free' %}
-  </div>
-    <div class="credit-box">
-      <div class="box-cont">
-        <p class="cr">Buy More Credits</p>
-        <p class="dollar">${{cur_plan.price_per_vsl}} Each</p>
-        <form id="buycoins" method="POST" action="{% url 'accounts:add_credits' %}" >
-        <input type="text" required name="credit" id="credit" placeholder="Enter the amount of credits" />
-        <!-- <input type="text" name="plan" id="plan" value="Pro" hidden> -->
-        </form>
-      <button  {% if cur_plan.name|lower == 'free' %}disabled{% endif %} >Buy</button>
-      </div>
-    </div>
-    {% endif %}
-
-
-  <!-- Additional Credit Purchase Section End -->
-
-  <!-- Subscription Plans Section Start -->
-  <div class="main-head">
-    <h1>Choose The Plan That Fits Your Needs</h1>
-  </div>
-
-  
-  <div class="second-main">
     <div class="heading">Need More Credits?</div>
     <p>
       Out of VSL edits? No worries! Add more edits to your account instantly.
@@ -517,6 +487,7 @@
     </div>
   </div>
 </div>
+
 
 <script>
   document.querySelector('.cancel_button').addEventListener('click', () => {
