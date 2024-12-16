@@ -67,44 +67,32 @@
     <div class="for-border">
       <div class="plan">
         <p class="cr-text">Current Plan</p>
-        <p class="btn">{{User_plan}}</p>
+        <p class="btn">{{ cur_plan.name }}</p>
       </div>
       <div class="plan subs">
         <p class="cr-text">Subscription Status</p>
-        {% if user.subscription_active %}
-          <p class="act">Active</p>
-        {% else %}
-          <p class="notact">Not Active </p>
-        {% endif %}
+        {% if cur_plan.name|lower == 'free' %}
+            <p class="btn">Trial</p>
+          {% else %}
+            <p class="active">Active</p>
+          {% endif %}
       </div>
-      {% if user.stripe_subscription_id %}
       <div class="credit">
         <p class="cr-usage">Credit Usage</p>
         <div class="credit-text">
           <p>Any unused credit will roll over to the next month</p>
-          <p>Next recharge in {{daysleft}} Days </p>
+          <p>{{ days_left }} days left</p>
         </div>
 
       </div>
-      {% else %}
-        <div class="credit">
-        <p class="cr-usage">Credit Usage</p>
-        <div class="credit-text">
-          <p>Any unused credit will roll over to the next month</p>
-          <p>{{user.coins}}/{{maxcoins}} Used (Rest in 24 Days) </p>
-        </div>
-        <div class="bar">
-          <div class="bar-fill" style="width: {{ barvalue }}%;"></div>
-        </div>
-      </div>
-       {% endif %}
     </div>
   </div>
   <!-- Subscription Information End -->
 
   <!-- Additional Credit Purchase Section Start -->
 
-{% if User_plan == 'Pro' %}
+{% if cur_plan.name|lower == 'pro' %}
+
   <div class="second-main">
     <div class="heading">Need More Lead Edits?</div>
     <p>
@@ -124,7 +112,7 @@
       <button onclick="checkcoins()">Buy</button>
       </div>
     </div>
-{% elif User_plan == 'Premuim' %}
+{% if cur_plan.name|lower == 'premuim' %}
   <div class="second-main">
     <div class="heading">Need More Lead Edits?</div>
     <p>
@@ -155,7 +143,8 @@
   </div>
 
   <div class="plans">
-  {% if User_plan == 'Pro' %}
+  {% if cur_plan.name|lower == 'pro' %}
+
     <div class="box">
       <p class="box-head box2">Pro Plan</p>
       <p id="p">Perfect for scaling your video advertising campaigns</p>
@@ -179,11 +168,11 @@
       <form id="PremuimPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
         <input hidden name="plan" value="Premuim_Plan">
       </form>
-      <button id="up" onclick=upgradePayment("PremuimPlan")>Upgrade Subscription</button>
+      <button id="up" >Upgrade Subscription</button>
     </div>
   </div>
+  {% elif cur_plan.name|lower == 'premuim' %}
 
-   {% elif User_plan == 'Premuim' %}
        <div class="box">
       <p class="box-head box2">Pro Plan</p>
       <p id="p">Perfect for scaling your video advertising campaigns</p>
@@ -195,7 +184,7 @@
       <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
         <input hidden name="plan" value="Pro_Plan">
       </form>
-      <button onclick=upgradePayment("ProPlan") >Downgrade Subscription</button>
+      <button  >Downgrade Subscription</button>
     </div>
 
     <!-- Pro Plan -->
@@ -222,7 +211,7 @@
       <form id="ProPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
         <input hidden name="plan" value="Pro_Plan">
       </form>
-      <button onclick=upgradePayment("ProPlan") >Upgrade Subscription</button>
+      <button  >Upgrade Subscription</button>
     </div>
 
     <!-- Pro Plan -->
@@ -237,36 +226,27 @@
       <form id="PremuimPlan" action="/upgradeplan" method="POST" class="btn get-started" style="display: none;">
         <input hidden name="plan" value="Premuim_Plan">
       </form>
-      <button id="up" onclick=upgradePayment("PremuimPlan")>Upgrade Subscription</button>
+      <button id="up">Upgrade Subscription</button>
     </div>
   </div>
   {% endif %}
-  <script>
-  function upgradePayment(formid){
-    document.getElementById(formid).submit();
-  }
-  function checkcoins(){
-    form=document.getElementById("buycoins");
-    number_of_coins=Number(form.children[0].value)
-    
-    if (number_of_coins>=5){
-        form.submit();
-    }
-      
-    else{
-      alert("test");
-    }
+<script>
+  document.querySelector('.cancel_button').addEventListener('click', () => {
+      document.querySelector('#cancelOverlay').classList.remove('hidden');
+    });
 
+    document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
+      document.querySelector('#cancelOverlay').classList.add('hidden');
+    });
 
-  }
-  document.getElementById('linktocustomerbilling').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.location.href = 'https://billing.stripe.com/p/login/test_7sI4i8e8gbKA7x6fYY';
-    })
-  </script>
-<!-- Bootstrap JS with Popper -->
+    document.querySelector('#downgradeButton').addEventListener('click', () => {
+      document.querySelector('#downgradeOverlay').classList.remove('hidden');
+    });
 
-  <!-- Subscription Plans Section End -->
+    document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
+      document.querySelector('#downgradeOverlay').classList.add('hidden');
+    });
+</script>    
 </body>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

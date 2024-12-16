@@ -489,7 +489,7 @@ def manage_subscription(request):
 
     return render(
         request,
-        "accounts/details.html",
+        "lead-maker/ManageSubscription.html",
         context={
             "total_credits": total_credits,
             "credits_left": credits_left,

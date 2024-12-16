@@ -4,11 +4,11 @@ from xml.etree import ElementTree as ET
 from django.conf import settings
 
 # Paths
-FONTS_DIR = os.path.join(settings.BASE_DIR, 'fonts')  # Local fonts directory
-CONTAINER_FONTS_DIR = "/usr/share/fonts/fonts"  # Docker container fonts directory
-TYPE_GHOSTSCRIPT_XML = "/etc/ImageMagick-6/type-ghostscript.xml"  # Path to the XML
+FONTS_DIR = os.path.join(settings.BASE_DIR, 'fonts')  
+CONTAINER_FONTS_DIR = "/usr/share/fonts/fonts"  
+TYPE_GHOSTSCRIPT_XML = "/etc/ImageMagick-6/type-ghostscript.xml"
 
-SUPPORTED_FORMATS = ["ttf", "otf", "woff", "woff2"]  # Add more formats if needed
+SUPPORTED_FORMATS = ["ttf", "otf", "woff", "woff2"] 
 
 
 def handle_font_upload(font_file):
@@ -16,12 +16,11 @@ def handle_font_upload(font_file):
     Handles uploading and registering font files.
     """
     font_name, font_extension = os.path.splitext(font_file.name)
-    font_extension = font_extension.lower().strip(".")  # Get file extension without dot
+    font_extension = font_extension.lower().strip(".") 
 
     if font_extension not in SUPPORTED_FORMATS:
         raise ValueError(f"Unsupported font format: {font_extension}")
 
-    # Save font locally if not already present
     os.makedirs(FONTS_DIR, exist_ok=True)
     local_font_path = os.path.join(FONTS_DIR, font_file.name)
 
@@ -31,11 +30,9 @@ def handle_font_upload(font_file):
                 f.write(chunk)
         print(f"Font saved: {local_font_path}")
 
-    # Copy fonts to Docker container
     shutil.copytree(FONTS_DIR, CONTAINER_FONTS_DIR, dirs_exist_ok=True)
     print(f"Fonts copied to Docker container: {CONTAINER_FONTS_DIR}")
 
-    # Register the font in type-ghostscript.xml
     add_font_to_ghostscript(font_name, font_extension, local_font_path)
 
 
