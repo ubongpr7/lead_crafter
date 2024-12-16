@@ -97,6 +97,10 @@
         </li>
       </ul>
       <div class="lead-container-new">
+        <div class="lead-header">
+          <a href="/text" class="lead-back">
+            <img src="{% static 'lead-maker/images/left-arrow.svg' %}" alt="back" class="img-fluid" />
+          </a>
         <h5 class="text-center lead-title"> TrIm Video <br class="d-none d-md-block" /> </h5>
         <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
