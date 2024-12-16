@@ -7,6 +7,7 @@ from mainapps.vidoe_text.decorators import (
     check_credits_and_ownership,
     check_user_credits,
 )
+from mainapps.vidoe_text.font_processor import handle_font_upload
 from .models import TextFile, TextLineVideoClip
 import os
 from django.http import HttpResponse, JsonResponse, Http404
@@ -380,8 +381,14 @@ def add_text_video(request):
         font_select = request.POST.get("font_select")
         font_size = request.POST.get("font_size")
         print('======>',font_size)
-        x, y = is_api_key_valid(api_key, voice_id)
 
+        x, y = is_api_key_valid(api_key, voice_id)
+        try:
+            # Process the uploaded font
+            handle_font_upload(fontFile)
+            
+        except Exception as _:
+            print(_)
         if x and y:
             if voice_id and api_key:
                 text_obj = TextFile.objects.create(
@@ -390,6 +397,7 @@ def add_text_video(request):
                     voice_id=voice_id,
                     api_key=api_key,
                     font_file=fontFile,
+                    font = os.path.splitext(fontFile.name)[0],
                     resolution=resolution,
                     subtitle_box_color=subtitle_box_color,
                     font_size=font_size,

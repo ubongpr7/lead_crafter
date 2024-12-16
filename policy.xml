@@ -11,46 +11,38 @@
 <!ATTLIST policy stealth NMTOKEN #IMPLIED>
 <!ATTLIST policy value CDATA #IMPLIED>
 ]>
-<!-- 
-  Maximum Permissions Policy for ImageMagick
-  WARNING: This configuration removes security restrictions and is not recommended for production environments. 
-           Use only in secure and controlled environments.
--->
 
 <policymap>
-  <!-- Allow all undefined permissions -->
-  <policy domain="Undefined" rights="all"/>
+  <!-- Full permissions policy -->
+  
+  <!-- Enable all resource limits -->
+  <policy domain="resource" name="disk" value="-1"/>
+  <policy domain="resource" name="file" value="-1"/>
+  <policy domain="resource" name="map" value="-1"/>
+  <policy domain="resource" name="memory" value="-1"/>
+  <policy domain="resource" name="width" value="-1"/>
+  <policy domain="resource" name="height" value="-1"/>
+  <policy domain="resource" name="area" value="-1"/>
+  <policy domain="resource" name="thread" value="-1"/>
+  <policy domain="resource" name="time" value="-1"/>
+  <policy domain="resource" name="list-length" value="-1"/>
 
-  <!-- Set resource limits to maximum -->
-  <policy domain="resource" name="memory" value="unlimited"/>
-  <policy domain="resource" name="map" value="unlimited"/>
-  <policy domain="resource" name="area" value="unlimited"/>
-  <policy domain="resource" name="disk" value="unlimited"/>
-  <policy domain="resource" name="thread" value="unlimited"/>
-  <policy domain="resource" name="time" value="unlimited"/>
-  <policy domain="resource" name="width" value="unlimited"/>
-  <policy domain="resource" name="height" value="unlimited"/>
-  <policy domain="resource" name="list-length" value="unlimited"/>
-  <policy domain="resource" name="file" value="unlimited"/>
-  <policy domain="resource" name="temporary-path" value="/tmp"/>
-
-  <!-- Allow all delegate execution -->
+  <!-- Enable all delegates -->
   <policy domain="delegate" rights="all" pattern="*"/>
 
-  <!-- Allow all filters -->
+  <!-- Enable unrestricted filters -->
   <policy domain="filter" rights="all" pattern="*"/>
-
-  <!-- Allow all paths -->
-  <policy domain="path" rights="read|write|execute" pattern="*"/>
 
   <!-- Allow all coders -->
   <policy domain="coder" rights="read|write" pattern="*"/>
 
-  <!-- Allow all modules -->
-  <policy domain="module" rights="read|write" pattern="*"/>
+  <!-- Enable unrestricted paths -->
+  <policy domain="path" rights="read|write|execute" pattern="*"/>
 
-  <!-- Allow all system operations -->
-  <policy domain="system" name="max-memory-request" value="unlimited"/>
-  <policy domain="system" name="shred" value="0"/>
+  <!-- Enable all modules -->
+  <policy domain="module" rights="all" pattern="*"/>
+
+  <!-- Disable security restrictions -->
+  <policy domain="security" name="shred" value="0"/>
   <policy domain="system" name="memory-map" value="all"/>
 </policymap>

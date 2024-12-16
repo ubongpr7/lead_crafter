@@ -1272,62 +1272,50 @@ class Command(BaseCommand):
         temp_subtitle_clip = TextClip(
             wrapped_text,
             fontsize=font_size,
-            font=font_path_,
+            font=self.text_file_instance.font
         )
         longest_line_width, text_height = temp_subtitle_clip.size
 # # i'm 
-        file_field=self.text_file_instance.font_file
-        if not file_field or not file_field.name:
-            raise ValueError("File field is empty or invalid.")
 
-        file_extension = os.path.splitext(file_field.name)[1].lower()
 
-        with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_file:
-            file_content = download_from_s3(file_field.name, temp_file.name)
+        subtitle_clip = TextClip(
+            wrapped_text,
+            fontsize=adjusted_font_size,
+            color=color,
+            # stroke_color="white",
+            stroke_width=0,
+            font=self.text_file_instance.font,
+            method="caption",
+            align="center",
+            size=(
+                longest_line_width,
+                None,
+            ),  # Use the measured width for the longest line
+        ).set_duration(clip.duration)
 
-            if not file_content:
-                raise ValueError("Failed to download the file from S3.")
-            os.chmod(temp_file.name, 0o644)
-           
-            subtitle_clip = TextClip(
-                wrapped_text,
-                fontsize=adjusted_font_size,
-                color=color,
-                # stroke_color="white",
-                stroke_width=0,
-                # font=os.path.normpath(temp_file.name),
-                font=temp_file.name, 
-                method="caption",
-                align="center",
-                size=(
-                    longest_line_width,
-                    None,
-                ),  # Use the measured width for the longest line
-            ).set_duration(clip.duration)
+        text_width, text_height = subtitle_clip.size
+        small_margin = 8 
+        box_width = (
+            text_width + small_margin
+        )  # Adjust the box width to be slightly larger than the text width
+        box_height = text_height + margin
+        box_clip = (
+            ColorClip(size=(box_width, box_height), color=subtitle_box_color)
+            .set_opacity(0.7)
+            .set_duration(subtitle_clip.duration)
+        )
+        print("this is the used box color:", subtitle_box_color)
+        # Adjust box position to be slightly higher in the video
+        box_position = ("center", clip.h - box_height - 2 * margin)
+        subtitle_position = (
+            "center",
+            clip.h - box_height - 2 * margin + (box_height - text_height) / 2,
+        )
 
-            text_width, text_height = subtitle_clip.size
-            small_margin = 8 
-            box_width = (
-                text_width + small_margin
-            )  # Adjust the box width to be slightly larger than the text width
-            box_height = text_height + margin
-            box_clip = (
-                ColorClip(size=(box_width, box_height), color=subtitle_box_color)
-                .set_opacity(0.7)
-                .set_duration(subtitle_clip.duration)
-            )
-            print("this is the used box color:", subtitle_box_color)
-            # Adjust box position to be slightly higher in the video
-            box_position = ("center", clip.h - box_height - 2 * margin)
-            subtitle_position = (
-                "center",
-                clip.h - box_height - 2 * margin + (box_height - text_height) / 2,
-            )
+        box_clip = box_clip.set_position(box_position)
+        subtitle_clip = subtitle_clip.set_position(subtitle_position)
 
-            box_clip = box_clip.set_position(box_position)
-            subtitle_clip = subtitle_clip.set_position(subtitle_position)
-
-            return CompositeVideoClip([clip, box_clip, subtitle_clip])
+        return CompositeVideoClip([clip, box_clip, subtitle_clip])
 
     def add_static_watermark_to_instance(
         self,

@@ -4,7 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV IMAGEMAGICK_BINARY=/usr/bin/convert
-
 RUN apt update
 RUN apt -y install \
   wget \

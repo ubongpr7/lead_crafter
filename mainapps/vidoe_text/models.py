@@ -94,7 +94,7 @@ class TextFile(models.Model):
     audio_file = models.FileField(upload_to="lead-editor/audio_files", blank=True, null=True)
     srt_file = models.FileField(
         upload_to="lead-editor/srt_files/", blank=True, null=True
-    )  # SRT file for subtitles
+    ) 
     blank_video = models.FileField(upload_to="lead-editor/blank_video/", blank=True, null=True)
     subtitle_file = models.FileField(upload_to="lead-editor/subtitles/", blank=True, null=True)
     generated_audio = models.FileField(
