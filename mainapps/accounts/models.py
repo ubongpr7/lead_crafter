@@ -62,16 +62,16 @@ class CustomUserManager(BaseUserManager):
 
         try:
             admin_plan = Plan.objects.get(id=4) 
-        stripe_customer = StripeCustomer.objects.create(user=user, stripe_customer_id=f"admin_{user.id}")
-        subscription = Subscription.objects.create(
-            plan=admin_plan,
-            stripe_subscription_id=f"sub_admin_{user.id}",
-            customer=stripe_customer,
-            credits=admin_plan.vsl_limit,  
-        )
+            stripe_customer = StripeCustomer.objects.create(user=user, stripe_customer_id=f"admin_{user.id}")
+            subscription = Subscription.objects.create(
+                plan=admin_plan,
+                stripe_subscription_id=f"sub_admin_{user.id}",
+                customer=stripe_customer,
+                credits=admin_plan.vsl_limit,  
+            )
 
-        user.subscription = subscription
-        user.save()
+            user.subscription = subscription
+            user.save()
         except Plan.DoesNotExist:
             return user
             # raise ValueError("Admin plan with ID=4 does not exist. Please create it first.")
