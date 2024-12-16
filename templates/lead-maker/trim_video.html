@@ -181,21 +181,73 @@
       let endPercent = 100;
       const proceedLink = document.getElementById('proceedWithoutTrimming');
       const actionContainer = document.getElementById('actionContainer');
-    function removeTrimming() {
-    startPercent = 0;
-    endPercent = 100;
-    updateSlider();
+      const MAX_VISIBLE_RANGE = 10; // Max visible seconds on the slider
+let videoDuration = 0;
+let startTime = 0; // Current start time in seconds
+let endTime = 0; // Current end time in seconds
 
-    startTimeInput.value = 0;
-    endTimeInput.value = videoDuration;
+// Handle video metadata loaded
+video.addEventListener("loadedmetadata", () => {
+  videoDuration = video.duration; // Get total video duration
+  endTime = videoDuration; // Default end time is full duration
+  startTimeInput.value = startTime.toFixed(2);
+  endTimeInput.value = endTime.toFixed(2);
+  updateSlider();
+});
 
-    trimButton.style.display = 'none';
-    document.getElementById('undo').style.display = 'none';
-    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+// Update the slider's appearance and range
+function updateSlider() {
+  const visibleStart = Math.max(0, startTime); // Visible start range
+  const visibleEnd = Math.min(videoDuration, startTime + MAX_VISIBLE_RANGE); // Visible end range
 
-    video.currentTime = 0;
+  // Update slider UI
+  sliderStart.style.left = `${((startTime / videoDuration) * 100).toFixed(2)}%`;
+  sliderFilled.style.left = `${((visibleStart / videoDuration) * 100).toFixed(2)}%`;
+  sliderFilled.style.width = `${(((visibleEnd - visibleStart) / videoDuration) * 100).toFixed(2)}%`;
+
+  startTimeDisplay.textContent = visibleStart.toFixed(2);
+  endTimeDisplay.textContent = visibleEnd.toFixed(2);
 }
-    
+
+// Handle manual input of start time
+startTimeInput.addEventListener("input", () => {
+  const inputTime = parseFloat(startTimeInput.value);
+  if (!isNaN(inputTime) && inputTime >= 0 && inputTime <= videoDuration) {
+    startTime = Math.min(inputTime, videoDuration - MAX_VISIBLE_RANGE);
+    updateSlider();
+    video.currentTime = startTime;
+  } else {
+    alert("Invalid start time. Ensure it's within the video duration.");
+  }
+});
+
+// Move slider thumb (for start trimming)
+sliderStart.addEventListener("mousedown", () => {
+  const onMouseMove = (e) => {
+    const rect = sliderStart.parentNode.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const visibleRangeWidth = rect.width; // Width of visible slider range
+    const newStartTime =
+      startTime + (offsetX / visibleRangeWidth) * MAX_VISIBLE_RANGE;
+
+    if (newStartTime >= 0 && newStartTime <= videoDuration - MAX_VISIBLE_RANGE) {
+      startTime = newStartTime;
+      startTimeInput.value = startTime.toFixed(2);
+      video.currentTime = startTime;
+      updateSlider();
+    }
+  };
+
+  document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener(
+    "mouseup",
+    () => {
+      document.removeEventListener("mousemove", onMouseMove);
+    },
+    { once: true }
+  );
+});
+
 function handleInteraction() {
         proceedLink.style.display = 'none'; 
         document.getElementById('undo').style.display = 'inline-block';
@@ -290,19 +342,23 @@ function handleInteraction() {
           }, { once: true });
         });
   trimForm=document.getElementById('lead-form')
-  // trimTorm.addEventListener('submit', (e) => {
-  //   e.preventDefault()
-  //   if (startPercent >= endPercent) {
-  //     alert('Invalid trim range!');
-  //     return;
-  //   }
-  //   trimForm.s
+  
 
-    
-  // });
+  function removeTrimming() {
+    startPercent = 0;
+    endPercent = 100;
+    updateSlider();
 
+    startTimeInput.value = 0;
+    endTimeInput.value = videoDuration;
 
-    
+    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    video.currentTime = 0;
+}
+      
   
   
   
