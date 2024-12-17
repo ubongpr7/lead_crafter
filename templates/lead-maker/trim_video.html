@@ -221,7 +221,21 @@ video.addEventListener("loadedmetadata", () => {
   updateSlider();
 });
 
+function enforceStartTime(videoElement) {
+  videoElement.addEventListener('play', () => {
+    if (videoElement.currentTime < startTime || videoElement.currentTime > endTime) {
+      videoElement.currentTime = startTime;
+    }
+  });
 
+  videoElement.addEventListener('timeupdate', () => {
+    if (videoElement.currentTime > endTime) {
+      videoElement.pause();
+      videoElement.currentTime = startTime; 
+    }
+  });
+}
+enforceStartTime(video);
 document.addEventListener('mousemove', (e) => {
   if (isDragging) {
     const rect = sliderContainer.getBoundingClientRect();
