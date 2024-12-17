@@ -346,6 +346,7 @@
         sliderFilled.style.left = `${boundedStartPercent}%`;
         sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
 
+        startTimeDisplay.textContent = startTime;
         startTimeDisplay.textContent = formatTime(startTime);
         endTimeDisplay.textContent = formatTime(endTime);
 
@@ -358,36 +359,6 @@
         return `${minutes}:${secs.toString().padStart(2, '0')}`;
       }
 
-      // function moveSlider(e, thumb) {
-      //   const rect = thumb.parentNode.getBoundingClientRect();
-      //   const offsetX = e.clientX - rect.left;
-
-      //   // Calculate percentage relative to slider container width
-      //   const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
-
-      //   // Map percent to visible range (currentRangeStart to visibleEnd)
-      //   const visibleStart = currentRangeStart;
-      //   const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
-      //   const durationInVisibleRange = visibleEnd - visibleStart;
-
-      //   const newTime = visibleStart + (percent / 100) * durationInVisibleRange;
-
-      //   // Move the slider thumbs while maintaining constraints
-      //   if (thumb === sliderStart && newTime < endTime) {
-      //     startTime = newTime;
-      //     startTimeInput.value = startTime.toFixed(2); // Update input
-      //     video.currentTime = startTime; // Move video currentTime to startTime
-      //   } else if (thumb === sliderEnd && newTime > startTime) {
-      //     endTime = newTime;
-      //     endTimeInput.value = endTime.toFixed(2); // Update input
-      //     video.currentTime = endTime; // Move video currentTime to endTime
-      //   } else {
-      //     return; // Invalid move, do nothing
-      //   }
-
-      //   // Call updateSlider to re-render positions
-      //   updateSlider();
-      // }
       
       function moveSlider(e, thumb) {
         const rect = thumb.parentNode.getBoundingClientRect();
