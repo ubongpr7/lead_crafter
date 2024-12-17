@@ -528,7 +528,7 @@ i {
 }
 
 /* Upgrade Button: Special styling for the upgrade button */
-#up {
+#up, .up {
   border-radius: 10px;
   background-color: rgba(14, 68, 255, 1);
   color: rgba(25, 25, 25, 1);
@@ -540,7 +540,7 @@ i {
 }
 
 /* Hover Effect for Upgrade Button: Changes background color on hover */
-#up:hover {
+#up:hover,.up {
   background-color: rgba(72, 90, 255, 1);
   color: white;
 }
