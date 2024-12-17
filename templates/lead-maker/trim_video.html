@@ -327,6 +327,26 @@
         return `${minutes}:${secs.toString().padStart(2, '0')}`;
       }
 
+      
+      function moveSlider(e, thumb) {
+        const rect = thumb.parentNode.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
+
+        if (thumb === sliderStart) {
+          startPercent = percent;
+          startTime = (startPercent / 100) * videoDuration;
+          if (!trimmingVisible){
+        handleInteraction();
+        trimmingVisible=true
+        }
+        } else if (thumb === sliderEnd) {
+          endPercent = percent;
+          endTime = (endPercent / 100) * videoDuration;
+        }
+
+        updateSlider();
+      }
 
       function removeTrimming() {
         startPercent = 0;
@@ -341,6 +361,28 @@
         document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
 
         video.currentTime = 0;
+    }
+    function handleSliderRelease() {
+      document.addEventListener('mouseup', () => {
+        const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
+
+        if (startTime < halfVisibleRange) {
+          console.log('Slider remains where the user stopped.');
+        } else {
+          currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+          console.log('Slider adjusted to center position.');
+        }
+        if (!trimmingVisible){
+        handleInteraction();
+        trimmingVisible=true
+        }
+        sliderFilled.style.left = `${startPercent}%`;
+        sliderFilled.style.width = `${endPercent - startPercent}%`;
+
+        console.log(`Slider reset: Start = ${startTime}s, End = ${endTime}s`);
+
+        updateSlider();
+      });
     }
    
 video.addEventListener('loadedmetadata', () => {
@@ -359,9 +401,9 @@ document.addEventListener('mouseup', () => {
     currentRangeStart = 0;
   }
   if (!trimmingVisible){
-        handleInteraction();
-        trimmingVisible=true
-        }
+      handleInteraction();
+      trimmingVisible=true
+      }
   updateSlider();
 });
 
