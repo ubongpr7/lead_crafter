@@ -131,7 +131,7 @@
       
       <button class="cancel_button">Current Subscription</button>
       {% elif cur_plan.name|lower == 'free' %}
-      <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
+      <a id="up" href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
       {%else %}
       <button type="button" id="downgradeButton">Downgrade Subscription</button>
       {% endif %}
@@ -151,7 +151,7 @@
           Cancel Subscription
         </button>
       {% else %}
-        <a href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
+        <a id="up" href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
       {% endif %}
     </div>
   </div>
