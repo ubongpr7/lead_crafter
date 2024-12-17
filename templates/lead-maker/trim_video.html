@@ -348,28 +348,22 @@
         updateSlider();
       }
       function removeTrimming() {
-    // Reset values to the initial state
-    startTime = 0; // Slider start back to 0
-    endTime = videoDuration; // End time at the full duration
-    currentRangeStart = 0; // Reset visible range to start at 0
-
-    // Update input fields
+    startTime = 0;
+    endTime = videoDuration; 
+    currentRangeStart = 0; 
     startTimeInput.value = startTime.toFixed(4);
     endTimeInput.value = endTime.toFixed(4);
 
-    // Reset percentages
     startPercent = 0;
     endPercent = 100;
 
-    // Hide and show buttons as needed
     trimButton.style.display = 'none';
     document.getElementById('undo').style.display = 'none';
     document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
 
-    // Reset video current time
     video.currentTime = startTime;
 
-    // Update the slider visually
+    trimmingVisible=false
     updateSlider();
 }
 
