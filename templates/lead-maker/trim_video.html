@@ -262,46 +262,24 @@ function handleInteraction() {
         console.log(endTimeInput.value)
         updateSlider();
       });
-      function updateSlider() {
-      const startTime = (startPercent / 100) * videoDuration;
-      const endTime = (endPercent / 100) * videoDuration;
+    //   function updateSlider() {
+    //   const startTime = (startPercent / 100) * videoDuration;
+    //   const endTime = (endPercent / 100) * videoDuration;
   
-      startTimeDisplay.textContent = startTime.toFixed(6);
-      endTimeDisplay.textContent = endTime.toFixed(1);
-      sliderStart.style.left = startPercent + '%';
-      sliderEnd.style.left = endPercent + '%';
-      sliderFilled.style.left = startPercent + '%';
-      sliderFilled.style.width = (endPercent - startPercent) + '%';
+    //   startTimeDisplay.textContent = startTime.toFixed(6);
+    //   endTimeDisplay.textContent = endTime.toFixed(1);
+    //   sliderStart.style.left = startPercent + '%';
+    //   sliderEnd.style.left = endPercent + '%';
+    //   sliderFilled.style.left = startPercent + '%';
+    //   sliderFilled.style.width = (endPercent - startPercent) + '%';
   
-      // Validate range
-      if (startPercent >= endPercent) {
-        errorDisplay.style.display = 'block';
-      } else {
-        errorDisplay.style.display = 'none';
-      }
-    }
-    function fetchProgress() {
-  fetch('/text/progress/{{text_file.id}}')
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error) {
-        // Redirect to /text if there's an error
-        // window.location.href = '/text';
-        alert(data.error)
-      } else {
-        const progress = data.progress;
-        const percent = document.getElementById('percent');
-        percent.innerText = `${progress}%`;
-
-        if (progress < 100) {
-          setTimeout(fetchProgress, 1000); // Poll every second
-        } else {
-          // Reload the window upon completion
-          window.location.reload();
-        }
-      }
-    });
-}
+    //   // Validate range
+    //   if (startPercent >= endPercent) {
+    //     errorDisplay.style.display = 'block';
+    //   } else {
+    //     errorDisplay.style.display = 'none';
+    //   }
+    // }
 
   
   function moveSlider(e, thumb) {
