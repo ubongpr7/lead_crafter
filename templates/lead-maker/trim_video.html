@@ -216,10 +216,7 @@
       function addSliderEvents() {
         sliderStart.addEventListener('mousedown', (e) => {
           isDragging = true;
-          if (!trimmingVisible){
-        handleInteraction();
-        trimmingVisible=true
-        }
+         
 
           const rect = sliderContainer.getBoundingClientRect();
           initialMouseX = e.clientX; 
@@ -339,6 +336,10 @@
         if (thumb === sliderStart) {
           startPercent = percent;
           startTime = (startPercent / 100) * videoDuration;
+          if (!trimmingVisible){
+        handleInteraction();
+        trimmingVisible=true
+        }
         } else if (thumb === sliderEnd) {
           endPercent = percent;
           endTime = (endPercent / 100) * videoDuration;
