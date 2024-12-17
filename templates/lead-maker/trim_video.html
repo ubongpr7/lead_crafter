@@ -6,10 +6,7 @@
 
 {% include "lead-maker/accounts/new_messages.html" %}
 <style>
-  /* body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-  } */
+  
 
   .slider-container {
     position: relative;
@@ -76,6 +73,7 @@
 }
 
 </style>
+
 <div class="content contain">
   <section class="login-sec voice-subtitle">
     <div class="container">
@@ -184,6 +182,7 @@
       const MAX_VISIBLE_RANGE = 10; 
 let startTime = 0; 
 let endTime = 0; 
+let currentRangeStart = 0; 
 
 // Handle video metadata loaded
 video.addEventListener("loadedmetadata", () => {
@@ -194,21 +193,8 @@ video.addEventListener("loadedmetadata", () => {
   updateSlider();
 });
 
-// Update the slider's appearance and range
-function updateSlider() {
-  const visibleStart = Math.max(0, startTime); // Visible start range
-  const visibleEnd = Math.min(videoDuration, startTime + MAX_VISIBLE_RANGE); // Visible end range
 
-  // Update slider UI
-  sliderStart.style.left = `${((startTime / videoDuration) * 100).toFixed(2)}%`;
-  sliderFilled.style.left = `${((visibleStart / videoDuration) * 100).toFixed(2)}%`;
-  sliderFilled.style.width = `${(((visibleEnd - visibleStart) / videoDuration) * 100).toFixed(2)}%`;
 
-  startTimeDisplay.textContent = visibleStart.toFixed(2);
-  endTimeDisplay.textContent = visibleEnd.toFixed(2);
-}
-
-// Handle manual input of start time
 startTimeInput.addEventListener("input", () => {
   const inputTime = parseFloat(startTimeInput.value);
   if (!isNaN(inputTime) && inputTime >= 0 && inputTime <= videoDuration) {
@@ -254,15 +240,27 @@ function handleInteraction() {
         trimButton.style.display = 'inline-block';
       }
 
-      sliderStart.addEventListener('mousedown', handleInteraction);
-      sliderEnd.addEventListener('mousedown', handleInteraction);
-      video.addEventListener('loadedmetadata', () => {
-        videoDuration = video.duration;
-        endTimeInput.value =videoDuration
-        console.log(endTimeInput.value)
-        updateSlider();
-      });
-    //   function updateSlider() {
+sliderStart.addEventListener('mousedown', handleInteraction);
+sliderEnd.addEventListener('mousedown', handleInteraction);
+video.addEventListener('loadedmetadata', () => {
+  videoDuration = video.duration;
+  endTimeInput.value =videoDuration
+  console.log(endTimeInput.value)
+  updateSlider();
+});
+// function updateSlider() {
+//   const visibleStart = Math.max(0, startTime); 
+//   const visibleEnd = Math.min(videoDuration, startTime + MAX_VISIBLE_RANGE);
+
+//   sliderStart.style.left = `${((startTime / videoDuration) * 100).toFixed(2)}%`;
+//   sliderFilled.style.left = `${((visibleStart / videoDuration) * 100).toFixed(2)}%`;
+//   sliderFilled.style.width = `${(((visibleEnd - visibleStart) / videoDuration) * 100).toFixed(2)}%`;
+
+//   startTimeDisplay.textContent = visibleStart.toFixed(2);
+//   endTimeDisplay.textContent = visibleEnd.toFixed(2);
+// }
+    
+//   function updateSlider() {
     //   const startTime = (startPercent / 100) * videoDuration;
     //   const endTime = (endPercent / 100) * videoDuration;
   
@@ -280,6 +278,36 @@ function handleInteraction() {
     //     errorDisplay.style.display = 'none';
     //   }
     // }
+function updateSlider() {
+  // Ensure visible range is within bounds
+  const visibleStart = currentRangeStart;
+  const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
+
+  // Calculate percentages
+  const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+  const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+
+  // Update slider positions
+  sliderStart.style.left = `${startPercent}%`;
+  sliderEnd.style.left = `${endPercent}%`;
+  sliderFilled.style.left = `${startPercent}%`;
+  sliderFilled.style.width = `${endPercent - startPercent}%`;
+
+  // Update time display
+  startTimeDisplay.textContent = startTime.toFixed(2);
+  endTimeDisplay.textContent = endTime.toFixed(2);
+}
+document.addEventListener('mouseup', () => {
+  const trimmedRange = endTime - startTime;
+
+  if (trimmedRange < MAX_VISIBLE_RANGE) {
+    currentRangeStart = Math.max(0, startTime);
+  } else {
+    currentRangeStart = startTime; 
+  }
+
+  updateSlider();
+});
 
   
   function moveSlider(e, thumb) {
