@@ -363,112 +363,71 @@
         updateSlider();
       });
     }
+    
+    function addSliderEvents() {
+      sliderStart.addEventListener('mousedown', (e) => {
+        isDragging = true;
+    
+        const onMouseMove = (e) => {
+          const rect = sliderContainer.getBoundingClientRect();
+          const offsetX = e.clientX - rect.left;
+          const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
+    
+          startTime = Math.max(0, relativeX * videoDuration);
+          startTime = Math.min(startTime, endTime - 1); // Ensure start < end
+    
+          updateSlider();
+        };
+    
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+    
+          const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
+          if (startTime > halfVisibleRange) {
+            currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+          }
+          updateSlider();
+    
+          document.removeEventListener('mousemove', onMouseMove);
+        }, { once: true });
+      });
 
       enforceStartTime(video);
       handleSliderRelease();
-      sliderStart.addEventListener('mousedown', () => {
-        isDragging = true;
-      });
-      
-      sliderStart.addEventListener("mousedown", () => {
-        const onMouseMove = (e) => {
-          const rect = sliderStart.parentNode.getBoundingClientRect();
-          const offsetX = e.clientX - rect.left;
-          const visibleRangeWidth = rect.width; // Width of visible slider range
-          const newStartTime =
-            startTime + (offsetX / visibleRangeWidth) * MAX_VISIBLE_RANGE;
 
-          if (newStartTime >= 0 && newStartTime <= videoDuration - MAX_VISIBLE_RANGE) {
-            startTime = newStartTime;
-            startTimeInput.value = startTime.toFixed(2);
-            video.currentTime = startTime;
-            updateSlider();
-          }
-        };
+  sliderEnd.addEventListener('mousedown', (e) => {
+    isDragging = true;
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener(
-          "mouseup",
-          () => {
-            document.removeEventListener("mousemove", onMouseMove);
-          },
-          { once: true }
-        );
-      });
-     
-      sliderStart.addEventListener('mousedown', handleInteraction);
-      sliderEnd.addEventListener('mousedown', handleInteraction);
-      video.addEventListener('loadedmetadata', () => {
-        videoDuration = video.duration;
-        endTimeInput.value =videoDuration
-        console.log(endTimeInput.value)
-        updateSlider();
-      });
-   
-      document.addEventListener('mouseup', () => {
-        const trimmedRange = endTime - startTime;
+    const onMouseMove = (e) => {
+      const rect = sliderContainer.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
 
-        if (trimmedRange < MAX_VISIBLE_RANGE) {
-          currentRangeStart = Math.max(0, startTime);
-        } else {
-          currentRangeStart = startTime; 
-        }
+      endTime = Math.min(videoDuration, relativeX * videoDuration);
+      endTime = Math.max(endTime, startTime + 1); // Ensure end > start
 
-        updateSlider();
-      });
+      updateSlider();
+    };
 
-      video.addEventListener("loadedmetadata", () => {
-        videoDuration = video.duration; 
-        endTime = videoDuration; 
-        startTimeInput.value = startTime.toFixed(2);
-        endTimeInput.value = endTime.toFixed(2);
-        updateSlider();
-      });
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
 
-      document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          const rect = sliderContainer.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left;
+      document.removeEventListener('mousemove', onMouseMove);
+    }, { once: true });
+  });
+}
 
-          // Scale slider sensitivity (reduce movement speed)
-          const relativeX = Math.min(Math.max(0, mouseX / rect.width), 1);
-          startTime = relativeX * videoDuration;
+video.addEventListener('loadedmetadata', () => {
+  videoDuration = video.duration;
+  endTime = videoDuration;
 
-          updateSlider();
-        }
-      });
+  updateSlider();
+});
 
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-      });
-      startTimeInput.addEventListener("input", () => {
-        const inputTime = parseFloat(startTimeInput.value);
-        if (!isNaN(inputTime) && inputTime >= 0 && inputTime <= videoDuration) {
-          startTime = Math.min(inputTime, videoDuration - MAX_VISIBLE_RANGE);
-          updateSlider();
-          video.currentTime = startTime;
-        } else {
-          alert("Invalid start time. Ensure it's within the video duration.");
-        }
-      });
+addSliderEvents();
 
-      sliderStart.addEventListener('mousedown', () => {
-                const onMouseMove = (e) => moveSlider(e, sliderStart);
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', () => {
-                  document.removeEventListener('mousemove', onMouseMove);
-                }, { once: true });
-              });
-
-      sliderEnd.addEventListener('mousedown', () => {
-          const onMouseMove = (e) => moveSlider(e, sliderEnd);
-          document.addEventListener('mousemove', onMouseMove);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', onMouseMove);
-          }, { once: true });
-        });
-      trimForm=document.getElementById('lead-form')
-    
  
   
   
