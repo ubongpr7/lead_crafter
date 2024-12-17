@@ -27,6 +27,41 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" type="text/css" href="{% static 'lead-maker/css/leadmaker.css'%}" media="screen" />
   <link rel="stylesheet" type="text/css" href="{% static 'lead-maker/css/Responsivemanage.css'%}" media="screen" />
+  <style>
+    /* General Styles */
+a.upgrade-button {
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a.upgrade-button {
+    background-color: #007bff; /* Blue */
+    color: #fff; /* White */
+}
+
+/* Hover State */
+a.upgrade-button:hover {
+    background-color: #0062cc; /* Darker Blue */
+    color: #fff;
+}
+
+/* Active State */
+a.upgrade-button:active {
+    background-color: #00509d; /* Even Darker Blue */
+    color: #fff;
+}
+
+/* Disabled State */
+a.upgrade-button[disabled] {
+    background-color: #ccc; /* Gray */
+    color: #888; /* Dark Gray */
+    cursor: not-allowed;
+}
+  </style>
 </head>
 
 <body>
