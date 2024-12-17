@@ -347,21 +347,32 @@
 
         updateSlider();
       }
-
       function removeTrimming() {
-        startPercent = 0;
-        endPercent = 100;
-        updateSlider();
+    // Reset values to the initial state
+    startTime = 0; // Slider start back to 0
+    endTime = videoDuration; // End time at the full duration
+    currentRangeStart = 0; // Reset visible range to start at 0
 
-        startTimeInput.value = 0;
-        endTimeInput.value = videoDuration;
+    // Update input fields
+    startTimeInput.value = startTime.toFixed(4);
+    endTimeInput.value = endTime.toFixed(4);
 
-        trimButton.style.display = 'none';
-        document.getElementById('undo').style.display = 'none';
-        document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+    // Reset percentages
+    startPercent = 0;
+    endPercent = 100;
 
-        video.currentTime = 0;
-    }
+    // Hide and show buttons as needed
+    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    // Reset video current time
+    video.currentTime = startTime;
+
+    // Update the slider visually
+    updateSlider();
+}
+
     function handleSliderRelease() {
       document.addEventListener('mouseup', () => {
         const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
