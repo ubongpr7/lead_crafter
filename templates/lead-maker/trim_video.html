@@ -205,7 +205,7 @@
       let endPercent = 100;
       const proceedLink = document.getElementById('proceedWithoutTrimming');
       const actionContainer = document.getElementById('actionContainer');
-      const MAX_VISIBLE_RANGE = 60; 
+      const MAX_VISIBLE_RANGE = 20; 
 let startTime = 0; 
 let endTime = 0; 
 let currentRangeStart = 0; 
@@ -357,51 +357,33 @@ video.addEventListener('loadedmetadata', () => {
 //   sliderIndicator.textContent = formatTime(startTime);
 // }
 function updateSlider() {
-  // Ensure visible range is within bounds
   const visibleStart = currentRangeStart;
   const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
 
-  // Calculate percentages relative to the visible range
   const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
   const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
 
-  // Ensure percentages are within 0% - 100% bounds
   const boundedStartPercent = Math.max(0, Math.min(100, startPercent));
   const boundedEndPercent = Math.max(0, Math.min(100, endPercent));
 
-  // Update slider thumb positions
   sliderStart.style.left = `${boundedStartPercent}%`;
   sliderEnd.style.left = `${boundedEndPercent}%`;
 
-  // Update the filled slider area
   sliderFilled.style.left = `${boundedStartPercent}%`;
   sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
 
-  // Update time displays
   startTimeDisplay.textContent = startTime;
-  // startTimeDisplay.textContent = formatTime(startTime);
   endTimeDisplay.textContent = formatTime(endTime);
 
-  // Update the indicator
   sliderIndicator.style.left = `${boundedStartPercent}%`;
   sliderIndicator.textContent = formatTime(startTime);
 }
-
-// // Utility function: Format time as mm:ss
-// function formatTime(seconds) {
-//   const minutes = Math.floor(seconds / 60);
-//   const secs = Math.floor(seconds % 60);
-//   return `${minutes}:${secs.toString().padStart(2, '0')}`;
-// }
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
-
-// // Initial call to position everything
-// updateSlider();
 
 document.addEventListener('mouseup', () => {
   const trimmedRange = endTime - startTime;
