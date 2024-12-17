@@ -213,25 +213,91 @@
       let initialStartTime = 0;
       const SENSITIVITY_FACTOR = 500;
 
+// function addSliderEvents() {
+//   sliderStart.addEventListener('mousedown', (e) => {
+//     isDragging = true;
+
+//     const rect = sliderContainer.getBoundingClientRect();
+//     initialMouseX = e.clientX; 
+//     initialStartTime = startTime;
+
+//     const onMouseMove = (e) => {
+//       const deltaX = e.clientX - initialMouseX; // Mouse movement
+//       const rectWidth = rect.width;
+
+//       // Scale sensitivity based on video duration
+//       const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+
+//       let newStartTime = initialStartTime + timeChange;
+//       newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
+
+//       startTime = newStartTime; 
+//       video.currentTime = startTime;
+//       updateSlider();
+//     };
+
+//     document.addEventListener('mousemove', onMouseMove);
+//     document.addEventListener('mouseup', () => {
+//       isDragging = false;
+//       document.removeEventListener('mousemove', onMouseMove);
+//     }, { once: true });
+//   });
+
+//   sliderEnd.addEventListener('mousedown', (e) => {
+//     isDragging = true;
+
+//     const rect = sliderContainer.getBoundingClientRect();
+//     initialMouseX = e.clientX; 
+//     let initialEndTime = endTime;
+
+//     const onMouseMove = (e) => {
+//       const deltaX = e.clientX - initialMouseX;
+//       const rectWidth = rect.width;
+
+//       // Scale sensitivity
+//       const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+
+//       let newEndTime = initialEndTime + timeChange;
+//       newEndTime = Math.min(videoDuration, Math.max(newEndTime, startTime + 1));
+
+//       endTime = newEndTime;
+//       updateSlider();
+//     };
+
+//     document.addEventListener('mousemove', onMouseMove);
+//     document.addEventListener('mouseup', () => {
+//       isDragging = false;
+//       document.removeEventListener('mousemove', onMouseMove);
+//     }, { once: true });
+//   });
+// }
+
 function addSliderEvents() {
   sliderStart.addEventListener('mousedown', (e) => {
     isDragging = true;
 
     const rect = sliderContainer.getBoundingClientRect();
-    initialMouseX = e.clientX; 
+    initialMouseX = e.clientX;
     initialStartTime = startTime;
 
     const onMouseMove = (e) => {
-      const deltaX = e.clientX - initialMouseX; // Mouse movement
-      const rectWidth = rect.width;
+      const deltaX = e.clientX - initialMouseX;
 
-      // Scale sensitivity based on video duration
+      // Stop dragging if mouse moves outside sliderContainer
+      if (e.clientX < rect.left || e.clientX > rect.right || 
+          e.clientY < rect.top || e.clientY > rect.bottom) {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        return;
+      }
+
+      const rectWidth = rect.width;
       const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
 
       let newStartTime = initialStartTime + timeChange;
       newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
 
-      startTime = newStartTime; 
+      startTime = newStartTime;
       video.currentTime = startTime;
       updateSlider();
     };
@@ -247,14 +313,21 @@ function addSliderEvents() {
     isDragging = true;
 
     const rect = sliderContainer.getBoundingClientRect();
-    initialMouseX = e.clientX; 
+    initialMouseX = e.clientX;
     let initialEndTime = endTime;
 
     const onMouseMove = (e) => {
       const deltaX = e.clientX - initialMouseX;
-      const rectWidth = rect.width;
 
-      // Scale sensitivity
+      // Stop dragging if mouse moves outside sliderContainer
+      if (e.clientX < rect.left || e.clientX > rect.right || 
+          e.clientY < rect.top || e.clientY > rect.bottom) {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        return;
+      }
+
+      const rectWidth = rect.width;
       const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
 
       let newEndTime = initialEndTime + timeChange;
