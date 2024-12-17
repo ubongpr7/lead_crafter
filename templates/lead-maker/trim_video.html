@@ -341,21 +341,57 @@ video.addEventListener('loadedmetadata', () => {
 //   endTimeDisplay.textContent = endTime.toFixed(2);
 // }
 
+// function updateSlider() {
+//   // Calculate position percentage
+//   const startPercent = (startTime / videoDuration) * 100;
+
+//   // Update slider thumb position
+//   sliderStart.style.left = `${startPercent}%`;
+
+//   // Update filled slider area
+//   sliderFilled.style.left = `0`;
+//   sliderFilled.style.width = `${startPercent}%`;
+
+//   // Update slider indicator position and time
+//   sliderIndicator.style.left = `${startPercent}%`;
+//   sliderIndicator.textContent = formatTime(startTime);
+// }
 function updateSlider() {
-  // Calculate position percentage
-  const startPercent = (startTime / videoDuration) * 100;
+  // Ensure visible range is within bounds
+  const visibleStart = currentRangeStart;
+  const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
 
-  // Update slider thumb position
-  sliderStart.style.left = `${startPercent}%`;
+  // Calculate percentages relative to the visible range
+  const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+  const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
 
-  // Update filled slider area
-  sliderFilled.style.left = `0`;
-  sliderFilled.style.width = `${startPercent}%`;
+  // Ensure percentages are within 0% - 100% bounds
+  const boundedStartPercent = Math.max(0, Math.min(100, startPercent));
+  const boundedEndPercent = Math.max(0, Math.min(100, endPercent));
 
-  // Update slider indicator position and time
-  sliderIndicator.style.left = `${startPercent}%`;
+  // Update slider thumb positions
+  sliderStart.style.left = `${boundedStartPercent}%`;
+  sliderEnd.style.left = `${boundedEndPercent}%`;
+
+  // Update the filled slider area
+  sliderFilled.style.left = `${boundedStartPercent}%`;
+  sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
+
+  // Update time displays
+  startTimeDisplay.textContent = formatTime(startTime);
+  endTimeDisplay.textContent = formatTime(endTime);
+
+  // Update the indicator
+  sliderIndicator.style.left = `${boundedStartPercent}%`;
   sliderIndicator.textContent = formatTime(startTime);
 }
+
+// // Utility function: Format time as mm:ss
+// function formatTime(seconds) {
+//   const minutes = Math.floor(seconds / 60);
+//   const secs = Math.floor(seconds % 60);
+//   return `${minutes}:${secs.toString().padStart(2, '0')}`;
+// }
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
