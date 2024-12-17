@@ -379,7 +379,7 @@
 video.addEventListener('loadedmetadata', () => {
   videoDuration = video.duration;
   endTime = videoDuration;
-  SENSITIVITY_FACTOR = 0.01 * videoDuration; 
+  SENSITIVITY_FACTOR = 0.1 * videoDuration; 
 
   updateSlider();
 });
