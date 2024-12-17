@@ -346,7 +346,9 @@
         sliderFilled.style.left = `${boundedStartPercent}%`;
         sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
 
-        startTimeDisplay.textContent = startTime;
+        startTimeDisplay.textContent = startTime.toFixed(4);
+        startTimeInput.value = startTime.toFixed(4);
+
         startTimeDisplay.textContent = formatTime(startTime);
         endTimeDisplay.textContent = formatTime(endTime);
 
