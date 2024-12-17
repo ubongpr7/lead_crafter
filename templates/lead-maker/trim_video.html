@@ -209,6 +209,85 @@
       let startTime = 0; 
       let endTime = 0; 
       let currentRangeStart = 0; 
+      let initialMouseX = 0; 
+      let initialStartTime = 0;
+
+
+    function addSliderEvents() {
+      // Start dragging for sliderStart
+      sliderStart.addEventListener('mousedown', (e) => {
+        isDragging = true;
+
+        // Capture initial mouse position and startTime
+        const rect = sliderContainer.getBoundingClientRect();
+        initialMouseX = e.clientX; 
+        initialStartTime = startTime;
+
+        const onMouseMove = (e) => {
+          const deltaX = e.clientX - initialMouseX; // Calculate mouse movement
+          const rectWidth = rect.width; // Slider width in pixels
+
+          // Calculate new startTime based on mouse movement
+          const timeChange = (deltaX / rectWidth) * videoDuration; 
+          let newStartTime = initialStartTime + timeChange;
+
+          // Clamp newStartTime within valid bounds
+          newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
+          startTime = newStartTime;
+
+          updateSlider();
+        };
+
+        // Attach mousemove and mouseup events
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+
+          // Adjust sliderStart's position after release
+          const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
+          if (startTime > halfVisibleRange) {
+            currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+          }
+
+          updateSlider();
+          document.removeEventListener('mousemove', onMouseMove);
+        }, { once: true });
+      });
+
+      // Start dragging for sliderEnd
+      sliderEnd.addEventListener('mousedown', (e) => {
+        isDragging = true;
+
+        const rect = sliderContainer.getBoundingClientRect();
+        initialMouseX = e.clientX; 
+        let initialEndTime = endTime;
+
+        const onMouseMove = (e) => {
+          const deltaX = e.clientX - initialMouseX; 
+          const rectWidth = rect.width;
+
+          // Calculate new endTime based on mouse movement
+          const timeChange = (deltaX / rectWidth) * videoDuration;
+          let newEndTime = initialEndTime + timeChange;
+
+          // Clamp newEndTime within valid bounds
+          newEndTime = Math.min(videoDuration, Math.max(newEndTime, startTime + 1));
+          endTime = newEndTime;
+
+          updateSlider();
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+
+          document.removeEventListener('mousemove', onMouseMove);
+        }, { once: true });
+      });
+    }
+
+
+
 
       function handleInteraction() {
               proceedLink.style.display = 'none'; 
@@ -364,60 +443,60 @@
       });
     }
     
-    function addSliderEvents() {
-      sliderStart.addEventListener('mousedown', (e) => {
-        isDragging = true;
+//     function addSliderEvents() {
+//       sliderStart.addEventListener('mousedown', (e) => {
+//         isDragging = true;
     
-        const onMouseMove = (e) => {
-          const rect = sliderContainer.getBoundingClientRect();
-          const offsetX = e.clientX - rect.left;
-          const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
+//         const onMouseMove = (e) => {
+//           const rect = sliderContainer.getBoundingClientRect();
+//           const offsetX = e.clientX - rect.left;
+//           const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
     
-          startTime = Math.max(0, relativeX * videoDuration);
-          startTime = Math.min(startTime, endTime - 1); // Ensure start < end
+//           startTime = Math.max(0, relativeX * videoDuration);
+//           startTime = Math.min(startTime, endTime - 1); // Ensure start < end
     
-          updateSlider();
-        };
+//           updateSlider();
+//         };
     
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', () => {
-          isDragging = false;
+//         document.addEventListener('mousemove', onMouseMove);
+//         document.addEventListener('mouseup', () => {
+//           isDragging = false;
     
-          const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
-          if (startTime > halfVisibleRange) {
-            currentRangeStart = Math.max(0, startTime - halfVisibleRange);
-          }
-          updateSlider();
+//           const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
+//           if (startTime > halfVisibleRange) {
+//             currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+//           }
+//           updateSlider();
     
-          document.removeEventListener('mousemove', onMouseMove);
-        }, { once: true });
-      });
+//           document.removeEventListener('mousemove', onMouseMove);
+//         }, { once: true });
+//       });
 
-      enforceStartTime(video);
-      handleSliderRelease();
+//       enforceStartTime(video);
+//       handleSliderRelease();
 
-  sliderEnd.addEventListener('mousedown', (e) => {
-    isDragging = true;
+//   sliderEnd.addEventListener('mousedown', (e) => {
+//     isDragging = true;
 
-    const onMouseMove = (e) => {
-      const rect = sliderContainer.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
+//     const onMouseMove = (e) => {
+//       const rect = sliderContainer.getBoundingClientRect();
+//       const offsetX = e.clientX - rect.left;
+//       const relativeX = Math.min(Math.max(0, offsetX / rect.width), 1);
 
-      endTime = Math.min(videoDuration, relativeX * videoDuration);
-      endTime = Math.max(endTime, startTime + 1); // Ensure end > start
+//       endTime = Math.min(videoDuration, relativeX * videoDuration);
+//       endTime = Math.max(endTime, startTime + 1); // Ensure end > start
 
-      updateSlider();
-    };
+//       updateSlider();
+//     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
+//     document.addEventListener('mousemove', onMouseMove);
+//     document.addEventListener('mouseup', () => {
+//       isDragging = false;
 
-      document.removeEventListener('mousemove', onMouseMove);
-    }, { once: true });
-  });
-}
+//       document.removeEventListener('mousemove', onMouseMove);
+//     }, { once: true });
+//   });
+// }
 
 video.addEventListener('loadedmetadata', () => {
   videoDuration = video.duration;
