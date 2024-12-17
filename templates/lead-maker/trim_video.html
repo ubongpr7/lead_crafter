@@ -214,24 +214,20 @@
 
 
     function addSliderEvents() {
-      // Start dragging for sliderStart
       sliderStart.addEventListener('mousedown', (e) => {
         isDragging = true;
 
-        // Capture initial mouse position and startTime
         const rect = sliderContainer.getBoundingClientRect();
         initialMouseX = e.clientX; 
         initialStartTime = startTime;
 
         const onMouseMove = (e) => {
-          const deltaX = e.clientX - initialMouseX; // Calculate mouse movement
-          const rectWidth = rect.width; // Slider width in pixels
+          const deltaX = e.clientX - initialMouseX; 
+          const rectWidth = rect.width; 
 
-          // Calculate new startTime based on mouse movement
           const timeChange = (deltaX / rectWidth) * videoDuration; 
           let newStartTime = initialStartTime + timeChange;
 
-          // Clamp newStartTime within valid bounds
           newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
           startTime = newStartTime;
 
@@ -343,7 +339,7 @@
 
         const boundedStartPercent = Math.max(0, Math.min(100, startPercent));
         const boundedEndPercent = Math.max(0, Math.min(100, endPercent));
-
+        video.currentTime=startTime
         sliderStart.style.left = `${boundedStartPercent}%`;
         sliderEnd.style.left = `${boundedEndPercent}%`;
 
