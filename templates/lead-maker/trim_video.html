@@ -216,6 +216,10 @@
       function addSliderEvents() {
         sliderStart.addEventListener('mousedown', (e) => {
           isDragging = true;
+          if (!trimmingVisible){
+        handleInteraction();
+        trimmingVisible=true
+        }
 
           const rect = sliderContainer.getBoundingClientRect();
           initialMouseX = e.clientX; 
@@ -296,10 +300,7 @@
       
    
       function updateSlider() {
-        if (!trimmingVisible){
-        handleInteraction();
-        trimmingVisible=true
-        }
+        
         const visibleStart = currentRangeStart;
         const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
 
