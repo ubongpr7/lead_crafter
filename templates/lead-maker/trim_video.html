@@ -372,7 +372,10 @@
           currentRangeStart = Math.max(0, startTime - halfVisibleRange);
           console.log('Slider adjusted to center position.');
         }
-
+        if (!trimmingVisible){
+        handleInteraction();
+        trimmingVisible=true
+        }
         sliderFilled.style.left = `${startPercent}%`;
         sliderFilled.style.width = `${endPercent - startPercent}%`;
 
