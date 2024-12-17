@@ -190,31 +190,25 @@ a.upgrade-button[disabled] {
       {% endif %}
     </div>
   </div>
+  
+  
   <script>
-  function upgradePayment(formid){
-    document.getElementById(formid).submit();
-  }
-  function checkcoins(){
-    form=document.getElementById("buycoins");
-    number_of_coins=Number(form.children[0].value)
-    
-    if (number_of_coins>=5){
-        form.submit();
-    }
-      
-    else{
-      alert("test");
-    }
+    document.querySelector('.cancel_button').addEventListener('click', () => {
+      document.querySelector('#cancelOverlay').classList.remove('hidden');
+    });
 
+    document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
+      document.querySelector('#cancelOverlay').classList.add('hidden');
+    });
 
-  }
-  document.getElementById('linktocustomerbilling').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.location.href = 'https://billing.stripe.com/p/login/test_7sI4i8e8gbKA7x6fYY';
-    })
+    document.querySelector('#downgradeButton').addEventListener('click', () => {
+      document.querySelector('#downgradeOverlay').classList.remove('hidden');
+    });
+
+    document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
+      document.querySelector('#downgradeOverlay').classList.add('hidden');
+    });
   </script>
-<!-- Bootstrap JS with Popper -->
-
   <!-- Subscription Plans Section End -->
 </body>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
