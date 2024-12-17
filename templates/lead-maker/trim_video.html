@@ -378,7 +378,8 @@ function updateSlider() {
   sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
 
   // Update time displays
-  startTimeDisplay.textContent = formatTime(startTime);
+  startTimeDisplay.textContent = startTime;
+  // startTimeDisplay.textContent = formatTime(startTime);
   endTimeDisplay.textContent = formatTime(endTime);
 
   // Update the indicator
