@@ -14,6 +14,21 @@
     height: 30px;
     margin: 20px auto;
   }
+  .slider-indicator {
+  position: absolute;
+  top: -20px; /* Position slightly above the slider */
+  width: 1px;
+  height: 40px; /* Matches slider height */
+  background-color: #5f83ff; /* Indicator color */
+  z-index: 3;
+  color: #333;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 10px;
+  white-space: nowrap; /* Prevent text wrapping */
+  transform: translateX(-50%);
+  pointer-events: none; /* Ignore clicks */
+}
 
   .slider-track {
  position: absolute;
@@ -111,15 +126,23 @@
                 </video>
               </div>
             </figure>
-            
+<!--             
         <div class="slider-container">
           <div class="slider-track">
             <div class="slider-filled" id="slider-filled"></div>
           </div>
           <div class="slider-thumb" id="sliderStart"></div>
           <div class="slider-thumb end" style="display:none;" id="sliderEnd"></div>
+        </div> -->
+        <div class="slider-container">
+          <div class="slider-track">
+            <div class="slider-filled" id="slider-filled"></div>
+          </div>
+          <div class="slider-thumb" id="sliderStart"></div>
+          <div class="slider-thumb end" style="display:none;" id="sliderEnd"></div>
+          <div class="slider-indicator" id="sliderIndicator">0:00</div>
         </div>
-
+        
         <div>
           <p>Start Time: <span id="startTime">0</span>s</p>
           <p style="display:none;">End Time: <span id="endTime" >0</span>s</p>
@@ -174,6 +197,9 @@
       const trimButton = document.getElementById('trimButton');
       const trimmedVideo = document.getElementById('trimmedVideo');
       const undoBtn=document.getElementById('undo')
+      const sliderContainer = document.querySelector('.slider-container');
+      const sliderIndicator = document.getElementById('sliderIndicator');
+      let isDragging = false;
       let videoDuration = 0;
       let startPercent = 0;
       let endPercent = 100;
@@ -184,7 +210,9 @@ let startTime = 0;
 let endTime = 0; 
 let currentRangeStart = 0; 
 
-// Handle video metadata loaded
+sliderStart.addEventListener('mousedown', () => {
+  isDragging = true;
+});
 video.addEventListener("loadedmetadata", () => {
   videoDuration = video.duration; 
   endTime = videoDuration; 
@@ -194,7 +222,22 @@ video.addEventListener("loadedmetadata", () => {
 });
 
 
+document.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    const rect = sliderContainer.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
 
+    // Scale slider sensitivity (reduce movement speed)
+    const relativeX = Math.min(Math.max(0, mouseX / rect.width), 1);
+    startTime = relativeX * videoDuration;
+
+    updateSlider();
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
 startTimeInput.addEventListener("input", () => {
   const inputTime = parseFloat(startTimeInput.value);
   if (!isNaN(inputTime) && inputTime >= 0 && inputTime <= videoDuration) {
@@ -278,25 +321,51 @@ video.addEventListener('loadedmetadata', () => {
     //     errorDisplay.style.display = 'none';
     //   }
     // }
+// function updateSlider() {
+//   // Ensure visible range is within bounds
+//   const visibleStart = currentRangeStart;
+//   const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
+
+//   // Calculate percentages
+//   const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+//   const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+
+//   // Update slider positions
+//   sliderStart.style.left = `${startPercent}%`;
+//   sliderEnd.style.left = `${endPercent}%`;
+//   sliderFilled.style.left = `${startPercent}%`;
+//   sliderFilled.style.width = `${endPercent - startPercent}%`;
+
+//   // Update time display
+//   startTimeDisplay.textContent = startTime.toFixed(2);
+//   endTimeDisplay.textContent = endTime.toFixed(2);
+// }
+
 function updateSlider() {
-  // Ensure visible range is within bounds
-  const visibleStart = currentRangeStart;
-  const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
+  // Calculate position percentage
+  const startPercent = (startTime / videoDuration) * 100;
 
-  // Calculate percentages
-  const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
-  const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
-
-  // Update slider positions
+  // Update slider thumb position
   sliderStart.style.left = `${startPercent}%`;
-  sliderEnd.style.left = `${endPercent}%`;
-  sliderFilled.style.left = `${startPercent}%`;
-  sliderFilled.style.width = `${endPercent - startPercent}%`;
 
-  // Update time display
-  startTimeDisplay.textContent = startTime.toFixed(2);
-  endTimeDisplay.textContent = endTime.toFixed(2);
+  // Update filled slider area
+  sliderFilled.style.left = `0`;
+  sliderFilled.style.width = `${startPercent}%`;
+
+  // Update slider indicator position and time
+  sliderIndicator.style.left = `${startPercent}%`;
+  sliderIndicator.textContent = formatTime(startTime);
 }
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${minutes}:${secs.toString().padStart(2, '0')}`;
+}
+
+// // Initial call to position everything
+// updateSlider();
+
 document.addEventListener('mouseup', () => {
   const trimmedRange = endTime - startTime;
 
