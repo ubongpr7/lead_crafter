@@ -181,15 +181,14 @@
       let endPercent = 100;
       const proceedLink = document.getElementById('proceedWithoutTrimming');
       const actionContainer = document.getElementById('actionContainer');
-      const MAX_VISIBLE_RANGE = 10; // Max visible seconds on the slider
-let videoDuration = 0;
-let startTime = 0; // Current start time in seconds
-let endTime = 0; // Current end time in seconds
+      const MAX_VISIBLE_RANGE = 10; 
+let startTime = 0; 
+let endTime = 0; 
 
 // Handle video metadata loaded
 video.addEventListener("loadedmetadata", () => {
-  videoDuration = video.duration; // Get total video duration
-  endTime = videoDuration; // Default end time is full duration
+  videoDuration = video.duration; 
+  endTime = videoDuration; 
   startTimeInput.value = startTime.toFixed(2);
   endTimeInput.value = endTime.toFixed(2);
   updateSlider();
