@@ -211,66 +211,67 @@
       let currentRangeStart = 0; 
       let initialMouseX = 0; 
       let initialStartTime = 0;
-      const SENSITIVITY_FACTOR = 50;
+      let SENSITIVITY_FACTOR = 50;
 
-function addSliderEvents() {
-  sliderStart.addEventListener('mousedown', (e) => {
-    isDragging = true;
+      function addSliderEvents() {
+        sliderStart.addEventListener('mousedown', (e) => {
+          isDragging = true;
 
-    const rect = sliderContainer.getBoundingClientRect();
-    initialMouseX = e.clientX; 
-    initialStartTime = startTime;
+          const rect = sliderContainer.getBoundingClientRect();
+          initialMouseX = e.clientX; 
+          initialStartTime = startTime;
 
-    const onMouseMove = (e) => {
-      const deltaX = e.clientX - initialMouseX; // Mouse movement
-      const rectWidth = rect.width;
+          const onMouseMove = (e) => {
+            const deltaX = e.clientX - initialMouseX; // Mouse movement
+            const rectWidth = rect.width;
 
-      // Scale sensitivity based on video duration
-      const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+            // Scale sensitivity based on video duration
+            const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
 
-      let newStartTime = initialStartTime + timeChange;
-      newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
+            let newStartTime = initialStartTime + timeChange;
+            newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
 
-      startTime = newStartTime; 
-      video.currentTime = startTime;
-      updateSlider();
-    };
+            startTime = newStartTime; 
+            video.currentTime = startTime;
+            updateSlider();
+          };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      document.removeEventListener('mousemove', onMouseMove);
-    }, { once: true });
-  });
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+          }, { once: true });
+        });
 
-  sliderEnd.addEventListener('mousedown', (e) => {
-    isDragging = true;
+        sliderEnd.addEventListener('mousedown', (e) => {
+          isDragging = true;
 
-    const rect = sliderContainer.getBoundingClientRect();
-    initialMouseX = e.clientX; 
-    let initialEndTime = endTime;
+          const rect = sliderContainer.getBoundingClientRect();
+          initialMouseX = e.clientX; 
+          let initialEndTime = endTime;
 
-    const onMouseMove = (e) => {
-      const deltaX = e.clientX - initialMouseX;
-      const rectWidth = rect.width;
+          const onMouseMove = (e) => {
+            const deltaX = e.clientX - initialMouseX;
+            const rectWidth = rect.width;
 
-      // Scale sensitivity
-      const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+            // Scale sensitivity
+            const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
 
-      let newEndTime = initialEndTime + timeChange;
-      newEndTime = Math.min(videoDuration, Math.max(newEndTime, startTime + 1));
+            let newEndTime = initialEndTime + timeChange;
+            newEndTime = Math.min(videoDuration, Math.max(newEndTime, startTime + 1));
 
-      endTime = newEndTime;
-      updateSlider();
-    };
+            endTime = newEndTime;
+            updateSlider();
+          };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      document.removeEventListener('mousemove', onMouseMove);
-    }, { once: true });
-  });
-}
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+          }, { once: true });
+        });
+      }
+            
       function handleInteraction() {
               proceedLink.style.display = 'none'; 
               document.getElementById('undo').style.display = 'inline-block';
@@ -313,7 +314,6 @@ function addSliderEvents() {
         startTimeDisplay.textContent = startTime.toFixed(4);
         startTimeInput.value = startTime.toFixed(4);
 
-        // startTimeDisplay.textContent = formatTime(startTime);
         endTimeDisplay.textContent = formatTime(endTime);
 
         sliderIndicator.style.left = `${boundedStartPercent}%`;
@@ -379,9 +379,22 @@ function addSliderEvents() {
 video.addEventListener('loadedmetadata', () => {
   videoDuration = video.duration;
   endTime = videoDuration;
+  SENSITIVITY_FACTOR = 0.01 * videoDuration; 
 
   updateSlider();
 });
+document.addEventListener('mouseup', () => {
+  const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
+
+  if (startTime > halfVisibleRange) {
+    currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+  } else {
+    currentRangeStart = 0;
+  }
+
+  updateSlider();
+});
+
 
 addSliderEvents();
 
