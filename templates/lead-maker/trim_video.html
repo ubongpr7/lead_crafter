@@ -232,6 +232,29 @@
         });
       }
       
+      // function updateSlider() {
+      //   const visibleStart = currentRangeStart;
+      //   const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
+
+      //   const startPercent = ((startTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+      //   const endPercent = ((endTime - visibleStart) / (visibleEnd - visibleStart)) * 100;
+
+      //   const boundedStartPercent = Math.max(0, Math.min(100, startPercent));
+      //   const boundedEndPercent = Math.max(0, Math.min(100, endPercent));
+
+      //   sliderStart.style.left = `${boundedStartPercent}%`;
+      //   sliderEnd.style.left = `${boundedEndPercent}%`;
+
+      //   sliderFilled.style.left = `${boundedStartPercent}%`;
+      //   sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
+
+      //   startTimeDisplay.textContent = startTime;
+      //   endTimeDisplay.textContent = formatTime(endTime);
+
+      //   sliderIndicator.style.left = `${boundedStartPercent}%`;
+      //   sliderIndicator.textContent = formatTime(startTime);
+      // }
+
       function updateSlider() {
         const visibleStart = currentRangeStart;
         const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
@@ -248,75 +271,64 @@
         sliderFilled.style.left = `${boundedStartPercent}%`;
         sliderFilled.style.width = `${boundedEndPercent - boundedStartPercent}%`;
 
-        startTimeDisplay.textContent = startTime;
+        startTimeDisplay.textContent = formatTime(startTime);
         endTimeDisplay.textContent = formatTime(endTime);
 
         sliderIndicator.style.left = `${boundedStartPercent}%`;
         sliderIndicator.textContent = formatTime(startTime);
       }
-
       function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${minutes}:${secs.toString().padStart(2, '0')}`;
       }
 
-      function moveSlider(e, thumb) {
-        const rect = thumb.parentNode.getBoundingClientRect();
-        const offsetX = e.clientX - rect.left;
-
-        // Calculate percentage relative to slider container width
-        const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
-
-        // Map percent to visible range (currentRangeStart to visibleEnd)
-        const visibleStart = currentRangeStart;
-        const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
-        const durationInVisibleRange = visibleEnd - visibleStart;
-
-        const newTime = visibleStart + (percent / 100) * durationInVisibleRange;
-
-        // Move the slider thumbs while maintaining constraints
-        if (thumb === sliderStart && newTime < endTime) {
-          startTime = newTime;
-          startTimeInput.value = startTime.toFixed(2); // Update input
-          video.currentTime = startTime; // Move video currentTime to startTime
-        } else if (thumb === sliderEnd && newTime > startTime) {
-          endTime = newTime;
-          endTimeInput.value = endTime.toFixed(2); // Update input
-          video.currentTime = endTime; // Move video currentTime to endTime
-        } else {
-          return; // Invalid move, do nothing
-        }
-
-        // Call updateSlider to re-render positions
-        updateSlider();
-      }
-     
       // function moveSlider(e, thumb) {
       //   const rect = thumb.parentNode.getBoundingClientRect();
       //   const offsetX = e.clientX - rect.left;
+
+      //   // Calculate percentage relative to slider container width
       //   const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
 
-      //   if (thumb === sliderStart) {
-      //     startPercent = percent;
-      //     startTime = (startPercent / 100) * videoDuration;
+      //   // Map percent to visible range (currentRangeStart to visibleEnd)
+      //   const visibleStart = currentRangeStart;
+      //   const visibleEnd = Math.min(videoDuration, currentRangeStart + MAX_VISIBLE_RANGE);
+      //   const durationInVisibleRange = visibleEnd - visibleStart;
 
-      //     if (startTime > endTime) {
-      //       endTime = startTime;
-      //       endPercent = startPercent;
-      //     }
-      //   } else if (thumb === sliderEnd) {
-      //     endPercent = percent;
-      //     endTime = (endPercent / 100) * videoDuration;
+      //   const newTime = visibleStart + (percent / 100) * durationInVisibleRange;
 
-      //     if (endTime < startTime) {
-      //       startTime = endTime;
-      //       startPercent = endPercent;
-      //     }
+      //   // Move the slider thumbs while maintaining constraints
+      //   if (thumb === sliderStart && newTime < endTime) {
+      //     startTime = newTime;
+      //     startTimeInput.value = startTime.toFixed(2); // Update input
+      //     video.currentTime = startTime; // Move video currentTime to startTime
+      //   } else if (thumb === sliderEnd && newTime > startTime) {
+      //     endTime = newTime;
+      //     endTimeInput.value = endTime.toFixed(2); // Update input
+      //     video.currentTime = endTime; // Move video currentTime to endTime
+      //   } else {
+      //     return; // Invalid move, do nothing
       //   }
 
+      //   // Call updateSlider to re-render positions
       //   updateSlider();
       // }
+      
+      function moveSlider(e, thumb) {
+        const rect = thumb.parentNode.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
+
+        if (thumb === sliderStart) {
+          startPercent = percent;
+          startTime = (startPercent / 100) * videoDuration;
+        } else if (thumb === sliderEnd) {
+          endPercent = percent;
+          endTime = (endPercent / 100) * videoDuration;
+        }
+
+        updateSlider();
+      }
 
       function removeTrimming() {
         startPercent = 0;
@@ -332,17 +344,28 @@
 
         video.currentTime = 0;
     }
-    function addSliderReleaseEvents() {
-    document.addEventListener('mouseup', () => {
-      sliderFilled.style.left = `${startPercent}%`;
-      sliderFilled.style.width = `${endPercent - startPercent}%`;
+    function handleSliderRelease() {
+      document.addEventListener('mouseup', () => {
+        const halfVisibleRange = MAX_VISIBLE_RANGE / 2;
 
-      console.log(`Slider reset: Start = ${startTime}s, End = ${endTime}s`);
+        if (startTime < halfVisibleRange) {
+          console.log('Slider remains where the user stopped.');
+        } else {
+          currentRangeStart = Math.max(0, startTime - halfVisibleRange);
+          console.log('Slider adjusted to center position.');
+        }
+
+        sliderFilled.style.left = `${startPercent}%`;
+        sliderFilled.style.width = `${endPercent - startPercent}%`;
+
+        console.log(`Slider reset: Start = ${startTime}s, End = ${endTime}s`);
+
+        updateSlider();
       });
     }
 
       enforceStartTime(video);
-      addSliderReleaseEvents();
+      handleSliderRelease();
       sliderStart.addEventListener('mousedown', () => {
         isDragging = true;
       });
