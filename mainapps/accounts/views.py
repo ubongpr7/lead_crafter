@@ -156,7 +156,7 @@ def register(request):
             user.save()
 
             send_html_email2(
-                subject="Welcome to VideoCrafter.io – Verify Your Email To Continue",
+                subject="Welcome to LeadEditor.io – Verify Your Email To Continue",
                 message=None,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to_email=user.email,
@@ -218,7 +218,7 @@ def register(request):
                     )
 
                 send_html_email2(
-                    subject="Welcome to VideoCrafter.io",
+                    subject="Welcome to LeadEditor.io",
                     message=None,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     to_email=user.email,
