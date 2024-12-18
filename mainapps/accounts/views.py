@@ -266,7 +266,7 @@ def register(request):
                         user=user, stripe_customer_id=stripe_customer_id
                     )
                     new_customer.save()
-
+                    customer=new_customer
                     customer_id = new_customer.id
 
                 try:
@@ -274,7 +274,7 @@ def register(request):
                     subscription = Subscription.objects.create(
                     plan=plan,
                     credits=plan.vsl_limit,
-                    customer=new_customer,
+                    customer=customer,
                     stripe_subscription_id=subscription_id,
                     )   
                     user.subscription = subscription
@@ -500,15 +500,16 @@ def manage_subscription(request):
                         user=user, stripe_customer_id=stripe_customer_id
                     )
                     new_customer.save()
-
+                    customer=new_customer
                     customer_id = new_customer.id
+                
 
                 try:
 
                     subscription = Subscription.objects.create(
                     plan=plan,
                     credits=plan.vsl_limit,
-                    customer=new_customer,
+                    customer=customer,
                     stripe_subscription_id=subscription_id,
                     )   
                     user.subscription = subscription
