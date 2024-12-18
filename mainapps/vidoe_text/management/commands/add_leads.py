@@ -61,13 +61,28 @@ import subprocess
 
 base_path = settings.MEDIA_ROOT
 
-# Predefined resolutions
 RESOLUTIONS = {
-    "1:1": (480, 480),
-    "16:9": (1920, 1080),
-    "4:5": (800, 1000),
-    "9:16": (1080, 1920),
+    "1:1": (480, 480),  # Square video
+    "4:5": (800, 1000),  # Common social media format
+    "16:9": (1920, 1080),  # Full HD (1080p)
+    "9:16": (1080, 1920),  # Vertical video (social media, mobile)
+    "21:9": (2560, 1080),  # Ultra-wide HD
+    "18:9": (1440, 720),  # Mobile phone aspect ratio
+    "3:2": (720, 480),  # DSLR cameras
+    "2:3": (480, 720),  # Rotated 3:2
+    "4:3": (1024, 768),  # Old monitors, TVs
+    "3:4": (768, 1024),  # Portrait 4:3
+    "5:4": (1280, 1024),  # Old square-like monitors
+    "32:9": (5120, 1440),  # Super ultra-wide monitors
+    "32:10": (3840, 1200),  # Rare ultra-wide resolution
+    "17:9": (2048, 1080),  # DCI 2K format
+    "5:3": (1280, 768),  # Rare widescreen aspect ratio
+    "14:9": (700, 450),  # Transitional broadcasting ratio
+    "2.39:1": (2560, 1070),  # Cinematic widescreen
+    "2.35:1": (1920, 817),  # Cinematic widescreen
+    "1.85:1": (1920, 1038),  # Widescreen cinema standard
 }
+
 
 # Suppress specific Pydantic warnings
 warnings.filterwarnings(
@@ -152,8 +167,37 @@ def parse_s3_url(s3_url):
     bucket_name, key = s3_url.split("/", 1)
     return bucket_name, key
 
+aspect_ratios_list = [
+    "1:1", "4:5", "16:9", "9:16", "21:9", "18:9", "3:2", "2:3", 
+    "4:3", "3:4", "5:4", "4:5", "32:9", "32:10", "17:9", 
+    "11:8", "5:3", "3:5", "14:9", "2.39:1", "2.35:1", "1.85:1"
+]
 
-MAINRESOLUTIONS = {"1:1": 1 / 1, "16:9": 16 / 9, "4:5": 4 / 5, "9:16": 9 / 16}
+MAINRESOLUTIONS = {
+    "1:1": 1,
+    "4:5": 4/5,
+    "16:9": 16/9,
+    "9:16": 9/16,
+    "21:9": 21/9,
+    "18:9": 18/9,
+    "3:2": 3/2,
+    "2:3": 2/3,
+    "4:3": 4/3,
+    "3:4": 3/4,
+    "5:4": 5/4,
+    "4:5": 4/5,
+    "32:9": 32/9,
+    "32:10": 32/10,
+    "17:9": 17/9,
+    "11:8": 11/8,
+    "5:3": 5/3,
+    "3:5": 3/5,
+    "14:9": 14/9,
+    "2.39:1": 2.39,  
+    "2.35:1": 2.35,  
+    "1.85:1": 1.85,  
+}
+
 s3_client = boto3.client("s3")
 
 timestamp = int(time.time())
