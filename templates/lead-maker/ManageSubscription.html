@@ -299,7 +299,7 @@ a.upgrade-button[disabled] {
         Are you sure you want to cancel your subscription?
       </p>
       <div class="cancel-sub-choices">
-        <button class="cancel_button" id="cancelSubPopupNoBtn" type="button">No</button>
+        <button  id="cancelSubPopupNoBtn" type="button">No</button>
         <a href="{% url 'accounts:cancel_subscription' %}">Yes</a>
       </div>
     </div>
@@ -312,7 +312,7 @@ a.upgrade-button[disabled] {
         Are you sure you want to downgrade your subscription?
       </p>
       <div class="cancel-sub-choices">
-        <button id="downgradeSubPopupNoBtn"class="cancel_button" type="button">No</button>
+        <button id="downgradeSubPopupNoBtn" type="button">No</button>
         <a href="{% url 'accounts:downgrade_subscription' %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Yes</a>
       </div>
     </div>
