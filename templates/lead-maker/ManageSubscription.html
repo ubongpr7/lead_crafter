@@ -295,7 +295,7 @@ a.upgrade-button[disabled] {
       <p id="p"><i class="fa-solid fa-check"></i>{{ plans.0.vsl_limit }} leads per month</p>
       {% if cur_plan.name|lower == 'pro' %}
       
-      <button class="cancel_button">Current Subscription</button>
+      <button class="cancel_button">Cancel Subscription</button>
       {% elif cur_plan.name|lower == 'free' %}
       <a class="upgrade-button" href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
       {%else %}
