@@ -467,7 +467,7 @@ def subscribe(request, price_id):
 
 @login_required
 def manage_subscription(request):
-    if request.GETget('session_id'):
+    if request.GET.get('session_id'):
         checkout_session_id = request.GET.get("session_id")
         if checkout_session_id and request.user.is_authenticated:
             user= request.user
