@@ -125,7 +125,7 @@
       cursor: pointer;
       font-size: 17px;
       border-radius: 10px;
-      background-color:none;
+      background-color:#fff;
       /* padding: 13px 25px; */
       text-decoration: none;
       border: 2px solid #000000;
@@ -211,7 +211,7 @@ a.upgrade-button[disabled] {
           {% else %}
           
                     <div class="credit-score">
-                      <span>Credits Remaining: </span> <span>{{ user.subscription.credit }}</span><span style="margin-left: 10px;margin-right: 10px;"> | </span>
+                      <span>Credits Remaining: </span> <span>{{ user.subscription.credits }}</span><span style="margin-left: 10px;margin-right: 10px;"> | </span>
                     </div>
           {% endif %}
           
