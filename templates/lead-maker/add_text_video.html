@@ -401,7 +401,7 @@ document.getElementById('videoFile').addEventListener('change', function(event) 
         const aspectRatio = width / height;
 
         // Common aspect ratios
-        const  ratios  = {
+    const  ratios  = {
     "1:1": 1,
     "4:5": 4/5,
     "16:9": 16/9,
@@ -425,7 +425,7 @@ document.getElementById('videoFile').addEventListener('change', function(event) 
     "2.35:1": 2.35,
     "1.85:1": 1.85,
 };
-
+console.log('this is the aspect ratio ',aspectRatio)
 
         let matchedRatio = 'Unknown';
 
