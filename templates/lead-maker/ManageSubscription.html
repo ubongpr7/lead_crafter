@@ -270,7 +270,8 @@ a.upgrade-button[disabled] {
         <p class="cr">Buy More Credits</p>
         <p class="dollar">${{ cur_plan.price_per_vsl }} Each</p>
         <form id="buycoins" method="POST" action="{% url 'accounts:add_credits' %}">
-        <input type="text" name="credits_number" id="credit" placeholder="Enter the amount of credits" />
+          {% csrf_token %}
+        <input type="number" min="1" name="credits_number" id="credit" placeholder="Enter the amount of credits" />
         <button >Buy</button>
         </form>
       </div>
