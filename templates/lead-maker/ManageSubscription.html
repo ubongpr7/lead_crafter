@@ -265,6 +265,7 @@ a.upgrade-button[disabled] {
     </p>
 
   </div>
+
     <div class="credit-box">
       <div class="box-cont">
         <p class="cr">Buy More Credits</p>
@@ -272,7 +273,7 @@ a.upgrade-button[disabled] {
         <form id="buycoins" method="POST" action="{% url 'accounts:add_credits' %}">
           {% csrf_token %}
         <input type="number" min="1" name="credits_number" id="credit" placeholder="Enter the amount of credits" />
-        <button >Buy</button>
+        <button {% if cur_plan.name|lower == 'free' %}disabled{% endif %} >Buy</button>
         </form>
       </div>
     </div>
