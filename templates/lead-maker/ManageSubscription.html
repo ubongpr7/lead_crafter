@@ -28,6 +28,104 @@
   <link rel="stylesheet" type="text/css" href="{% static 'lead-maker/css/leadmaker.css'%}" media="screen" />
   <link rel="stylesheet" type="text/css" href="{% static 'lead-maker/css/Responsivemanage.css'%}" media="screen" />
   <style>
+    a {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    
+    .cancel-sub-overlay {
+      position: fixed;
+      background-color: #00000077;
+      z-index: 99999;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cancel-sub-popup {
+      width: 27%;
+      background-color: #ffffff;
+      padding: 32px 32px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    .cancel-sub-heading {
+      color: #0e44ff;
+      font-size: 20px;
+      margin-bottom: 35px;
+    }
+
+    .cancel-sub-msg {
+      font-size: 17px;
+      margin-bottom: 35px;
+    }
+
+    .cancel-sub-choices {
+      display: flex;
+      justify-content: space-between;
+      width: 50%;
+      margin: 0 auto;
+    }
+
+    .cancel-sub-choices button {
+      border: 2px solid #893bff;
+      background-color: #893bff;
+      border-radius: 10px;
+      padding: 13px 25px;
+      cursor: pointer;
+      font-size: 17px;
+      transition: all ease-out 0.2s;
+      display: block;
+      color: #ffffff;
+    }
+
+    .cancel-sub-choices a {
+      transition: all ease-out 0.2s;
+      display: block;
+      cursor: pointer;
+      font-size: 17px;
+      border-radius: 10px;
+      padding: 13px 25px;
+      text-decoration: none;
+      border: 2px solid #000000;
+    }
+
+    .cancel-sub-choices a:hover {
+      border: 2px solid #893bff;
+      background-color: #893bff;
+      color: #ffffff;
+    }
+
+    .cancel-sub-choices button:hover {
+      background-color: #5f12d1;
+      border: 2px solid #5f12d1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 1356px) {
+      .plans {
+       
+        grid-template-columns: 1fr;
+        
+      }
+  }
+
+
+    
+  </style>
+
+  <style>
 a.upgrade-button {
     display: inline-block;
     padding: 15px 30px;
