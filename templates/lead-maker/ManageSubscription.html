@@ -192,6 +192,32 @@ a.upgrade-button[disabled] {
   </div>
   
   
+  <div class="cancel-sub-overlay hidden" id="cancelOverlay">
+    <div class="cancel-sub-popup">
+      <p class="cancel-sub-heading">Cancel Subscription?</p>
+      <p class="cancel-sub-msg">
+        Are you sure you want to cancel your subscription?
+      </p>
+      <div class="cancel-sub-choices">
+        <button id="cancelSubPopupNoBtn" type="button">No</button>
+        <a href="{% url 'accounts:cancel_subscription' %}">Yes</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cancel-sub-overlay hidden" id="downgradeOverlay">
+    <div class="cancel-sub-popup">
+      <p class="cancel-sub-heading">Downgrade Subscription?</p>
+      <p class="cancel-sub-msg">
+        Are you sure you want to downgrade your subscription?
+      </p>
+      <div class="cancel-sub-choices">
+        <button id="downgradeSubPopupNoBtn" type="button">No</button>
+        <a href="{% url 'accounts:downgrade_subscription' %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Yes</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     document.querySelector('.cancel_button').addEventListener('click', () => {
       document.querySelector('#cancelOverlay').classList.remove('hidden');
