@@ -269,7 +269,7 @@
                 <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}/?bg_music=false"
                    class="p-button"
                    style="text-decoration: none">Get Started</a>
-                   {%else}
+                   {%else %}
                    <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}/?bg_music=false"
                       class="p-button"
                       style="text-decoration: none">Get Started</a>
