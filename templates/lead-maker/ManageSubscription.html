@@ -29,122 +29,99 @@
   <link rel="stylesheet" type="text/css" href="{% static 'lead-maker/css/Responsivemanage.css'%}" media="screen" />
   <style>
     
-    
     .cancel-sub-overlay {
-        position: fixed;
-        background-color: #00000077;
-        z-index: 99999;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
 
-    a {
+.cancel-sub-popup {
+  width: 90%;
+  max-width: 400px; /* Restrict popup width */
+  background-color: #ffffff;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+  border-radius: 12px; /* Softer border radius */
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out; /* Smooth popup appearance */
+}
 
-      text-decoration: none;
-      color: #000000;
-    }
-    /* .cancel-sub-overlay{
-  position: fixed; 
-  top: 50%; 
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  z-index: 1000; 
-  background-color: white; 
-  padding: 20px; 
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width:100%;
-  text-transform: capitalize;
-  max-width: 400px; 
-} */
+.cancel-sub-heading {
+  color: #0e44ff;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 
-    
-     .cancel-sub-overlay {
-      position: absolute;
-      background-color: #00000077;
-      height:100vh;
-      z-index: 99999;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.cancel-sub-msg {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 25px;
+  line-height: 1.5; /* Better readability */
+}
 
-    .cancel-sub-popup {
-      width: 27%;
-      background-color: #ffffff;
-      padding: 32px 32px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      text-align: center;
-      text-transform: capitalize;
-    }
+.cancel-sub-choices {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: center;
+}
 
-    .cancel-sub-heading {
-      color: #0e44ff;
-      font-size: 20px;
-      margin-bottom: 35px;
-    }
+.cancel-sub-choices button,
+.cancel-sub-choices a {
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
 
-    .cancel-sub-msg {
-      font-size: 17px;
-      margin-bottom: 35px;
-    }
+.cancel-sub-choices button {
+  background-color: #0e44ff;
+  color: #ffffff;
+  border: 2px solid #0e44ff;
+}
 
-    .cancel-sub-choices {
-      display: flex;
-      justify-content: space-between;
-      width: 50%;
-      /* padding:30px; */
-      margin: 0 auto;
-    }
+.cancel-sub-choices button:hover {
+  background-color: #ffffff;
+  color: #0e44ff;
+  border-color: #0e44ff;
+}
 
-    .cancel-sub-choices button,.cancel-sub-choices a {
-      border: 2px solid #0e44ff;
-      background-color: #0e44ff;
-      border-radius: 10px;
-      padding: 13px 25px;
-      margin:20px;
-      cursor: pointer;
-      font-size: 17px;
-      transition: all ease-out 0.2s;
-      display: block;
-      color: #ffffff;
-    }
-    .cancel-sub-choices a {
-      transition: all ease-out 0.2s;
-      display: block;
-      cursor: pointer;
-      font-size: 17px;
-      border-radius: 10px;
-      background-color:#fff;
-      /* padding: 13px 25px; */
-      text-decoration: none;
-      border: 2px solid #000000;
-    }
+.cancel-sub-choices a {
+  background-color: #ffffff;
+  color: #0e44ff;
+  border: 2px solid #0e44ff;
+  text-decoration: none;
+}
 
-    .cancel-sub-choices a:hover {
-      border: 2px solid #0e44ff;
-      background-color: #0e44ff;
-      color: #ffffff;
-    }
+.cancel-sub-choices a:hover {
+  background-color: #0e44ff;
+  color: #ffffff;
+  border-color: #0e44ff;
+}
 
-    .cancel-sub-choices button:hover {
-      background-color: #0e44ff;
-      border: 2px solid #0e44ff;
-    }
-
-    .hidden {
-      display: none;
-    }
+/* Popup animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
     @media (max-width: 1356px) {
       .plans {
