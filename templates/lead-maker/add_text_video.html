@@ -199,10 +199,109 @@ font_select.addEventListener('change',(e)=>{
 })
 
 
-function validateAPIKey(event) {
-  startProcessingAnimation('#button-text'); 
+// function validateAPIKey(event) {
+//   startProcessingAnimation('#button-text'); 
 
-  event.preventDefault(); 
+//   event.preventDefault(); 
+
+//   const apiKey = apiKeyInput.val().trim();
+//   const voiceId = voiceIdInput.val().trim();
+//   const font_ = font_select.files[0];
+//   const videoFile = videoInput.files[0];
+
+//   apiKeyError.text('');
+//   voiceIdError.text('');
+//   font_error.text('');
+//   videoErrorTxt.text('');
+
+//   let formValid = true
+
+//   if (!videoFile){
+//     videoInput.focus()
+//     videoErrorTxt.text('Please Upload a input video file');
+//     formValid = false
+//   }
+  
+
+
+
+//   if (!apiKey) {
+//     apiKeyInput.focus();
+//     apiKeyError.text('API key is required.');
+//     formValid = false
+//   } 
+  
+//   if (!voiceId) {
+//     voiceIdInput.focus();
+    
+//     voiceIdError.text('Voice ID is required.');
+//     formValid = false
+    
+//   }
+
+//   if(apiKey || voiceId){
+//     $.ajax({
+//       url: '/text/validate_api_key/',
+//       type: 'POST',
+//       data: {
+//         'eleven_labs_api_key': apiKey,
+//         'voice_id': voiceId,
+//         'csrfmiddlewaretoken': '{{ csrf_token }}' 
+//       },
+//       success: function(response) {
+//         console.log(response); 
+
+//         if (!response.valid) {
+//           formValid = false
+//           if (response.error.includes('API key')) {
+//             apiKeyInput.focus();
+//             apiKeyError.text(response.error);
+//           } else if (response.error.includes('Voice')) {
+//             voiceIdInput.focus();
+//             voiceIdError.text(response.error);
+//           } else {
+//             apiKeyInput.focus();
+//             apiKeyError.text(response.error); 
+//           }
+//         }
+//       },
+//       error: function(xhr, status, error) {
+//         formValid = false
+//         console.log("Error Status: ", status); // Log error status
+//         console.log("Error: ", error); // Log error message
+//         apiKeyError.text('Error validating the API key.');
+//         apiKeyInput.focus();
+//       }
+//     });
+//   }
+  
+//   if (!font_) {
+//     font_select.required = true;
+//     font_select.focus();
+//     font_error.text('Please Upload a font file');
+//     formValid = false
+//   }
+
+ 
+
+
+
+//   if (formValid) {
+
+//     console.log('form is valid now submit will happen');
+//     text_form.submit();
+
+// }else{
+//   stopProcessingAnimation('#button-text');
+// }
+// }
+// text_form.addEventListener('submit', validateAPIKey);
+
+
+function validateAPIKey(event) {
+  startProcessingAnimation('#button-text');
+
+  event.preventDefault();
 
   const apiKey = apiKeyInput.val().trim();
   const voiceId = voiceIdInput.val().trim();
@@ -214,45 +313,50 @@ function validateAPIKey(event) {
   font_error.text('');
   videoErrorTxt.text('');
 
-  let formValid = true
+  let formValid = true;
+  let apiKeyValid = false; // Separate variable to track API key validation
 
-  if (!videoFile){
-    videoInput.focus()
-    videoErrorTxt.text('Please Upload a input video file');
-    formValid = false
+  if (!videoFile) {
+    videoInput.focus();
+    videoErrorTxt.text('Please Upload an input video file');
+    formValid = false;
   }
-  
-
-
 
   if (!apiKey) {
     apiKeyInput.focus();
     apiKeyError.text('API key is required.');
-    formValid = false
-  } 
-  
-  if (!voiceId) {
-    voiceIdInput.focus();
-    
-    voiceIdError.text('Voice ID is required.');
-    formValid = false
-    
+    formValid = false;
   }
 
-  if(apiKey || voiceId){
+  if (!voiceId) {
+    voiceIdInput.focus();
+    voiceIdError.text('Voice ID is required.');
+    formValid = false;
+  }
+
+  if (!font_) {
+    font_select.required = true;
+    font_select.focus();
+    font_error.text('Please Upload a font file');
+    formValid = false;
+  }
+
+  // Only proceed with AJAX validation if basic form fields are valid
+  if (formValid) {
     $.ajax({
       url: '/text/validate_api_key/',
       type: 'POST',
+      async: false, // Use synchronous behavior (deprecated in modern browsers)
       data: {
         'eleven_labs_api_key': apiKey,
         'voice_id': voiceId,
-        'csrfmiddlewaretoken': '{{ csrf_token }}' 
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
       },
-      success: function(response) {
-        console.log(response); 
-
-        if (!response.valid) {
-          formValid = false
+      success: function (response) {
+        if (response.valid) {
+          apiKeyValid = true; // Mark API key as valid
+        } else {
+          formValid = false;
           if (response.error.includes('API key')) {
             apiKeyInput.focus();
             apiKeyError.text(response.error);
@@ -261,42 +365,27 @@ function validateAPIKey(event) {
             voiceIdError.text(response.error);
           } else {
             apiKeyInput.focus();
-            apiKeyError.text(response.error); 
+            apiKeyError.text(response.error);
           }
         }
       },
-      error: function(xhr, status, error) {
-        formValid = false
-        console.log("Error Status: ", status); // Log error status
-        console.log("Error: ", error); // Log error message
+      error: function (xhr, status, error) {
+        formValid = false;
         apiKeyError.text('Error validating the API key.');
         apiKeyInput.focus();
-      }
+      },
     });
   }
-  
-  if (!font_) {
-    font_select.required = true;
-    font_select.focus();
-    font_error.text('Please Upload a font file');
-    formValid = false
-  }
 
- 
-
-
-
-  if (formValid) {
-
-    console.log('form is valid now submit will happen');
+  if (formValid && apiKeyValid) {
+    console.log('Form is valid, now submit will happen');
     text_form.submit();
+  } else {
+    stopProcessingAnimation('#button-text');
+  }
+}
 
-}else{
-  stopProcessingAnimation('#button-text');
-}
-}
 text_form.addEventListener('submit', validateAPIKey);
-
 
 function updateFont(currentSize){
   const minFontSize = 12; // minimum font size
