@@ -190,7 +190,7 @@ a.upgrade-button[disabled] {
           <a href="/"><img src="{% static 'lead-maker/images/logo.svg'%}" alt="VSL Logo" /></a>
         </div>
         <div class="header-profile">
-          {% if   cur_plan.name|lower == 'free' and  request.user.subscription.credits < 2 %}
+          {% if   cur_plan.name|lower == 'free' %}
           <div class="credit-score">
             <span>Free Trial </span> <span>| </span>
           </div>
@@ -225,7 +225,7 @@ a.upgrade-button[disabled] {
       </div>
       <div class="plan subs">
         <p class="cr-text">Subscription Status</p>
-        {% if cur_plan.name|lower == 'free' %}
+        {% if cur_plan.name|lower == 'free' or cur_plan.name|lower == 'cancelled' %}
         <p class="notact">Not Active </p>
         {% else %}
         <p class="act">Active</p>
@@ -235,7 +235,7 @@ a.upgrade-button[disabled] {
       <div class="credit">
         <p class="cr-usage">Credit Usage</p>
         <div class="credit-text">
-          {% if   cur_plan.name|lower == 'free' %}
+          {% if   cur_plan.name|lower == 'free' or  cur_plan.name|lower == 'cancelled' %}
           <p>You currently do not have an active plan.</p>
           <p>Unused credits will expire in  {{days_left}} Days </p>
           {%else%}
@@ -265,7 +265,7 @@ a.upgrade-button[disabled] {
         <form id="buycoins" method="POST" action="{% url 'accounts:add_credits' %}">
           {% csrf_token %}
         <input type="number" min="1" name="credits_number" id="credit" placeholder="Enter the amount of credits" />
-        <button {% if cur_plan.name|lower == 'free' %}disabled{% endif %} >Buy</button>
+        <button {% if cur_plan.name|lower == 'free' or  cur_plan.name|lower == 'cancelled' %}disabled{% endif %} >Buy</button>
         </form>
       </div>
     </div>
@@ -289,7 +289,7 @@ a.upgrade-button[disabled] {
       {% if cur_plan.name|lower == 'pro' %}
       
       <button class="cancel_button">Cancel Subscription</button>
-      {% elif cur_plan.name|lower == 'free' %}
+      {% elif cur_plan.name|lower == 'free' or  cur_plan.name|lower == 'cancelled' %}
       <a class="upgrade-button" href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription">Upgrade Subscription</a>
       {%else %}
       <button type="button" id="downgradeButton">Downgrade Subscription</button>

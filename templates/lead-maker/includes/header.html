@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div class="header-profile">
-            {% if user.stripe_subscription_id != '' %}
+            {% if user.user.subscription.plan.name|lower != 'free' %}
                 <div class="credit-score">
                     <span>Credits Remaining: </span> <span>{{ user.subscription.credits }}</span>
                 </div>
@@ -50,7 +50,7 @@
                                 <div class="profile-nav-right">
                                     <span class="count" style="color:#000;font-weight: 500;">{{ user.subscription.credits }} </span>
                                 </div>
-                                  {% if request.user.subscription.plan.name|lower == 'free' and  request.user.subscription.credits < 2 %}
+                                  {% if request.user.subscription.plan.name|lower == 'free' %}
 
                                   <div class="profile-nav-left">
                                     <a href="#" style="color:#000;font-weight: 500;">&nbsp Free Trial</a>

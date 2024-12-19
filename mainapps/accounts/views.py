@@ -687,8 +687,8 @@ def cancel_subscription(request):
             cancel_at_period_end=True,
         )
 
-        free_plan = Plan.objects.get(id=3)
-        request.user.subscription.plan = free_plan
+        cancelled_plan = Plan.objects.get(id=5)
+        request.user.subscription.plan = cancelled_plan
         request.user.subscription.stripe_subscription_id = None
         request.user.subscription.current_period_end = subscription.current_period_end
         request.user.subscription.save()
