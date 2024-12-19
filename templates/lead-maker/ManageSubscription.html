@@ -322,7 +322,7 @@ a.upgrade-button[disabled] {
   </div>
 
   <div class="cancel-sub-overlay hidden" id="downgradeOverlay">
-    <div class="cancel-sub-popup">
+    <div id="downgradeContent" class="cancel-sub-popup">
       <p class="cancel-sub-heading">Downgrade Subscription?</p>
       <p class="cancel-sub-msg">
         Are you sure you want to downgrade your subscription?
@@ -362,8 +362,9 @@ document.querySelector('#downgradeButton').addEventListener('click', () => {
 
   document.body.classList.add('popup-active'); 
 
-  const popupContent = overlay.querySelector('.cancel-sub-popup');
+  const popupContent = overlay.querySelector('#downgradeContent');
   popupContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  
 });
 
 document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
@@ -373,26 +374,6 @@ document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () =
   document.body.classList.remove('popup-active'); 
 });
 
-
-// document.querySelector('.cancel_button').addEventListener('click', () => {
-//   document.querySelector('#cancelOverlay').classList.remove('hidden');
-//   document.body.classList.add('popup-active'); 
-// });
-
-// document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
-//   document.querySelector('#cancelOverlay').classList.add('hidden');
-//   document.body.classList.remove('popup-active');
-// });
-
-// document.querySelector('#downgradeButton').addEventListener('click', () => {
-//   document.querySelector('#downgradeOverlay').classList.remove('hidden');
-//   document.body.classList.add('popup-active');
-// });
-
-// document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
-//   document.querySelector('#downgradeOverlay').classList.add('hidden');
-//   document.body.classList.remove('popup-active'); 
-// });
 
   </script>
 </body>
