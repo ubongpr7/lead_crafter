@@ -210,6 +210,7 @@ a.upgrade-button[disabled] {
     </div>
   </header>
   <!-- Header Section End -->
+  {% include "lead-maker/accounts/new_messages.html" %}
 
   <!-- Subscription Information Start -->
   <div class="content">
@@ -234,8 +235,13 @@ a.upgrade-button[disabled] {
       <div class="credit">
         <p class="cr-usage">Credit Usage</p>
         <div class="credit-text">
+          {% if   cur_plan.name|lower == 'free' %}
+          <p>You currently do not have an active plan.</p>
+          <p>Unused credits will expire in  {{days_left}} Days </p>
+          {%else%}
           <p>Any unused credit will roll over to the next month</p>
           <p>Next recharge in {{days_left}} Days </p>
+          {% endif %}
         </div>
 
       </div>
