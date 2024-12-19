@@ -338,6 +338,8 @@ a.upgrade-button[disabled] {
     // Show the cancel subscription popup
 document.querySelector('.cancel_button').addEventListener('click', () => {
   const overlay = document.querySelector('#cancelOverlay');
+  document.querySelector('#cancelOverlay').classList.remove('hidden');
+
   overlay.classList.add('active');
   document.body.classList.add('popup-active'); // Disable background scrolling
 
@@ -348,6 +350,7 @@ document.querySelector('.cancel_button').addEventListener('click', () => {
 
 document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
   const overlay = document.querySelector('#cancelOverlay');
+  document.querySelector('#cancelOverlay').classList.add('hidden');
   overlay.classList.remove('active');
   document.body.classList.remove('popup-active'); 
 });
@@ -355,6 +358,8 @@ document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
 document.querySelector('#downgradeButton').addEventListener('click', () => {
   const overlay = document.querySelector('#downgradeOverlay');
   overlay.classList.add('active');
+  document.querySelector('#cancelOverlay').classList.remove('hidden');
+
   document.body.classList.add('popup-active'); 
 
   const popupContent = overlay.querySelector('.cancel-sub-popup');
@@ -363,6 +368,7 @@ document.querySelector('#downgradeButton').addEventListener('click', () => {
 
 document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
   const overlay = document.querySelector('#downgradeOverlay');
+  document.querySelector('#cancelOverlay').classList.add('hidden');
   overlay.classList.remove('active');
   document.body.classList.remove('popup-active'); 
 });
