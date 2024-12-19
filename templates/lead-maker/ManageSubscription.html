@@ -357,7 +357,7 @@ document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
 
 document.querySelector('#downgradeButton').addEventListener('click', () => {
   const overlay = document.querySelector('#downgradeOverlay');
-  document.querySelector('#cancelOverlay').classList.remove('hidden');
+  document.querySelector('#downgradeOverlay').classList.remove('hidden');
   overlay.classList.add('active');
 
   document.body.classList.add('popup-active'); 
