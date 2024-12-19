@@ -570,6 +570,8 @@ def upgrade_subscription(request, price_id):
 
 @login_required
 def downgrade_subscription(request):
+    stripe.api_key = settings.STRIPE_SEC_KEY
+
     try:
         if request.user.subscription.plan.id == 2:
             subscription = stripe.Subscription.retrieve(
