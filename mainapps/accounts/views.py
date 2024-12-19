@@ -270,7 +270,7 @@ def register(request):
                     customer_id = new_customer.id
 
                 try:
-                    if user.subscription.credits:
+                    try:
 
                         subscription = Subscription.objects.create(
                         plan=plan,
@@ -278,7 +278,7 @@ def register(request):
                         customer=customer,
                         stripe_subscription_id=subscription_id,
                         )   
-                    else:
+                    except Exception as e:
                         subscription = Subscription.objects.create(
                         plan=plan,
                         credits=plan.vsl_limit,
