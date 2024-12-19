@@ -270,21 +270,12 @@ def register(request):
                     customer_id = new_customer.id
 
                 try:
-                    try:
-
-                        subscription = Subscription.objects.create(
-                        plan=plan,
-                        credits=plan.vsl_limit +user.subscription.credits,
-                        customer=customer,
-                        stripe_subscription_id=subscription_id,
-                        )   
-                    except Exception as e:
-                        subscription = Subscription.objects.create(
-                        plan=plan,
-                        credits=plan.vsl_limit,
-                        customer=customer,
-                        stripe_subscription_id=subscription_id,
-                        )   
+                    subscription = Subscription.objects.create(
+                    plan=plan,
+                    credits=plan.vsl_limit,
+                    customer=customer,
+                    stripe_subscription_id=subscription_id,
+                    )   
                     user.subscription = subscription
                     user.save()
 
@@ -513,13 +504,21 @@ def manage_subscription(request):
                 
 
                 try:
+                    try:
 
-                    subscription = Subscription.objects.create(
-                    plan=plan,
-                    credits=plan.vsl_limit,
-                    customer=customer,
-                    stripe_subscription_id=subscription_id,
-                    )   
+                        subscription = Subscription.objects.create(
+                        plan=plan,
+                        credits=plan.vsl_limit +user.subscription.credits,
+                        customer=customer,
+                        stripe_subscription_id=subscription_id,
+                        )   
+                    except Exception as e:
+                        subscription = Subscription.objects.create(
+                        plan=plan,
+                        credits=plan.vsl_limit,
+                        customer=customer,
+                        stripe_subscription_id=subscription_id,
+                        )   
                     user.subscription = subscription
                     user.save()
 
