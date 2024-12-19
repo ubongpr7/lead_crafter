@@ -213,7 +213,7 @@
                     </div>
                     {% if user.subscription.plan.name|lower == 'free' %}
                     
-                    <button   class="btn proceed-btn" onclick="showSubscrition()" >
+                    <button   class="btn proceed-btn" onclick="showPopup()" >
                       Download
                       <img class="btn-arrow" src="{% static 'lead-maker/images/download-icn.svg' %}" alt="Download Arrow" />
                     </button> 
@@ -290,6 +290,27 @@
     </div>
     
 <script>
+// Function to show the popup
+function showPopup() {
+  const popupContainer = document.querySelector('.plans-popup-container');
+  popupContainer.classList.remove('hidden'); // Remove 'hidden' class to show the popup
+  document.body.classList.add('no-scroll'); // Disable background scrolling
+}
+
+// Function to hide the popup
+function hidePopup() {
+  const popupContainer = document.querySelector('.plans-popup-container');
+  popupContainer.classList.add('hidden'); // Add 'hidden' class to hide the popup
+  document.body.classList.remove('no-scroll'); // Re-enable background scrolling
+}
+
+// Add event listener for the close button
+document.querySelector('.close-popup img').addEventListener('click', hidePopup);
+
+// Optional: Close popup when clicking outside the content
+document.querySelector('.plans-popup-container').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) hidePopup();
+});
 
 
 </script>
