@@ -190,7 +190,7 @@ a.upgrade-button[disabled] {
           <a href="/"><img src="{% static 'lead-maker/images/logo.svg'%}" alt="VSL Logo" /></a>
         </div>
         <div class="header-profile">
-          {% if   cur_plan.name|lower == 'free' %}
+          {% if   cur_plan.name|lower == 'free' and  request.user.subscription.credits < 2 %}
           <div class="credit-score">
             <span>Free Trial </span> <span>| </span>
           </div>
