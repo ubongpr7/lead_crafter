@@ -34,8 +34,8 @@
 .cancel-sub-overlay {
   position: fixed; /* Fixed position relative to the viewport */
   top: 0;
-  width: 100%;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
   display: flex;
@@ -43,7 +43,10 @@
   align-items: center;
   z-index: 99999;
 }
-
+.cancel-sub-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
 .cancel-sub-popup {
   width: 90%;
   max-width: 400px; /* Restrict popup width */
@@ -336,42 +339,58 @@ a.upgrade-button[disabled] {
   </div>
 
   <script>
-    // document.querySelector('.cancel_button').addEventListener('click', () => {
-    //   document.querySelector('#cancelOverlay').classList.remove('hidden');
-    // });
-
-    // document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
-    //   document.querySelector('#cancelOverlay').classList.add('hidden');
-    // });
-
-    // document.querySelector('#downgradeButton').addEventListener('click', () => {
-    //   document.querySelector('#downgradeOverlay').classList.remove('hidden');
-    // });
-
-    // document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
-    //   document.querySelector('#downgradeOverlay').classList.add('hidden');
-    // });
-
-
+    // Show the cancel subscription popup
 document.querySelector('.cancel_button').addEventListener('click', () => {
-  document.querySelector('#cancelOverlay').classList.remove('hidden');
-  document.body.classList.add('popup-active'); // Disable scrolling
+  const overlay = document.querySelector('#cancelOverlay');
+  overlay.classList.add('active');
+  document.body.classList.add('popup-active'); // Disable background scrolling
+
+  // Scroll to the popup content
+  const popupContent = overlay.querySelector('.cancel-sub-popup');
+  popupContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
-  document.querySelector('#cancelOverlay').classList.add('hidden');
-  document.body.classList.remove('popup-active'); // Re-enable scrolling
+  const overlay = document.querySelector('#cancelOverlay');
+  overlay.classList.remove('active');
+  document.body.classList.remove('popup-active'); 
 });
 
 document.querySelector('#downgradeButton').addEventListener('click', () => {
-  document.querySelector('#downgradeOverlay').classList.remove('hidden');
-  document.body.classList.add('popup-active'); // Disable scrolling
+  const overlay = document.querySelector('#downgradeOverlay');
+  overlay.classList.add('active');
+  document.body.classList.add('popup-active'); 
+
+  const popupContent = overlay.querySelector('.cancel-sub-popup');
+  popupContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
-  document.querySelector('#downgradeOverlay').classList.add('hidden');
-  document.body.classList.remove('popup-active'); // Re-enable scrolling
+  const overlay = document.querySelector('#downgradeOverlay');
+  overlay.classList.remove('active');
+  document.body.classList.remove('popup-active'); 
 });
+
+
+// document.querySelector('.cancel_button').addEventListener('click', () => {
+//   document.querySelector('#cancelOverlay').classList.remove('hidden');
+//   document.body.classList.add('popup-active'); 
+// });
+
+// document.querySelector('#cancelSubPopupNoBtn').addEventListener('click', () => {
+//   document.querySelector('#cancelOverlay').classList.add('hidden');
+//   document.body.classList.remove('popup-active');
+// });
+
+// document.querySelector('#downgradeButton').addEventListener('click', () => {
+//   document.querySelector('#downgradeOverlay').classList.remove('hidden');
+//   document.body.classList.add('popup-active');
+// });
+
+// document.querySelector('#downgradeSubPopupNoBtn').addEventListener('click', () => {
+//   document.querySelector('#downgradeOverlay').classList.add('hidden');
+//   document.body.classList.remove('popup-active'); 
+// });
 
   </script>
 </body>
