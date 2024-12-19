@@ -297,8 +297,8 @@ a.upgrade-button[disabled] {
       <div class="price">
         <h1>${{ plans.1.price }}</h1><span>/Month</span>
       </div>
-      <p class="p-pro p-pro2" style="color: white; margin-top: -18px;">$${{ plans.1.price_per_vsl }} per video</p>
-      <p class="p-pro"><i class="fa-solid fa-check pro-i"></i>50 leads per month</p>
+      <p class="p-pro p-pro2" style="color: white; margin-top: -18px;">${{ plans.1.price_per_vsl }} per video</p>
+      <p class="p-pro"><i class="fa-solid fa-check pro-i"></i>{{ plans.1.vsl_limit }} leads per month</p>
       {% if cur_plan.name|lower == 'premium' %}
         <button type="button" class="cancel_button" id="up">
           Cancel Subscription
