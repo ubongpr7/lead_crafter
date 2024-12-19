@@ -76,6 +76,9 @@
                 <label for="Confirmpassword" style="font-size: 1.8rem; font-weight: 600; color: #344054; margin-bottom: 12px; font-family: 'Plus Jakarta Sans', sans-serif;">Confirm Password:</label>
                 <div class="pwd-input">
                     <input type="password" name="Confirmpassword" placeholder="Confirm Password" class="form-control" id="Confirmpassword">
+                    <span class="show-icn" onclick="togglePasswordVisibility('Confirmpassword')">
+                      <img src="{% static 'lead-maker/images/eye.svg' %}" alt="Toggle Password Visibility">
+                  </span>
                 </div>
             </div>
 
