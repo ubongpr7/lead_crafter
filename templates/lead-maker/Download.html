@@ -264,9 +264,16 @@
                   <img src="{% static 'assets/icons/check.svg' %}" alt="" />
                   <span class="benefits-text">Create Up To {{ plans.0.vsl_limit }} VSLs Per Month</span>
                 </div>
-                <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription"
+                {% if  bg_music %}
+
+                <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}/?bg_music=false"
                    class="p-button"
                    style="text-decoration: none">Get Started</a>
+                   {%else}
+                   <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}/?bg_music=false"
+                      class="p-button"
+                      style="text-decoration: none">Get Started</a>
+                  {%endif%}
               </div>
               <div class="p-cards-grid-item">
                 <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.1.name }} Plan</span>
@@ -280,9 +287,16 @@
                     <img src="{% static 'assets/icons/check.svg' %}" alt="" />
                     <span class="benefits-text">Create Up To {{ plans.1.vsl_limit }} VSLs Per Month</span>
                   </div>
-                  <a href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription"
+                  {% if  bg_music %}
+                  <a href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}/?bg_music=false"
                      class="p-button"
                      style="text-decoration: none">Get Started</a>
+                     {%else%}
+                     <a href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/download_video/{{text_file.id}}"
+                        class="p-button"
+                        style="text-decoration: none">Get Started</a>
+
+                     {%endif%}
                 </div>
               </div>
             </div>
@@ -290,14 +304,12 @@
     </div>
     
 <script>
-// Function to show the popup
 function showPopup() {
   const popupContainer = document.querySelector('.plans-popup-container');
-  popupContainer.classList.remove('hidden'); // Remove 'hidden' class to show the popup
-  document.body.classList.add('no-scroll'); // Disable background scrolling
+  popupContainer.classList.remove('hidden');
+  document.body.classList.add('no-scroll');
 }
 
-// Function to hide the popup
 function hidePopup() {
   const popupContainer = document.querySelector('.plans-popup-container');
   popupContainer.classList.add('hidden'); // Add 'hidden' class to hide the popup
@@ -314,28 +326,22 @@ document.querySelector('.plans-popup-container').addEventListener('click', (e) =
 
 
 </script>
-    <!-- <script src="{% static 'lead-maker/js/downloads.js' %}"></script> external JS file -->
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script>
-    function showSubscrition(){
-
-    }
     
     document.getElementById('download').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor behavior
+            event.preventDefault(); 
 
             if ('{{ request.user.subscription.plan.name }}' == 'Free') {
               document.querySelector('.plans-popup-container').classList.remove('hidden');
             } else {
-              // Fetch the URL to start the download
               const href = event.currentTarget.getAttribute('href');
 
               fetch(href)
                 .then(response => {
                   if (response.ok) {
-                    // Create a temporary link to trigger the download
                     const tempLink = document.createElement('a');
                     tempLink.href = href;
                     tempLink.setAttribute('download', 'videocrafter.mp4');
@@ -343,7 +349,6 @@ document.querySelector('.plans-popup-container').addEventListener('click', (e) =
                     tempLink.click();
                     document.body.removeChild(tempLink);
 
-                    // After the download starts, redirect to /text
                     window.location.href = '/text';
                   } else {
                     console.error('Download failed or could not start.');

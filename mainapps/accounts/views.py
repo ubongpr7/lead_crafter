@@ -437,6 +437,9 @@ def subscribe(request, price_id):
 
             success_path = request.GET.get("success_path")
             cancel_path = request.GET.get("cancel_path")
+            user_url = request.GET.get("user_url")
+            if user_url:
+                request.session['user_url']=user_url
 
             customer = None
             if request.user.is_authenticated:
@@ -467,6 +470,7 @@ def subscribe(request, price_id):
 @login_required
 def manage_subscription(request):
     stripe.api_key = settings.STRIPE_SEC_KEY
+    user_url=request.session.get('user_url')
 
     if request.GET.get('session_id'):
         checkout_session_id = request.GET.get("session_id")
@@ -548,7 +552,8 @@ def manage_subscription(request):
     days_left = int((current_period_end - now) / 60 / 60 / 24)
     days_left = max(-1, days_left)
     days_left += 1
-
+    if user_url:
+        return redirect(user_url)
     return render(
         request,
         "lead-maker/ManageSubscription.html",
