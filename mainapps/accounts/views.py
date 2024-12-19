@@ -553,6 +553,7 @@ def manage_subscription(request):
     days_left = max(-1, days_left)
     days_left += 1
     if user_url:
+        request.session['user_url']=None
         return redirect(user_url)
     return render(
         request,
