@@ -119,21 +119,14 @@
         <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <figure class="video-place" style="background-color: white;" >
-              <div>
+              <div class="video-container">
                 <video id="video" height="400" controls>
                   <source src="{{text_file.video_file.url}}" type="video/mp4">
                   Your browser does not support the video tag.
                 </video>
               </div>
             </figure>
-<!--             
-        <div class="slider-container">
-          <div class="slider-track">
-            <div class="slider-filled" id="slider-filled"></div>
-          </div>
-          <div class="slider-thumb" id="sliderStart"></div>
-          <div class="slider-thumb end" style="display:none;" id="sliderEnd"></div>
-        </div> -->
+
         <div class="slider-container">
           <div class="slider-track">
             <div class="slider-filled" id="slider-filled"></div>
