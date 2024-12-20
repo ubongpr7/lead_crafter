@@ -2,7 +2,18 @@
 
 {% include "lead-maker/accounts/new_messages.html" %}
 {% include "lead-maker/includes/header.html" %}
+<style>
+    .video-place {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  height: 100%; 
+  width: 100%; 
+  margin: 0 auto;
+  text-align: center;
+}
 
+</style>
 <div class="content contain">
   <section class="login-sec voice-subtitle">
     <div class="container">
@@ -30,11 +41,20 @@
           </a>
           <h5 class="text-center lead-title"> Select Your Background Music </h5>
         </div>
-            <div class="video-container">
+
+        <figure class="video-place" style="background-color: white;" >
+          <div class="video-container">
+            <video id="video" height="400" controls>
+              <source src="{{textfile.generated_watermarked_video.url}}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </figure>
+            <!-- <div class="video-container">
               <video width="100%" height="400" controls>
                 <source src="{{textfile.generated_watermarked_video.url}}" type="video/mp4" /> Your browser does not support the video tag.
               </video>
-            </div> 
+            </div>  -->
 
         <form class="lead-form"id="lead-form"  method="POST" action="."  enctype="multipart/form-data">
           {% csrf_token %}
@@ -177,7 +197,7 @@
             {%else %}
             <button  type="submit"id="submit_form" style="display: none;" class="btn proceed-btn"> Create New Video <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </button>
-            <a href="{% url 'video_text:download_video' textfile_id %}?bg_music=false"   id="proceed"  class="btn proceed-btn"> Proceed Withouth Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
+            <a href="{% url 'video_text:download_video' textfile_id %}?bg_music=false"   id="proceed"  class="btn proceed-btn"> Proceed Without Background Music <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
             </a>
           {% endif %}
         </form>
