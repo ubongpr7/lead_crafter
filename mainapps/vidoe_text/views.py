@@ -491,6 +491,7 @@ def trim_video(request,textfile_id):
     return render(request,'lead-maker/trim_video.html',{'text_file':text_file})
 
 @login_required
+@check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
