@@ -94,10 +94,10 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.env('POSTGRES_NAME'),
-        'USER': os.env('POSTGRES_USER'),
-        'PASSWORD':os.env('POSTGRES_PASSWORD'),
-        'HOST': os.env('POSTGRES_HOST'),
+        'NAME': os.getenv('POSTGRES_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD':os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': '5432', 
     }
 }
