@@ -42,7 +42,7 @@
             <tr>
               <th class="slide-first">Subtitle</th>
               <th>Subtitle Text</th>
-              <th>Upload Scene</th>
+              <!-- <th>Upload Scene</th> -->
               <th class="slide-last">Action</th>
             </tr>
           </thead>
@@ -51,22 +51,32 @@
             {% for clip in clips %}
             <tr>
               <td>Subtitle {{ forloop.counter }}</td>
-                <td  >
-                 <textarea  name="saved_slide_text_{{clip.id}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
-                </td> 
-                           
-                <td style="background: none;">
-                  <div class="custum-browse custum-browse-v2 d-flex align-items-center">
-                    <div class="brws">
-                      <input class="br-input" type="file" name="saved_slide_file_{{clip.id}}" onchange="savedInputChangeFunc('{{clip.id}}')" id="saved_slide_file_{{clip.id}}" accept="image/*,video/*"  >
-                         <a href="#!" class="btn get-start browse-btn">
-                        <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""><span id="saved_span_{{clip.id}}"> Choose file</span>
-                      </a>
-                    </div>
-                    <p id='current_{{clip.id}}'>Current: {{ clip.get_video_file_name}}</p>
-                   
+                <td>
+                 <textarea style="display: none;"  name="saved_slide_text_{{clip.id}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
+                 <div class="wrapper" id="wrapper_{{clip.id}}">
+                  <div style="width: 100%;" class="tag-box">
+                      <ul style="margin: 0;" id="list-of-tags_{{clip.id}}" class="list-of-tags">
+
+                          {% for subclip in clip.subclips.all %}
+                          <li data-id="{{subclip.id}}"
+                          data-clipid="{{subclip.video_clip.id}}"
+                          data-cat_id="{{subclip.video_clip.category.id}}"
+                          data-name="{{subclip.video_clip.title}}"
+                          data-current_file="{{subclip.get_video_file_name}}"
+                          id="saved_li_{{subclip.id}}"
+                              onclick="editCurrentLi(this)">
+                              {{subclip.subtittle}}</li>
+                          {% endfor %}
+                          <input type="number" hidden id="clip_id_{{subclip.id}}" value="{{subclip.video_clip.id}}">
+                          <span id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}"
+                              data-id="{{clip.id}}">{{ clip.remaining }}</span>
+                      </ul>
+                      <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
                   </div>
-                </td>
+                  <div id="error-message_{{clip.id}}" style="text-transform: capitalize;" class="error-message"></div>
+              </div>
+                </td> 
+                     
                 
               <td>
                 <a href="#!" class="delete-row-btn" onclick="deleteSavedSlide('{{clip.id}}')">
@@ -74,6 +84,7 @@
                 </a>
               </td>
             </tr>
+
             {% endfor %}
         <input  type="number"  name="no_of_slides" id="no_of_slides" hidden value="{{no_of_slides}}">
             {% else %}
@@ -132,7 +143,6 @@ function deleteSavedSlide(clipId) {
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
-    // document.getElementById('no_of_slides').value=document.getElementById('no_of_slides').value-1
 }
 
   function addSlide() {
@@ -149,34 +159,15 @@ function deleteSlide(btn) {
         `<td>
           <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
         </td>
-        <td style="background: none;">
-           <div class="custum-browse custum-browse-v2 d-flex align-items-center">
-             <div class="brws">
-               <input class="br-input" type="file" name="slide_file_${currentNumber}"accept="image/*,video/*"  >
-                  <a href="#!" class="btn get-start browse-btn">
-                 <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt=""> Choose file
-               </a>
-             </div>
-            
-           </div>
-         </td>
          <td>
                 <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
                   <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
          </td>`;
  
-         const fileInputs = document.querySelectorAll('.br-input');
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
     
-         console.log(fileInputs,noFileTexts);
-    fileInputs.forEach((input, index) => {
-      input.addEventListener('change', (event) => {
-        const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Choose file';
-        noFileTexts[index].lastChild.textContent = fileName; // Update the text to show the selected file name
-      });
-    });
 }
 </script>
 {% endblock content %}
