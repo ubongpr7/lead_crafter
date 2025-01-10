@@ -165,34 +165,34 @@ class TextFile(models.Model):
     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
     font_size = models.IntegerField()
     created_at = models.DateTimeField(default=timezone.now)
-    bg_music_text = models.FileField(upload_to="background_txt/", blank=True, null=True)
-    audio_file = models.FileField(upload_to="audio_files", blank=True, null=True)
+    bg_music_text = models.FileField(upload_to="lead_maker/background_txt/", blank=True, null=True)
+    audio_file = models.FileField(upload_to="lead_maker/audio_files", blank=True, null=True)
     srt_file = models.FileField(
         upload_to="srt_files/", blank=True, null=True
     )  
-    subtitle_file = models.FileField(upload_to="subtitles/", blank=True, null=True)
-    subclips_text_file = models.FileField(upload_to="subclips_text_files/", blank=True, null=True)
+    subtitle_file = models.FileField(upload_to="lead_maker/subtitles/", blank=True, null=True)
+    subclips_text_file = models.FileField(upload_to="lead_maker/subclips_text_files/", blank=True, null=True)
     blank_video = models.FileField(upload_to="blank_video/", blank=True, null=True)
     generated_audio = models.FileField(
         upload_to="generated_audio/", blank=True, null=True
     )
-    generated_subclips_srt = models.FileField(upload_to="generated_subclips_srt/", blank=True, null=True)
-    generated_srt = models.FileField(upload_to="generated_srt/", blank=True, null=True)
+    generated_subclips_srt = models.FileField(upload_to="lead_maker/generated_subclips_srt/", blank=True, null=True)
+    generated_srt = models.FileField(upload_to="lead_maker/generated_srt/", blank=True, null=True)
     generated_blank_video = models.FileField(
-        upload_to="generated_blank_video/", blank=True, null=True
+        upload_to="lead_maker/generated_blank_video/", blank=True, null=True
     )
     
     generated_final_video = models.FileField(
-        upload_to="generated_final_video/", blank=True, null=True
+        upload_to="lead_maker/generated_final_video/", blank=True, null=True
     )
     generated_watermarked_video = models.FileField(
-        upload_to="generated_watermarked_video/", blank=True, null=True
+        upload_to="lead_maker/generated_watermarked_video/", blank=True, null=True
     )
     generated_final_bgm_video = models.FileField(
-        upload_to="generated_bgm_video/", blank=True, null=True
+        upload_to="lead_maker/generated_bgm_video/", blank=True, null=True
     )
     generated_final_bgmw_video = models.FileField(
-        upload_to="generated_bgmw_video/", blank=True, null=True
+        upload_to="lead_maker/generated_bgmw_video/", blank=True, null=True
     )
     class Meta:
         ordering=['-created_at']
