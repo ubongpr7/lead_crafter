@@ -13,7 +13,8 @@ services:
       - .:/app
     ports:
       - "7732:7732"
-
+python3.10 manage.py makemigrations &&
+        python3.10 manage.py migrate &&
 
 
 
