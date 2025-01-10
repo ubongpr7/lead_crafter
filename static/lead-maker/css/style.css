@@ -1238,7 +1238,7 @@
 .lead-table tr td:first-child {
   width: 135px;
 }
-.lead-table tr td:nth-child(3),
+/* .lead-table tr td:nth-child(3), */
 .lead-table tr td:nth-child(2) {
   width: 527px;
 }

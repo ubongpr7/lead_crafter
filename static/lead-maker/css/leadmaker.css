@@ -21,7 +21,6 @@ body {
       /* Darkest color at the bottom */
     );
   backdrop-filter: blur(20px);
-  /* Adjust the blur level for a softer effect */
   -webkit-backdrop-filter: blur(20px);
 }
 
