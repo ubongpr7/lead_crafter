@@ -147,6 +147,8 @@ class TextFile(models.Model):
         "accounts.User", on_delete=models.SET_NULL, null=True, editable=False
     )
 
+    trimmed_video = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
+    video_file = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
 
     text_file = models.FileField(upload_to=text_file_upload_path, null=True, blank=True)
     voice_id = models.CharField(max_length=100)
