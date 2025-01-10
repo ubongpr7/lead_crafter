@@ -162,7 +162,7 @@ class TextFile(models.Model):
     font_color = models.CharField(max_length=7) 
     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
     font_size = models.IntegerField()
-    created_at = models.DateTimeField(default=time.timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
     bg_music_text = models.FileField(upload_to="background_txt/", blank=True, null=True)
     audio_file = models.FileField(upload_to="audio_files", blank=True, null=True)
     srt_file = models.FileField(
