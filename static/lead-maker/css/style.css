@@ -1236,14 +1236,17 @@
   height: 100px;
 }
 .lead-table tr td:first-child {
-  width: 135px;
+  width: 15%;
+  /* width: 135px; */
 }
 /* .lead-table tr td:nth-child(3), */
 .lead-table tr td:nth-child(2) {
-  width: 527px;
+  width: 60%;
+  /* width: 527px; */
 }
 .lead-table tr td:last-child {
-  width: 129px;
+  /* width: 129px; */
+  width: 25%;
   height: 50px;
   text-align: center;
 }
