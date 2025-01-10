@@ -20,6 +20,8 @@ from moviepy.editor import (
     TextClip,
     VideoFileClip,
 )
+from moviepy.video.fx.all import crop as fix_all_crop
+
 import moviepy.video.fx.resize as rz
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.loop import loop
@@ -1118,6 +1120,12 @@ class Command(BaseCommand):
         original_width, original_height = clip.size
 
         original_aspect_ratio = original_width / original_height
+        if desired_aspect_ratio==9/16:
+            crop_width = original_height * 9/16
+
+            cropped_clip = fix_all_crop(clip, width=600, height=5000, x_center=original_width/2, y_center=original_height/2)
+            return cropped_clip
+        
 
         if (
             abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
