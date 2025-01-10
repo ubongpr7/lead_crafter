@@ -153,7 +153,7 @@ class TextFile(models.Model):
     processed = models.BooleanField(default=False)
     progress = models.CharField(default="0", max_length=100)
     api_key = models.CharField(max_length=200)
-    resolution = models.CharField(max_length=50)
+    resolution = models.CharField(max_length=50,null=True,blank=True)
     font_file = models.FileField(upload_to=font_file_upload_path, blank=True, null=True)
     bg_level = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=9, default=0.1
@@ -236,13 +236,11 @@ class TextFile(models.Model):
             "generated_final_bgmw_video",
         ]
 
-        # Delete files associated with each file field
         for field_name in file_fields:
             field = getattr(self, field_name, None)
             if field and field.name:  # Check if the field is not None and has a file
                 field.delete(save=False)
 
-        # Call the parent class's delete method to delete the model instance
         super().delete(using=using, keep_parents=keep_parents)
 
 
