@@ -241,8 +241,9 @@ class TextFile(models.Model):
 
         for field_name in file_fields:
             field = getattr(self, field_name, None)
-            if field and field.name:  # Check if the field is not None and has a file
-                field.delete(save=False)
+            if field : 
+                if field.name:  # Check if the field is not None and has a file
+                    field.delete(save=False)
 
         super().delete(using=using, keep_parents=keep_parents)
 
