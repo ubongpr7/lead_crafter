@@ -54,7 +54,7 @@
                 <td>
                  <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.slide}}</textarea></td>
                  <div class="wrapper" id="wrapper_{{forloop.counter}}">
-                  <div style="width: 100%;" class="tag-box">
+                  <div  class="tag-box">
                       <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
 
                           {% for subclip in clip.subclips.all %}
