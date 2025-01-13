@@ -259,7 +259,7 @@ function handleEnterToHide(currentNumber) {
                         if (response.success) {
                             slide_span.textContent = textarea.value;
                             slide_span.dataset.id=response.id
-                            showSuccessMessage('Subtitle submitted successfully! ',slide_span.dataset.id);
+                            showSuccessMessage(`Subtitle submitted successfully! ${lide_span.dataset.id}`);
 
                         } else {
                             alert(response.error || 'Failed to submit the text.');
