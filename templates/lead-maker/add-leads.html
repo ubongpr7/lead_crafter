@@ -127,6 +127,30 @@ function savedInputChangeFunc(id) {
         console.error(`Element with ID current_${id} not found.`);
     }
 }
+function showSuccessMessage(message) {
+    const successMessage = document.createElement('div');
+    successMessage.textContent = message;
+    successMessage.style.position = 'fixed';
+    successMessage.style.top = '20px';
+    successMessage.style.right = '20px';
+    successMessage.style.padding = '10px 15px';
+    successMessage.style.backgroundColor = '#4CAF50';
+    successMessage.style.color = 'white';
+    successMessage.style.borderRadius = '5px';
+    successMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+    successMessage.style.zIndex = '1000';
+    
+    // Clear existing error messages or alerts if any
+    clearErrorMessages();
+
+    // Append the success message to the document body
+    document.body.appendChild(successMessage);
+
+    // Remove the success message after 2 seconds
+    setTimeout(() => {
+        document.body.removeChild(successMessage);
+    }, 2000);
+}
 
 let currentNumber = document.getElementById('no_of_slides').value
 function deleteSavedSlide(clipId) {
@@ -235,7 +259,7 @@ function handleEnterToHide(currentNumber) {
                         if (response.success) {
                             slide_span.textContent = textarea.value;
                             slide_span.dataset.id=response.id
-                            alert('Text submitted successfully! ',slide_span.dataset.id);
+                            showSuccessMessage('Subtitle submitted successfully! ',slide_span.dataset.id);
 
                         } else {
                             alert(response.error || 'Failed to submit the text.');
