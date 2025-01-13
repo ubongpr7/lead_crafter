@@ -235,7 +235,7 @@ function handleEnterToHide(currentNumber) {
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
     const edit_ = document.getElementById(`edit_${currentNumber}`);
     const delete_ = document.getElementById(`delete_${currentNumber}`);
-    const clip_id=slide_span.dataset.id
+    let clip_id=slide_span.dataset.id
     textarea.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
             event.preventDefault();
