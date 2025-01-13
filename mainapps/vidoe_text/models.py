@@ -337,10 +337,11 @@ class TextLineVideoClip(models.Model):
 
         ordering = ["line_number", "text_file"]
     def save(self, *args, **kwargs):
-        max_line_number=0
-        for clip in self.text_file.video_clips.all():
-            if clip.line_number>max_line_number:
-                max_line_number=clip.line_number
+    
+        max_line_number = (
+            TextLineVideoClip.objects.filter(text_file=self.text_file)
+            .aggregate(max_line=models.Max('line_number'))['max_line'] or 0
+        )
         self.line_number = max_line_number + 1
         super().save(*args, **kwargs)
 
