@@ -374,8 +374,40 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 })
 </script>
+<!-- subclip  -->
 <script>
     
+    function closeModal(cNumber) {
+        const errorElements = document.querySelectorAll('[id^="error"]');
+        sessionStorage.clear();
+
+        errorElements.forEach(element => {
+            element.textContent = "";
+        });
+       
+        document.getElementById('add-subclip-popup').style.display = 'none';
+        
+        const formClipID = document.getElementById('clipId').value;
+        const ulElement = document.getElementById(`list-of-tags_${cNumber}`);
+        const spanElement = document.getElementById(`slide_span_${cNumber}`);
+        const liItem=document.getElementById(`saved_li_${cNumber}`);
+        if (ulElement && ulElement.children.length > 1) {
+            const secondToLastLi = ulElement.children[ulElement.children.length - 2];
+            const secondToLastLiText = secondToLastLi.textContent;
+
+            const spanText = spanElement.textContent.trim();
+            spanElement.textContent = `${secondToLastLiText} ${spanText}`
+            console.log("Last <li> text:", secondToLastLiText);
+
+            ulElement.removeChild(secondToLastLi);
+        } else if(liItem){
+            liItem.disabled=false
+            liItem.style.cursor='pointer'
+
+        }else {
+            console.log("No <li> items found to remove.");
+        }
+    }
 
 function handleSelection(cNumber) {
               const wrapper = document.querySelector(`#wrapper_${cNumber}`);
