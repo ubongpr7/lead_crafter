@@ -89,6 +89,13 @@
                onclick="EditeSlide('{{forloop.counter}}', this)">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
+            <a href="#!" 
+               style="display:none; " 
+               class="delete-row-btn" 
+               id="edit_${currentNumber}" 
+               onclick="EditeSlide('{{clip.id}}')">
+              <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="recycle" />
+            </a>
               </td>
             </tr>
 
@@ -208,7 +215,7 @@ function addSlide() {
             </div>
           </div>
         </td>
-        <td>
+        <td id="action_${currentNumber}">
             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
             </a>
@@ -219,6 +226,8 @@ function addSlide() {
                onclick="EditeSlide(${currentNumber})">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
+            
+
         </td>`;
 
         document.getElementById(`slide_text_${currentNumber}`).focus()
@@ -230,7 +239,43 @@ function addSlide() {
 </script>
 
 <script>
+
   let edit=false
+
+  
+function subclipReset(clipID) {
+        const grid= document.getElementById(`grid_${clipID}`)
+        // grid.disabled=true
+        // grid.style.cursor='wait'
+            const textfileID = "{{textfile.id}}"
+            const url = `/text/reset_subclip/${clipID}/`;
+
+            if (confirm("Are You Sure You Want To Reset This Sentence?")) {
+                sessionStorage.clear();
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({ textfile_id: textfileID })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // alert("Clip reset successfully!");
+                            location.reload();
+                        } else {
+                            alert("Failed to reset the clip. Please try again.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error resetting clip:", error);
+                        alert("An error occurred. Please try again later.");
+                    });
+            }
+        }
+
 function handleEnterToHide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper = document.getElementById(`wrapper_${currentNumber}`);
