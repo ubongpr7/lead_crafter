@@ -193,62 +193,62 @@ function deleteSlide(btn) {
 </script>
 
 <script>
-
-  function handleEnterToHide(currentNumber) {
+function handleEnterToHide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
-    const wrapper=document.getElementById(`wrapper_${currentNumber}`);
-    const slide_span=document.getElementById(`slide_span_${currentNumber}`);
-    const edit_=document.getElementById(`edit_${currentNumber}`);
-    const delete_=document.getElementById(`edit_${currentNumber}`);
-    const textarea_form_=document.getElementById(`textarea_form_${currentNumber}`);
+    const wrapper = document.getElementById(`wrapper_${currentNumber}`);
+    const slide_span = document.getElementById(`slide_span_${currentNumber}`);
+    const edit_ = document.getElementById(`edit_${currentNumber}`);
+    const delete_ = document.getElementById(`delete_${currentNumber}`);
     const form = document.getElementById(`textarea_form_${currentNumber}`);
 
-
     textarea.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        if (textarea.value){
-          
-          textarea.style.display = 'none';
-          wrapper.style.display='flex'
-          // delete_.style.display = 'none';
-          edit_.style.display='flex'
-          slide_span.textContent=textarea.value
-          const formData = new FormData(form);
+        if (event.key === 'Enter') {
+            event.preventDefault();
 
-          const xhr = new XMLHttpRequest();
+            if (textarea.value) {
+                // Hide textarea and show other elements
+                textarea.style.display = 'none';
+                wrapper.style.display = 'flex';
+                edit_.style.display = 'flex';
+                slide_span.textContent = textarea.value;
 
-          xhr.addEventListener('load', function () {
-              if (xhr.status === 200) {
-                  const response = JSON.parse(xhr.responseText);
+                // Check if the form is valid before creating FormData
+                if (!(form instanceof HTMLFormElement)) {
+                    console.error('Invalid form element:', form);
+                    return;
+                }
 
-                  if (response.success) {
-                      slide_span.textContent = textarea.value;
+                const formData = new FormData(form);
 
-                      alert('Form submitted successfully!');
-                  } else {
-                      alert(response.error || 'Failed to submit the form.');
-                  }
-              } else {
-                  alert('An error occurred while submitting the form.');
-              }
-          });
+                const xhr = new XMLHttpRequest();
 
-          xhr.addEventListener('error', function () {
-              alert('An error occurred during the request.');
-          });
+                xhr.addEventListener('load', function () {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
 
-          xhr.open('POST', '/text/add_text_clip_line/{{text_file.id}}/');
-          xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); 
-          xhr.send(formData);
+                        if (response.success) {
+                            slide_span.textContent = textarea.value;
+                            alert('Form submitted successfully!');
+                        } else {
+                            alert(response.error || 'Failed to submit the form.');
+                        }
+                    } else {
+                        alert('An error occurred while submitting the form.');
+                    }
+                });
 
-              }
+                xhr.addEventListener('error', function () {
+                    alert('An error occurred during the request.');
+                });
 
-              
-              
+                xhr.open('POST', `/text/add_text_clip_line/{{text_file.id}}/`);
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.send(formData);
             }
-          });
-  }
+        }
+    });
+}
+
   function EditeSlide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper=document.getElementById(`wrapper_${currentNumber}`);
