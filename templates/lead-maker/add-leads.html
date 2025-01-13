@@ -146,26 +146,76 @@ function deleteSlide(btn) {
     row.parentNode.removeChild(row);
 }
 
-  function addSlide() {
-    let currentNumber = document.getElementById('no_of_slides').value
+//   function addSlide() {
+//     let currentNumber = document.getElementById('no_of_slides').value
+
+//     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
+//     var newRow = table.insertRow(-1);
+//     var slideCell = newRow.insertCell(0);
+//     currentNumber++
+    
+//     document.getElementById('no_of_slides').value=currentNumber
+//     slideCell.innerText = `Subtitle ${currentNumber}`;
+//     newRow.innerHTML += 
+//         `<td>
+//           <form id="textarea_form_${currentNumber}">
+//             {% csrf_token %}
+
+//           <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+//           </form>
+//           <div class="wrapper" id="wrapper_${currentNumber}">
+          
+//             <div  style="width: 100%;" class="tag-box">
+//                 <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
+//                     <span id="slide_span_${currentNumber}"></span>
+//                 </ul>
+//                 <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
+//             </div>
+//           </div>
+//         </td>
+//          <td>
+//           <div style="display:flex; flex-direction:column;">
+//             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
+//               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
+//             </a>
+//             <a href="#!" style="display:none; align-items:center;" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
+//               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
+//             </a>
+          
+//             </div>
+//          </td>`;
+ 
+    
+//          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
+//          handleEnterToHide(currentNumber)
+    
+// }
+function addSlide() {
+    let currentNumber = document.getElementById('no_of_slides').value;
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(-1);
     var slideCell = newRow.insertCell(0);
-    currentNumber++
-    
-    document.getElementById('no_of_slides').value=currentNumber
+    currentNumber++;
+
+    document.getElementById('no_of_slides').value = currentNumber;
     slideCell.innerText = `Subtitle ${currentNumber}`;
-    newRow.innerHTML += 
-        `<td>
+    newRow.innerHTML += `
+        <td>
           <form id="textarea_form_${currentNumber}">
             {% csrf_token %}
-
-          <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+            <textarea 
+                style="font-size: 19px;"
+                id="slide_text_${currentNumber}" 
+                type="text" 
+                name="slide_text" 
+                placeholder="Type Your Sentence Here" 
+                class="form-control tab-textarea" 
+                aria-describedby="textarea"
+            ></textarea>
           </form>
-          <div class="wrapper" id="wrapper_${currentNumber}">
-          
-            <div  style="width: 100%;" class="tag-box">
+          <div class="wrapper" id="wrapper_${currentNumber}" style="display:none;">
+            <div style="width: 100%;" class="tag-box">
                 <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
                     <span id="slide_span_${currentNumber}"></span>
                 </ul>
@@ -173,23 +223,27 @@ function deleteSlide(btn) {
             </div>
           </div>
         </td>
-         <td>
+        <td>
           <div style="display:flex; flex-direction:column;">
             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
             </a>
-            <a href="#!" style="display:none; align-items:center;" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
+            <a href="#!" 
+               style="display:none; align-items:center;" 
+               class="delete-row-btn" 
+               id="edit_${currentNumber}" 
+               onclick="EditeSlide(${currentNumber})">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
-          
-            </div>
-         </td>`;
- 
-    
-         const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
-         handleEnterToHide(currentNumber)
-    
+          </div>
+        </td>`;
+
+    // Wait for the DOM to update before attaching the event listeners
+    setTimeout(() => {
+        handleEnterToHide(currentNumber);
+    }, 0); // Zero delay ensures the DOM has updated.
 }
+
 </script>
 
 <script>
