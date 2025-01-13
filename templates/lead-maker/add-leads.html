@@ -51,10 +51,10 @@
             <tr>
               <td>Subtitle {{ forloop.counter }}</td>
                 <td>
-                 <textarea style="display: none;"  name="saved_slide_text_{{clip.id}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
-                 <div class="wrapper" id="wrapper_{{clip.id}}">
+                 <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
+                 <div class="wrapper" id="wrapper_{{forloop.counter}}">
                   <div style="width: 100%;" class="tag-box">
-                      <ul style="margin: 0;" id="list-of-tags_{{clip.id}}" class="list-of-tags">
+                      <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
 
                           {% for subclip in clip.subclips.all %}
                           <li data-id="{{subclip.id}}"
@@ -70,9 +70,9 @@
                           <span id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}"
                               data-id="{{clip.id}}">{{ clip.remaining }}</span>
                       </ul>
-                      <input id="remaining_{{clip.id}}" name="remaining_{{clip.id}}" hidden type="text">
+                      <input id="remaining_{{clip.id}}" name="remaining_{{forloop.counter}}" hidden type="text">
                   </div>
-                  <div id="error-message_{{clip.id}}" style="text-transform: capitalize;" class="error-message"></div>
+                  <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
               </div>
                 </td> 
                      
@@ -101,6 +101,7 @@
       </form>
     </div>
   </section>
+  
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -156,7 +157,16 @@ function deleteSlide(btn) {
     slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
-          <textarea style="font-size: 19px;" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+          <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+          <div class="wrapper" id="wrapper_${currentNumber}">
+          
+            <div  style="width: 100%; display:none;" class="tag-box">
+                <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
+                    <span id="slide_span_${currentNumber}"></span>
+                </ul>
+                <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
+            </div>
+          </div>
         </td>
          <td>
                 <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
@@ -169,7 +179,29 @@ function deleteSlide(btn) {
  
     
          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
+         handleEnterToHide(currentNumber)
     
 }
 </script>
+
+<script>
+  function handleEnterToHide(currentNumber) {
+    const textarea = document.getElementById(`slide_text_${currentNumber}`);
+    const wrapper=document.getElementById(`wrapper_${currentNumber}`);
+    const slide_span=document.getElementById(`slide_span_${currentNumber}`);
+
+    textarea.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        textarea.style.display = 'none';
+        wrapper.style.display='flex'
+        slide_span.textContent=textarea.value
+        
+      }
+    });
+  }
+
+</script>
+
 {% endblock content %}

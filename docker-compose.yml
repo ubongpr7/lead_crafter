@@ -13,23 +13,5 @@ services:
       - .:/app
     ports:
       - "7759:7759"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
-
-  db:
-    image: postgres:14
-    env_file:
-      - .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
-
-volumes:
-  postgres_data:
+    
+ 
