@@ -218,34 +218,34 @@ class TextFile(models.Model):
             return True
         except ValueError:
             return False
-    # def delete(self, using=None, keep_parents=False):
-    #     """Override the delete method to delete associated files."""
-    #     file_fields = [
-    #         "text_file",
-    #         "font_file",
-    #         "bg_music_text",
-    #         "audio_file",
-    #         "srt_file",
-    #         "subtitle_file",
-    #         "subclips_text_file",
-    #         "blank_video",
-    #         "generated_audio",
-    #         "generated_subclips_srt",
-    #         "generated_srt",
-    #         "generated_blank_video",
-    #         "generated_final_video",
-    #         "generated_watermarked_video",
-    #         "generated_final_bgm_video",
-    #         "generated_final_bgmw_video",
-    #     ]
+    def delete(self, using=None, keep_parents=False):
+        """Override the delete method to delete associated files."""
+        file_fields = [
+            "text_file",
+            "font_file",
+            "bg_music_text",
+            "audio_file",
+            "srt_file",
+            "subtitle_file",
+            "subclips_text_file",
+            "blank_video",
+            "generated_audio",
+            "generated_subclips_srt",
+            "generated_srt",
+            "generated_blank_video",
+            "generated_final_video",
+            "generated_watermarked_video",
+            "generated_final_bgm_video",
+            "generated_final_bgmw_video",
+        ]
 
-    #     for field_name in file_fields:
-    #         field = getattr(self, field_name, None)
-    #         if field : 
-    #             if field.name:  # Check if the field is not None and has a file
-    #                 field.delete(save=False)
+        for field_name in file_fields:
+            field = getattr(self, field_name, None)
+            if field : 
+                if field.name:  # Check if the field is not None and has a file
+                    field.delete(save=False)
 
-    #     super().delete(using=using, keep_parents=keep_parents)
+        super().delete(using=using, keep_parents=keep_parents)
 
 
     def track_progress(self, increase):

@@ -678,42 +678,9 @@ def add_leads(request,textfile_id):
             call_command("add_leads", textfile_id)
         except Exception as e:
             print(f"Error processing video: {e}")
-
-    if request.method=="POST":
-        text_file.progress='0'
-        text_file.save()
-        n_slides= int(request.POST.get('no_of_slides'))
-        for clip in line_clips:
-            clip_text= request.POST.get(f'saved_slide_text_{clip.id}')
-            clip_file= request.FILES.get(f'saved_slide_file_{clip.id}')
-            if clip_text:
-                clip.text=""
-                clip.text=clip_text
-            if clip_file:
-                clip.video_file_path.delete(save=False)
-                clip.video_file_path=clip_file
-            clip.save()
-        
-        slides=[]
-        for n in range(1,n_slides+1):
-            print("this is is slide: ",n)
-            slide_text=request.POST.get(f'slide_text_{n}')
-            video_file_path= request.FILES.get(f'slide_file_{n}')
-            if video_file_path:
-                    
-                clip=TextLineVideoClip(
-                    text_file=text_file,
-                    video_file_path=video_file_path,
-                    text=slide_text ,
-                    line_number=n+max_lin_num,
-                )
-                slides.append(clip)
-                print("appended clip for: ",n)
-
-        clips=TextLineVideoClip.objects.bulk_create(slides)
-        save_clips_to_text_file(text_file)
-        thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
-        thread.start()
+        if request.method =="POST":
+            thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
+            thread.start()
 
         return redirect(f'/text/progress_page/add_leads/{textfile_id}') 
         
