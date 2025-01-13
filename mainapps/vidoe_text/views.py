@@ -195,7 +195,6 @@ def manage_textfile(request):
 @csrf_exempt
 def reset_subclip(request, id):
     if request.method == 'POST':
-        textfile_id = request.POST.get('textfile_id')
         text_clip = TextLineVideoClip.objects.get(id=id)
         text_clip.remaining=text_clip.slide
         text_clip.save()

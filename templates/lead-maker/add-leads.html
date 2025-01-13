@@ -86,14 +86,14 @@
                 <a href="#!"  
                class="delete-row-btn" 
                id="edit_{{forloop.counter}}" 
-               onclick="EditeSlide('{{forloop.counter}}', this)">
+               onclick="EditeSlide('{{forloop.counter}}')">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
             <a href="#!" 
                class="delete-row-btn" 
-               id="edit_${currentNumber}" 
+               id="reset_${currentNumber}" 
                onclick="subclipReset('{{clip.id}}')">
-              <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="recycle" />
+              <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="reset" />
             </a>
               </td>
             </tr>
@@ -242,15 +242,12 @@ function addSlide() {
   let edit=false
 
   
-function subclipReset(clipID) {
-        const grid= document.getElementById(`grid_${clipID}`)
-        // grid.disabled=true
-        // grid.style.cursor='wait'
+function subclipReset(mainId) {
+        
             const textfileID = "{{textfile.id}}"
-            const url = `/text/reset_subclip/${clipID}/`;
+            const url = `/text/reset_subclip/${mainId}/`;
 
             if (confirm("Are You Sure You Want To Reset This Sentence?")) {
-                sessionStorage.clear();
                 fetch(url, {
                     method: 'POST',
                     headers: {
@@ -262,7 +259,6 @@ function subclipReset(clipID) {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // alert("Clip reset successfully!");
                             location.reload();
                         } else {
                             alert("Failed to reset the clip. Please try again.");
