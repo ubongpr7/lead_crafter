@@ -80,8 +80,7 @@
                 <a href="#!" class="delete-row-btn"id="delete_{{forloop.counter}}" onclick="deleteSavedSlide('{{clip.id}}')">
                   <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
-                <a href="#!" 
-               style="display:none; align-items:center;" 
+                <a href="#!"  
                class="delete-row-btn" 
                id="edit_{{forloop.counter}}" 
                onclick="EditeSlide('{{forloop.counter}}')">
@@ -125,15 +124,7 @@ function savedInputChangeFunc(id) {
         console.error(`Element with ID current_${id} not found.`);
     }
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  if (document.getElementById('no_of_slides').value == 0){
-    addSlide()
-  }else{
-    for (let index = 1; index <= document.getElementById('no_of_slides').value; index++) {
-      handleEnterToHide(index)       
-    }
-  }
-})
+
 let currentNumber = document.getElementById('no_of_slides').value
 function deleteSavedSlide(clipId) {
         $.ajax({
@@ -242,7 +233,7 @@ function handleEnterToHide(currentNumber) {
                         if (response.success) {
                             slide_span.textContent = textarea.value;
                             slide_span.dataset.id=response.id
-                            alert('Text submitted successfully!');
+                            alert('Text submitted successfully! ',slide_span.dataset.id);
 
                         } else {
                             alert(response.error || 'Failed to submit the text.');
@@ -285,7 +276,15 @@ function handleEnterToHide(currentNumber) {
         
       };
   
-
+document.addEventListener('DOMContentLoaded',()=>{
+  if (document.getElementById('no_of_slides').value == 0){
+    addSlide()
+  }else{
+    for (let index = 1; index <= document.getElementById('no_of_slides').value; index++) {
+      handleEnterToHide(index)       
+    }
+  }
+})
 </script>
 
 {% endblock content %}
