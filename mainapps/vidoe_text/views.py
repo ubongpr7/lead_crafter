@@ -24,6 +24,8 @@ from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
 from django.views.decorators.csrf import csrf_exempt
 
+from django.http import JsonResponse
+import json
 import tempfile
 
 
@@ -117,23 +119,33 @@ def edit_subcliphtmx(request,id):
         })
     return JsonResponse({"success": False, "error": ''}, status=500)
 
+
+@csrf_exempt  # Use only if CSRF tokens are not passed; otherwise, keep CSRF enabled.
 def add_text_clip_line(request, textfile_id):
-    textfile=TextFile.objects.get(id=textfile_id)
-    if request.method =="POST":
-        slide_text=request.POST.get('slide_text')
-        clip= TextLineVideoClip.objects.create(
-            text_file=textfile,
-            slide=slide_text,
-            remaining=slide_text,
-            
-        )
-        return JsonResponse({
-            "success": True,
-            "id": clip.id,
-            
-            
-        })
-    return JsonResponse({"success": False, "error":''}, status=500)
+    try:
+        textfile = TextFile.objects.get(id=textfile_id)
+    except TextFile.DoesNotExist:
+        return JsonResponse({"success": False, "error": "TextFile not found"}, status=404)
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse the JSON body
+            slide_text = data.get('text')  # Retrieve the 'text' field from the JSON payload
+
+            if not slide_text:
+                return JsonResponse({"success": False, "error": "Slide text is required"}, status=400)
+
+            clip = TextLineVideoClip.objects.create(
+                text_file=textfile,
+                slide=slide_text,
+                remaining=slide_text,
+            )
+            return JsonResponse({"success": True, "id": clip.id})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON payload"}, status=400)
+
+    return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
 
 
