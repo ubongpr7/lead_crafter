@@ -120,7 +120,7 @@ def edit_subcliphtmx(request,id):
     return JsonResponse({"success": False, "error": ''}, status=500)
 
 
-@csrf_exempt  # Use only if CSRF tokens are not passed; otherwise, keep CSRF enabled.
+@csrf_exempt 
 def add_text_clip_line(request, textfile_id):
     try:
         textfile = TextFile.objects.get(id=textfile_id)
@@ -148,6 +148,30 @@ def add_text_clip_line(request, textfile_id):
 
     return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
+
+@csrf_exempt 
+def edit_text_clip_line(request, id):
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body) 
+            slide_text = data.get('text') 
+
+            if not slide_text:
+                return JsonResponse({"success": False, "error": "Slide text is required"}, status=400)
+
+            clip = TextLineVideoClip.objects.get(id=id )
+            clip.slide=slide_text
+            clip.remaining=slide_text
+            clip.save()
+            for subclip in clip.subclips.all():
+                subclip.delete()
+            return JsonResponse({"success": True, "id": clip.id})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON payload"}, status=400)
+
+    return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
 
 
@@ -663,11 +687,7 @@ def add_leads(request,textfile_id):
     text_file=TextFile.objects.get(id=textfile_id)
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
     no_of_slides= len(line_clips)
-    if line_clips:
-        clip_line_nums=[clip.line_number for clip in line_clips ]
-        max_lin_num=max(clip_line_nums)
-    else: 
-        max_lin_num=0
+    
     context={
         'text_file':text_file,
         'clips':line_clips,

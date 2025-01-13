@@ -52,7 +52,7 @@
             <tr>
               <td>Subtitle {{ forloop.counter }}</td>
                 <td>
-                 <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.text}}</textarea></td>
+                 <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.slide}}</textarea></td>
                  <div class="wrapper" id="wrapper_{{forloop.counter}}">
                   <div style="width: 100%;" class="tag-box">
                       <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
@@ -236,33 +236,33 @@ function addSlide() {
         </td>`;
 
     // Wait for the DOM to update before attaching the event listeners
+
     setTimeout(() => {
-        handleEnterToHide(currentNumber);
+        handleEnterToHide(currentNumber,);
     }, 0); // Zero delay ensures the DOM has updated.
 }
 
 </script>
 
 <script>
+  let edit=false
 function handleEnterToHide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper = document.getElementById(`wrapper_${currentNumber}`);
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
     const edit_ = document.getElementById(`edit_${currentNumber}`);
     const delete_ = document.getElementById(`delete_${currentNumber}`);
-
+    const clip_id=slide_span.dataset.id
     textarea.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
             event.preventDefault();
 
             if (textarea.value) {
-                // Hide textarea and show other elements
                 textarea.style.display = 'none';
                 wrapper.style.display = 'flex';
                 edit_.style.display = 'flex';
                 slide_span.textContent = textarea.value;
 
-                // Create payload and send it to the backend
                 const payload = JSON.stringify({
                     text: textarea.value, // Send the textarea value
                 });
@@ -275,7 +275,9 @@ function handleEnterToHide(currentNumber) {
 
                         if (response.success) {
                             slide_span.textContent = textarea.value;
+                            slide_span.dataset.id=response.id
                             alert('Text submitted successfully!');
+
                         } else {
                             alert(response.error || 'Failed to submit the text.');
                         }
@@ -287,8 +289,13 @@ function handleEnterToHide(currentNumber) {
                 xhr.addEventListener('error', function () {
                     alert('An error occurred during the request.');
                 });
-
-                xhr.open('POST', `/text/add_text_clip_line/{{text_file.id}}/`);
+                if (clip_id){
+                  
+                  xhr.open('POST', `/text/edit_text_clip_line/${clip_id}/`);
+                }{
+                  
+                  xhr.open('POST', `/text/add_text_clip_line/{{text_file.id}}/`);
+                }
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
                 xhr.send(payload);
