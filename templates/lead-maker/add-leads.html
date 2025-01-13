@@ -54,25 +54,23 @@
                 <td>
                  <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.slide}}</textarea></td>
                  <div class="wrapper" id="wrapper_{{forloop.counter}}">
-                  <div  class="tag-box">
-                      <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
+                    <div  class="tag-box">
+                        <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
 
-                          {% for subclip in clip.subclips.all %}
-                          <li data-id="{{subclip.id}}"
-                          data-clipid="{{subclip.video_clip.id}}"
-                          data-cat_id="{{subclip.video_clip.category.id}}"
-                          data-name="{{subclip.video_clip.title}}"
-                          data-current_file="{{subclip.get_video_file_name}}"
-                          id="saved_li_{{subclip.id}}"
-                              onclick="editCurrentLi(this)">
-                              {{subclip.subtittle}}</li>
-                          {% endfor %}
-                          <input type="number" hidden id="clip_id_{{subclip.id}}" value="{{subclip.video_clip.id}}">
-                          <span id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}"
-                              data-id="{{clip.id}}">{{ clip.remaining }}</span>
-                      </ul>
-                      <input id="remaining_{{clip.id}}" name="remaining_{{forloop.counter}}" hidden type="text">
-                  </div>
+                            {% for subclip in clip.subclips.all %}
+                            <li data-id="{{subclip.id}}"
+                        
+                            data-current_file="{{subclip.get_video_file_name}}"
+                            id="saved_li_{{subclip.id}}"
+                                onclick="editCurrentLi(this)">
+                                {{subclip.subtittle}}</li>
+                            {% endfor %}
+                            <input type="number" hidden id="clip_id_{{subclip.id}}" value="{{subclip.video_clip.id}}">
+                            <span id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}"
+                                data-id="{{clip.id}}">{{ clip.remaining }}</span>
+                        </ul>
+                        <input id="remaining_{{clip.id}}" name="remaining_{{forloop.counter}}" hidden type="text">
+                    </div>
                   <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
               </div>
                 </td> 

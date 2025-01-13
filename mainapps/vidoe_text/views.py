@@ -235,8 +235,8 @@ def delete_background_music(request, id):
 def delete_clip(request, id):
     try:
         clip = get_object_or_404(TextLineVideoClip, id=id)
-
-        clip.video_file_path.delete()
+        if clip.video_file:
+            clip.video_file.delete()
         clip.delete()
 
         return JsonResponse({"message": "Music deleted successfully!"}, status=200)
