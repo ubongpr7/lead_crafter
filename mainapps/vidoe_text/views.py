@@ -8,7 +8,8 @@ from mainapps.vidoe_text.decorators import (
     check_user_credits,
 )
 from mainapps.vidoe_text.font_processor import handle_font_upload
-from .models import TextFile, TextLineVideoClip
+from mainapps.vidoe_text.video_converter import convert_mov_to_mp4
+from .models import SubClip, TextFile, TextLineVideoClip
 import os
 from django.http import HttpResponse, JsonResponse, Http404
 from django.conf import settings
@@ -21,8 +22,161 @@ from django.core.files.base import ContentFile
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from django.apps import apps
+from django.views.decorators.csrf import csrf_exempt
+
 import tempfile
 
+
+
+def add_subcliphtmx(request, id):
+    text_clip = get_object_or_404(TextLineVideoClip, id=id)
+
+    if request.method == "POST":
+        remaining = request.POST.get("remaining")
+        file_ = request.FILES.get("slide_file")
+        text = request.POST.get("slide_text")
+
+        subclip = None
+
+        if file_:
+            file_extension = os.path.splitext(file_.name)[1].lower()
+
+            if file_extension == ".mov":
+                try:
+                    converted_file_path = convert_mov_to_mp4(file_)
+
+                    with open(converted_file_path, "rb") as converted_file:
+                        file_content = converted_file.read()
+                        subclip = SubClip.objects.create(
+                            subtittle=text,
+                            video_file=ContentFile(file_content, name=os.path.basename(converted_file_path)),
+                            main_line=text_clip,
+                        )
+
+                    os.remove(converted_file_path)
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({"success": False, "error": str(e)}, status=500)
+            else:
+                subclip = SubClip.objects.create(
+                    subtittle=text,
+                    video_file=file_,
+                    main_line=text_clip,
+                )
+
+        if subclip:
+            text_clip.remaining = remaining
+            text_clip.save()
+
+            return JsonResponse(
+                {
+                    "success": True,
+                    "id": subclip.id,
+                    "current_file": subclip.get_video_file_name(),
+                }
+            )
+        return JsonResponse({"success": False, "error": "Failed to create subclip."}, status=400)
+
+    return JsonResponse({"success": False, "error": ''}, status=500)
+    
+def edit_subcliphtmx(request,id):
+    
+    subclip= SubClip.objects.get(id= id)
+    
+    if request.method =='POST':
+        file_=request.FILES.get(f'slide_file')
+        if subclip.video_file:
+            subclip.video_file.delete(save=False)
+        if file_:
+            file_extension = os.path.splitext(file_.name)[1].lower()
+
+            if file_extension == ".mov":
+                try:
+                    converted_file_path = convert_mov_to_mp4(file_)
+
+                    with open(converted_file_path, "rb") as converted_file:
+                        file_content = converted_file.read()
+                        subclip.video_file=ContentFile(file_content, name=os.path.basename(converted_file_path))
+
+
+                    os.remove(converted_file_path)
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({"success": False, "error": str(e)}, status=500)
+            else:
+                subclip.video_file=file_
+        
+        subclip.save()
+
+        return JsonResponse({
+            "success": True,
+            "id": subclip.id,
+                "current_file": subclip.get_video_file_name(),
+            
+            
+        })
+    return JsonResponse({"success": False, "error": ''}, status=500)
+
+def add_text_clip_line(request, textfile_id):
+    textfile=TextFile.objects.get(id=textfile_id)
+    if request.method =="POST":
+        slide_text=request.POST.get('slide_text')
+        clip= TextLineVideoClip.objects.create(
+            text_file=textfile,
+            slide=slide_text,
+            remaining=slide_text,
+            
+        )
+        return JsonResponse({
+            "success": True,
+            "id": clip.id,
+            
+            
+        })
+    return JsonResponse({"success": False, "error":''}, status=500)
+
+
+
+
+def delete_textfile(request, textfile_id):
+    textfile=TextFile.objects.get(id=textfile_id)
+    if request.method=='POST':
+        try:
+            textfile.delete()
+
+            return HttpResponse(status=204)
+        except Exception as e:
+            pass 
+
+    return render(request, "partials/confirm_delete.html", {"item":textfile })
+
+def manage_textfile(request):
+    user =request.user
+    textfiles=TextFile.objects.filter(user=user)
+    return render(request,'assets/text_files.html', {'textfiles':textfiles})
+
+
+@csrf_exempt
+def reset_subclip(request, id):
+    if request.method == 'POST':
+        textfile_id = request.POST.get('textfile_id')
+        text_clip = TextLineVideoClip.objects.get(id=id)
+        text_clip.remaining=text_clip.slide
+        text_clip.save()
+        for subclip in text_clip.subclips.all():
+            if subclip.video_file:
+                subclip.video_file.delete(save=True)
+            subclip.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+def check_text_clip(request,textfile_id):
+    textfile=TextFile.objects.get(id=textfile_id)
+    ids_of_no_subclip=[]
+    for clip in textfile.video_clips.all():
+        if not clip.remaining.strip()=='':
+            ids_of_no_subclip.append(clip.id)
+    return JsonResponse(ids_of_no_subclip,safe=False)
 
 @require_http_methods(["DELETE"])
 def delete_background_music(request, id):

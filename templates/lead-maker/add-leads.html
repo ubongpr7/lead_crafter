@@ -158,7 +158,11 @@ function deleteSlide(btn) {
     slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += 
         `<td>
-          <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text_${currentNumber}" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+          <form id="textarea_form_${currentNumber}">
+            {% csrf_token %}
+
+          <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
+          </form>
           <div class="wrapper" id="wrapper_${currentNumber}">
           
             <div  style="width: 100%;" class="tag-box">
@@ -189,26 +193,61 @@ function deleteSlide(btn) {
 </script>
 
 <script>
+
   function handleEnterToHide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper=document.getElementById(`wrapper_${currentNumber}`);
     const slide_span=document.getElementById(`slide_span_${currentNumber}`);
     const edit_=document.getElementById(`edit_${currentNumber}`);
     const delete_=document.getElementById(`edit_${currentNumber}`);
+    const textarea_form_=document.getElementById(`textarea_form_${currentNumber}`);
+    const form = document.getElementById(`textarea_form_${currentNumber}`);
+
 
     textarea.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') {
         event.preventDefault();
+        if (textarea.value){
+          
+          textarea.style.display = 'none';
+          wrapper.style.display='flex'
+          // delete_.style.display = 'none';
+          edit_.style.display='flex'
+          slide_span.textContent=textarea.value
+          const formData = new FormData(form);
 
-        textarea.style.display = 'none';
-        wrapper.style.display='flex'
-        // delete_.style.display = 'none';
-        edit_.style.display='flex'
-        slide_span.textContent=textarea.value
-        
-        
-      }
-    });
+          const xhr = new XMLHttpRequest();
+
+          xhr.addEventListener('load', function () {
+              if (xhr.status === 200) {
+                  const response = JSON.parse(xhr.responseText);
+
+                  if (response.success) {
+                      slide_span.textContent = textarea.value;
+
+                      alert('Form submitted successfully!');
+                  } else {
+                      alert(response.error || 'Failed to submit the form.');
+                  }
+              } else {
+                  alert('An error occurred while submitting the form.');
+              }
+          });
+
+          xhr.addEventListener('error', function () {
+              alert('An error occurred during the request.');
+          });
+
+          xhr.open('POST', '/text/add_text_clip_line/{{text_file.id}}/');
+          xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); 
+          xhr.send(formData);
+
+              }
+
+              
+              
+            }
+          });
   }
   function EditeSlide(currentNumber) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
