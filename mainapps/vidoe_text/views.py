@@ -139,7 +139,6 @@ def add_text_clip_line(request, textfile_id):
                 text_file=textfile,
                 slide=slide_text,
                 remaining=slide_text,
-                line_number=2
             )
             return JsonResponse({"success": True, "id": clip.id})
 
