@@ -51,7 +51,7 @@
             {% for clip in clips %}
             <tr id="tr_{{clip.id}}">
               <td>Subtitle {{ forloop.counter }}</td>
-                <td>
+                <td id="highlightable_{{forloop.counter}}">
                   <div>
 
                         <textarea style="display: none;"  name="slide_text" class="form-control tab-textarea" aria-describedby="textarea"  id="slide_text_{{forloop.counter}}"  >{{clip.slide}}</textarea>
