@@ -170,12 +170,15 @@ function deleteSlide(btn) {
           </div>
         </td>
          <td>
-                <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
-                  <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
-                </a>
-                <a href="#!" style="display:none" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
-                  <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
-                </a>
+          <div style="display:flex; flex-direction:column;">
+            <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
+              <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
+            </a>
+            <a href="#!" style="display:none" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
+              <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
+            </a>
+          
+            </div>
          </td>`;
  
     
@@ -217,7 +220,7 @@ function deleteSlide(btn) {
         wrapper.style.display='flex'
         // delete_.style.display = 'none';
         edit_.style.display='none'
-        wrapper.style.display='flex'
+        wrapper.style.display='none'
 
         
       };
