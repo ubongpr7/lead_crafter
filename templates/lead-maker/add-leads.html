@@ -52,27 +52,30 @@
             <tr id="tr_{{clip.id}}">
               <td>Subtitle {{ forloop.counter }}</td>
                 <td>
-                 <textarea style="display: none;"  name="slide_text" class="form-control tab-textarea" aria-describedby="textarea"  id="slide_text_{{forloop.counter}}"  >{{clip.slide}}</textarea></td>
-                 <div class="wrapper" id="wrapper_{{forloop.counter}}">
-                    <div  class="tag-box">
-                        <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
+                  <div>
 
-                            {% for subclip in clip.subclips.all %}
-                            <li data-id="{{subclip.id}}"  
-                              data-current_file="{{subclip.get_video_file_name}}"
-                              id="saved_li_{{subclip.id}}"
-                                  onclick="editCurrentLi(this)">
-                                  {{subclip.subtittle}}
-                              </li>
-                            {% endfor %}
-                            <span id="slide_span_{{forloop.counter}}" data-num="{{clip.get_number_of_subclip}}"
-                                data-id="{{clip.id}}">{{ clip.remaining }}
-                              </span>
-                        </ul>
-                        <!-- <input id="remaining_{{clip.id}}" name="remaining_" hidden type="text"> -->
+                        <textarea style="display: none;"  name="slide_text" class="form-control tab-textarea" aria-describedby="textarea"  id="slide_text_{{forloop.counter}}"  >{{clip.slide}}</textarea></td>
+                        <div class="wrapper" id="wrapper_{{forloop.counter}}">
+                          <div  class="tag-box">
+                              <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
+      
+                                  {% for subclip in clip.subclips.all %}
+                                  <li data-id="{{subclip.id}}"  
+                                    data-current_file="{{subclip.get_video_file_name}}"
+                                    id="saved_li_{{subclip.id}}"
+                                        onclick="editCurrentLi(this)">
+                                        {{subclip.subtittle}}
+                                    </li>
+                                  {% endfor %}
+                                  <span id="slide_span_{{forloop.counter}}" data-num="{{clip.get_number_of_subclip}}"
+                                      data-id="{{clip.id}}">{{ clip.remaining }}
+                                    </span>
+                              </ul>
+                              <!-- <input id="remaining_{{clip.id}}" name="remaining_" hidden type="text"> -->
+                          </div>
+                        <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
                     </div>
-                  <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
-              </div>
+                  </div>
                 </td> 
                      
                 
@@ -159,6 +162,7 @@ function addSlide() {
     slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += `
         <td>
+          <div>
             <textarea 
                 style="font-size: 19px;"
                 id="slide_text_${currentNumber}" 
@@ -168,17 +172,17 @@ function addSlide() {
                 class="form-control tab-textarea" 
                 aria-describedby="textarea"
             ></textarea>
-          <div class="wrapper" id="wrapper_${currentNumber}" style="display:none;">
-            <div style="width: 100%;" class="tag-box">
-                <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
-                    <span id="slide_span_${currentNumber}"></span>
-                </ul>
-                <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
+            <div class="wrapper" id="wrapper_${currentNumber}" style="display:none;">
+              <div style="width: 100%;" class="tag-box">
+                  <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
+                      <span id="slide_span_${currentNumber}"></span>
+                  </ul>
+                  <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
+              </div>
             </div>
           </div>
         </td>
         <td>
-          <div style="display:flex; flex-direction:column;">
             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
             </a>
@@ -189,14 +193,12 @@ function addSlide() {
                onclick="EditeSlide(${currentNumber})">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
-          </div>
         </td>`;
 
-    // Wait for the DOM to update before attaching the event listeners
 
     setTimeout(() => {
         handleEnterToHide(currentNumber,);
-    }, 0); // Zero delay ensures the DOM has updated.
+    }, 0); 
 }
 
 </script>
