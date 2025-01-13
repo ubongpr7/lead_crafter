@@ -202,8 +202,6 @@ function addSlide() {
     slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += `
         <td>
-          <form id="textarea_form_${currentNumber}">
-            {% csrf_token %}
             <textarea 
                 style="font-size: 19px;"
                 id="slide_text_${currentNumber}" 
@@ -213,7 +211,6 @@ function addSlide() {
                 class="form-control tab-textarea" 
                 aria-describedby="textarea"
             ></textarea>
-          </form>
           <div class="wrapper" id="wrapper_${currentNumber}" style="display:none;">
             <div style="width: 100%;" class="tag-box">
                 <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
@@ -253,7 +250,6 @@ function handleEnterToHide(currentNumber) {
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
     const edit_ = document.getElementById(`edit_${currentNumber}`);
     const delete_ = document.getElementById(`delete_${currentNumber}`);
-    const form = document.getElementById(`textarea_form_${currentNumber}`);
 
     textarea.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
@@ -266,13 +262,10 @@ function handleEnterToHide(currentNumber) {
                 edit_.style.display = 'flex';
                 slide_span.textContent = textarea.value;
 
-                // Check if the form is valid before creating FormData
-                if (!(form instanceof HTMLFormElement)) {
-                    console.error('Invalid form element:', form);
-                    return;
-                }
-
-                const formData = new FormData(form);
+                // Create payload and send it to the backend
+                const payload = JSON.stringify({
+                    text: textarea.value, // Send the textarea value
+                });
 
                 const xhr = new XMLHttpRequest();
 
@@ -282,12 +275,12 @@ function handleEnterToHide(currentNumber) {
 
                         if (response.success) {
                             slide_span.textContent = textarea.value;
-                            alert('Form submitted successfully!');
+                            alert('Text submitted successfully!');
                         } else {
-                            alert(response.error || 'Failed to submit the form.');
+                            alert(response.error || 'Failed to submit the text.');
                         }
                     } else {
-                        alert('An error occurred while submitting the form.');
+                        alert('An error occurred while submitting the text.');
                     }
                 });
 
@@ -296,8 +289,9 @@ function handleEnterToHide(currentNumber) {
                 });
 
                 xhr.open('POST', `/text/add_text_clip_line/{{text_file.id}}/`);
+                xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-                xhr.send(formData);
+                xhr.send(payload);
             }
         }
     });
