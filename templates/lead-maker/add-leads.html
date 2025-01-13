@@ -71,7 +71,7 @@
                                       data-id="{{clip.id}}">{{ clip.remaining }}
                                     </span>
                               </ul>
-                              <!-- <input id="remaining_{{clip.id}}" name="remaining_" hidden type="text"> -->
+                              <input id="remaining_{{forloop.counter}}" name="remaining_" hidden type="text">
                           </div>
                         <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
                     </div>
@@ -115,7 +115,22 @@
       </form>
     </div>
   </section>
-  
+  <div class="popup-form popup-modal" id="add-subclip-popup">
+    <div class="popup-container">
+        <div class="close-btnx close-btn" onclick="closeModal()">
+            <button class="close-popup">
+                X
+            </button>
+        </div>
+        <div id="modal-cont">
+
+        </div>
+    </div>
+</div>
+<script>
+    
+</script>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -193,7 +208,7 @@ function addSlide() {
     document.getElementById('no_of_slides').value = currentNumber;
     slideCell.innerText = `Subtitle ${currentNumber}`;
     newRow.innerHTML += `
-        <td>
+        <td id="highlightable_${currentNumber}">
           <div>
             <textarea 
                 style="font-size: 19px;"
@@ -209,8 +224,10 @@ function addSlide() {
                   <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
                       <span id="slide_span_${currentNumber}"></span>
                   </ul>
-                  <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
+                  <input id="remaining_${currentNumber}" name="remaining_" hidden type="text">
               </div>
+              <div id="error-message_${currentNumber}" style="text-transform: capitalize;" class="error-message"></div>
+
             </div>
           </div>
         </td>
@@ -232,11 +249,12 @@ function addSlide() {
         document.getElementById(`slide_text_${currentNumber}`).focus()
     setTimeout(() => {
         handleEnterToHide(currentNumber,);
+        handleSelection(currentNumber);
     }, 0); 
 }
-
+    
 </script>
-
+<!-- lines -->
 <script>
 
   let edit=false
@@ -350,10 +368,135 @@ document.addEventListener('DOMContentLoaded',()=>{
     addSlide()
   }else{
     for (let index = 1; index <= document.getElementById('no_of_slides').value; index++) {
-      handleEnterToHide(index)       
+      handleEnterToHide(index);  
+      handleSelection(index); 
     }
   }
 })
+</script>
+<script>
+    
+
+function handleSelection(cNumber) {
+              const wrapper = document.querySelector(`#wrapper_${cNumber}`);
+                const span = wrapper.querySelector("span");
+                const ul = wrapper.querySelector(`#list-of-tags_${cNumber}`);
+                const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
+                const errorMessage = wrapper.querySelector(`#error-message_${cNumber}`);
+
+        submitCheck=true
+        document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
+            const selection = window.getSelection();
+            if (selection && selection.toString().trim() && wrapper.style.display === 'flex') {
+                const selectedText = selection.toString().trim();
+                const fullText = span.innerText.trim();
+                const words = fullText.split(/\s+/);
+                const selectedWords = selectedText.split(/\s+/);
+
+                const startsCorrectly = fullText.startsWith(selectedText);
+                const isWordAligned = selectedWords.every(word => words.includes(word));
+
+                if (startsCorrectly && isWordAligned) {
+                    errorMessage.innerText = "";
+
+                    clip_id = cNumber
+                    const li = document.createElement("li");
+                    li.innerText = selectedText;
+                    li.dataset.id = cNumber;
+                    li.disabled=true
+                    li.onclick = function () {
+                            editCurrentLi(li);
+                        };
+                        num = span.dataset.num
+                        li.id=`current_li_${cNumber}`
+
+                    ul.insertBefore(li, span);
+
+                    const remainingText = fullText.slice(selectedText.length).trim();
+                    remainingInput.value = remainingText;
+                    span.innerText = remainingText;
+                    openPopup(cNumber, selectedText, remainingText);
+                    li.style.cursor='wait'
+
+                    
+
+
+                } else {
+                    // errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
+                    errorMessage.innerText = "Highlighting Must Start From The First Unassigned Word Of The Sentence.";
+                }
+            }
+
+            selection.removeAllRanges();
+        });
+    }
+    
+    function openPopup(cNumber, selectedText, remainingText) {
+    const modalContainer = document.getElementById('modal-cont');
+    const popup = document.getElementById('add-subclip-popup');
+    
+    if (modalContainer && popup) {
+        modalContainer.innerHTML=`
+        
+<form   class="popup-content" method="POST" enctype="multipart/form-data"
+ id="add-subclip-form-${cNumber}"
+ 
+    style="grid-template-columns: 0.7fr 1fr;width:100%;">
+    <br>
+    {% csrf_token %}
+
+    <div id="submit-cont">
+        <div class="form-group">
+            <input id="slide_text" hidden  name="slide_text" value="${selectedText}" readonly required class="form-input">
+        </div>
+        
+        <input id="clipId" type="number" hidden name="clipId" value="7">
+        
+
+        <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
+        <div style="display: grid;grid-template-columns: 0.7fr 1fr;border-radius: 8px;border: 1px solid #00000080;overflow: hidden;"  class="form-grid-cont">
+        <div class="grid-item title  form-grid-item begin column-1"><span style="height:50px;align-items: center;">Upload Scene</span></div>
+        <div class="grid-item title form-grid-item end column-2"><span style="height:50px;align-items: center;margin-left: -18px;">Upload Scene From Assets Folder</span></div>
+        <div class="form-grid-item main-item">
+            <div  class="form-group" style="height:100%;">
+                <div class="upload-container">
+                <label for="slide_file" class="upload-label">
+                    <i class="ri-upload-line"></i>
+                    <span id="upload-text">Choose File</span>
+                    </label>
+                    <i id="clear-file" style="display:none" onclick="clearFileInput()" class="ri-close-circle-line"></i>
+                <input type="file" onchange="saveInput(this)" id="slide_file" name="slide_file" class="upload-input" accept="video/*">
+
+            </div>
+            
+            <p id="currentFile"></p>
+        
+        </div>
+        </div>
+         <p style="color:red; font-size:13px;" id="error-slide"></p>
+        </div>
+        </div>
+    </div>
+    </div>
+    <div style="align-items: end;" class="form-group">
+        <button type="submit" id="submit-clip" class="submit-btn">Submit</button>
+    </div>
+</form>
+        `;
+        const errorElements = document.querySelectorAll('[id^="error"]');
+
+        errorElements.forEach(element => {
+            element.textContent = "";
+        });
+        };
+        
+        popup.style.display = 'flex';
+        document.getElementById(`add-subclip-form-${cNumber}`).addEventListener('submit', (e) => {
+            e.preventDefault();
+            // attachValidation(`add-subclip-form-${cNumber}`, cNumber);
+        })
+    }
+
 </script>
 
 {% endblock content %}

@@ -192,6 +192,15 @@ def manage_textfile(request):
     return render(request,'assets/text_files.html', {'textfiles':textfiles})
 
 
+def get_clips_id(request, textfile_id):
+    text_file = get_object_or_404(TextFile, id=textfile_id)
+    clips = TextLineVideoClip.objects.filter(text_file=text_file).values("id")
+    
+    clip_ids = [clip["id"] for clip in clips]
+    return JsonResponse(clip_ids, safe=False)
+
+
+
 @csrf_exempt
 def reset_subclip(request, id):
     if request.method == 'POST':
