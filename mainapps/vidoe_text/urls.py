@@ -13,7 +13,7 @@ urlpatterns = [
         name="progress_page",
     ),
     path("add_text_clip_line/<str:textfile_id>/", views.add_text_clip_line, name="add_text_clip_line"),
-    path("edit_text_clip_line/<str:textfile_id>/", views.edit_text_clip_line, name="edit_text_clip_line"),
+    path("edit_text_clip_line/<str:id>/", views.edit_text_clip_line, name="edit_text_clip_line"),
     path("progress/<str:text_file_id>/", views.progress, name="progress"),
     path(
         "process-background-music/<str:textfile_id>/",
