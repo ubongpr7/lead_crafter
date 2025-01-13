@@ -49,37 +49,44 @@
           <tbody>
             {% if clips %}
             {% for clip in clips %}
-            <tr>
+            <tr id="tr_{{clip.id}}">
               <td>Subtitle {{ forloop.counter }}</td>
                 <td>
-                 <textarea style="display: none;"  name="saved_slide_text_{{forloop.counter}}" class="form-control tab-textarea" aria-describedby="textarea"    >{{clip.slide}}</textarea></td>
+                 <textarea style="display: none;"  name="slide_text" class="form-control tab-textarea" aria-describedby="textarea"  id="slide_text_{{forloop.counter}}"  >{{clip.slide}}</textarea></td>
                  <div class="wrapper" id="wrapper_{{forloop.counter}}">
                     <div  class="tag-box">
                         <ul style="margin: 0;" id="list-of-tags_{{forloop.counter}}" class="list-of-tags">
 
                             {% for subclip in clip.subclips.all %}
-                            <li data-id="{{subclip.id}}"
-                        
-                            data-current_file="{{subclip.get_video_file_name}}"
-                            id="saved_li_{{subclip.id}}"
-                                onclick="editCurrentLi(this)">
-                                {{subclip.subtittle}}</li>
+                            <li data-id="{{subclip.id}}"  
+                              data-current_file="{{subclip.get_video_file_name}}"
+                              id="saved_li_{{subclip.id}}"
+                                  onclick="editCurrentLi(this)">
+                                  {{subclip.subtittle}}
+                              </li>
                             {% endfor %}
-                            <input type="number" hidden id="clip_id_{{subclip.id}}" value="{{subclip.video_clip.id}}">
-                            <span id="slide_span_{{clip.id}}" data-num="{{clip.get_number_of_subclip}}"
-                                data-id="{{clip.id}}">{{ clip.remaining }}</span>
+                            <span id="slide_span_{{forloop.counter}}" data-num="{{clip.get_number_of_subclip}}"
+                                data-id="{{clip.id}}">{{ clip.remaining }}
+                              </span>
                         </ul>
-                        <input id="remaining_{{clip.id}}" name="remaining_{{forloop.counter}}" hidden type="text">
+                        <!-- <input id="remaining_{{clip.id}}" name="remaining_" hidden type="text"> -->
                     </div>
                   <div id="error-message_{{forloop.counter}}" style="text-transform: capitalize;" class="error-message"></div>
               </div>
                 </td> 
                      
                 
-              <td>
-                <a href="#!" class="delete-row-btn" onclick="deleteSavedSlide('{{clip.id}}')">
+              <td id='action_{{forloop.counter}}'> 
+                <a href="#!" class="delete-row-btn"id="delete_{{forloop.counter}}" onclick="deleteSavedSlide('{{clip.id}}')">
                   <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
+                <a href="#!" 
+               style="display:none; align-items:center;" 
+               class="delete-row-btn" 
+               id="edit_{{forloop.counter}}" 
+               onclick="EditeSlide('{{forloop.counter}}')">
+              <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
+            </a>
               </td>
             </tr>
 
@@ -106,6 +113,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <!-- <script src="{% static 'lead-maker/js/createLead.js' %}" defer></script> -->
 <script>
+  
 function savedInputChangeFunc(id) {
     const inputFile=document.getElementById(`saved_slide_file_${id}`)
     const fileName = inputFile.files.length > 0 ? inputFile.files[0].name.slice(20) : 'Choose file';
@@ -120,6 +128,10 @@ function savedInputChangeFunc(id) {
 document.addEventListener('DOMContentLoaded',()=>{
   if (document.getElementById('no_of_slides').value == 0){
     addSlide()
+  }else{
+    for (let index = 1; index <= document.getElementById('no_of_slides').value; index++) {
+      handleEnterToHide(index)       
+    }
   }
 })
 let currentNumber = document.getElementById('no_of_slides').value
@@ -131,7 +143,7 @@ function deleteSavedSlide(clipId) {
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             success: function(response) {
-                location.reload();  
+              document.getElementById(`tr_${clipId}`).style.display='none'
             },
             error: function(xhr, status, error) {
                 alert("Error deleting music: " + error);
@@ -144,50 +156,6 @@ function deleteSlide(btn) {
     row.parentNode.removeChild(row);
 }
 
-//   function addSlide() {
-//     let currentNumber = document.getElementById('no_of_slides').value
-
-//     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-//     var newRow = table.insertRow(-1);
-//     var slideCell = newRow.insertCell(0);
-//     currentNumber++
-    
-//     document.getElementById('no_of_slides').value=currentNumber
-//     slideCell.innerText = `Subtitle ${currentNumber}`;
-//     newRow.innerHTML += 
-//         `<td>
-//           <form id="textarea_form_${currentNumber}">
-//             {% csrf_token %}
-
-//           <textarea style="font-size: 19px;"id="slide_text_${currentNumber}" type="text" name="slide_text" value="" placeholder="Type Your Sentence Here" class="form-control tab-textarea" aria-describedby="textarea"></textarea>
-//           </form>
-//           <div class="wrapper" id="wrapper_${currentNumber}">
-          
-//             <div  style="width: 100%;" class="tag-box">
-//                 <ul style="margin: 0;" id="list-of-tags_${currentNumber}" class="list-of-tags">
-//                     <span id="slide_span_${currentNumber}"></span>
-//                 </ul>
-//                 <input id="remaining_${currentNumber}" name="remaining_${currentNumber}" hidden type="text">
-//             </div>
-//           </div>
-//         </td>
-//          <td>
-//           <div style="display:flex; flex-direction:column;">
-//             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
-//               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
-//             </a>
-//             <a href="#!" style="display:none; align-items:center;" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
-//               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
-//             </a>
-          
-//             </div>
-//          </td>`;
- 
-    
-//          const noFileTexts = document.querySelectorAll('.btn.get-start.browse-btn');
-//          handleEnterToHide(currentNumber)
-    
-// }
 function addSlide() {
     let currentNumber = document.getElementById('no_of_slides').value;
 

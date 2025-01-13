@@ -218,17 +218,13 @@ def check_text_clip(request,textfile_id):
 @require_http_methods(["DELETE"])
 def delete_background_music(request, id):
     try:
-        # Get the BackgroundMusic object with the given id
         background_music = get_object_or_404(BackgroundMusic, id=id)
 
-        # Delete the object
         background_music.music.delete()
         background_music.delete()
 
-        # Return a success response
         return JsonResponse({"message": "Music deleted successfully!"}, status=200)
     except Exception as e:
-        # Return an error response in case something goes wrong
         return JsonResponse({"error": str(e)}, status=400)
 
 @require_http_methods(["DELETE"])
@@ -245,10 +241,8 @@ def delete_clip(request, id):
 
 
 def check_credits(api_key):
-    # Define the endpoint for fetching user information
     url = "https://api.elevenlabs.io/v1/usage/character-stats"
 
-    # Set the headers with the API key for authentication
     headers = {
         "xi-api-key": api_key,
     }
