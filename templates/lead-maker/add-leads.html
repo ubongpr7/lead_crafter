@@ -387,7 +387,7 @@ function handleSelection(cNumber) {
         submitCheck=true
         document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
             const selection = window.getSelection();
-            if (selection && selection.toString().trim() && wrapper.style.display === 'flex') {
+            if (selection && selection.toString().trim() ) {
                 const selectedText = selection.toString().trim();
                 const fullText = span.innerText.trim();
                 const words = fullText.split(/\s+/);
