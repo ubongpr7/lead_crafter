@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <!-- subclip  -->
 <script>
     
-    function closeModal(cNumber) {
+    function closeModal() {
         const errorElements = document.querySelectorAll('[id^="error"]');
         sessionStorage.clear();
 
@@ -388,9 +388,9 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('add-subclip-popup').style.display = 'none';
         
         const formClipID = document.getElementById('clipId').value;
-        const ulElement = document.getElementById(`list-of-tags_${cNumber}`);
-        const spanElement = document.getElementById(`slide_span_${cNumber}`);
-        const liItem=document.getElementById(`saved_li_${cNumber}`);
+        const ulElement = document.getElementById(`list-of-tags_${formClipID}`);
+        const spanElement = document.getElementById(`slide_span_${formClipID}`);
+        const liItem=document.getElementById(`saved_li_${formClipID}`);
         if (ulElement && ulElement.children.length > 1) {
             const secondToLastLi = ulElement.children[ulElement.children.length - 2];
             const secondToLastLiText = secondToLastLi.textContent;
@@ -482,7 +482,7 @@ function handleSelection(cNumber) {
             <input id="slide_text" hidden  name="slide_text" value="${selectedText}" readonly required class="form-input">
         </div>
         
-        <input id="clipId" type="number" hidden name="clipId" value="7">
+        <input id="clipId" type="number" hidden name="clipId" value="${cNumber}">
         
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
