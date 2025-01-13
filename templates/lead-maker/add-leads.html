@@ -170,10 +170,10 @@ function deleteSlide(btn) {
           </div>
         </td>
          <td>
-                <a href="#!" class="delete-row-btn" onclick="deleteSlide(this)">
+                <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
                   <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
                 </a>
-                <a href="#!" style="display:none" class="delete-row-btn" onclick="deleteSlide(this)">
+                <a href="#!" style="display:none" class="delete-row-btn" id="edit_${currentNumber}" onclick="EditeSlide(${currentNumber})">
                   <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
                 </a>
          </td>`;
@@ -190,6 +190,8 @@ function deleteSlide(btn) {
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper=document.getElementById(`wrapper_${currentNumber}`);
     const slide_span=document.getElementById(`slide_span_${currentNumber}`);
+    const edit_=document.getElementById(`edit_${currentNumber}`);
+    const delete_=document.getElementById(`edit_${currentNumber}`);
 
     textarea.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') {
@@ -197,11 +199,29 @@ function deleteSlide(btn) {
 
         textarea.style.display = 'none';
         wrapper.style.display='flex'
+        // delete_.style.display = 'none';
+        edit_.style.display='flex'
         slide_span.textContent=textarea.value
+        
         
       }
     });
   }
+  function EditeSlide(currentNumber) {
+    const textarea = document.getElementById(`slide_text_${currentNumber}`);
+    const wrapper=document.getElementById(`wrapper_${currentNumber}`);
+    const slide_span=document.getElementById(`slide_span_${currentNumber}`);
+    const edit_=document.getElementById(`edit_${currentNumber}`);
+    const delete_=document.getElementById(`edit_${currentNumber}`);
+    textarea.style.display = 'flex';
+        wrapper.style.display='flex'
+        // delete_.style.display = 'none';
+        edit_.style.display='none'
+        wrapper.style.display='flex'
+
+        
+      };
+  
 
 </script>
 
