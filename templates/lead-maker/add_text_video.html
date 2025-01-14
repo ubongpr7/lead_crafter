@@ -521,7 +521,7 @@ console.log('this is the aspect ratio ',aspectRatio)
 
         // Compare the aspect ratio to find the closest match
         for (const [key, value] of Object.entries(ratios)) {
-            if (Math.abs(aspectRatio - value) < 0.01) {
+            if (Math.abs(aspectRatio - value) < 0.1) {
                 matchedRatio = key;
                 break;
             }
