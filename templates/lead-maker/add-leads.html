@@ -171,22 +171,29 @@ function showSuccessMessage(message) {
 
 let currentNumber = document.getElementById('no_of_slides').value
 function deleteSavedSlide(clipId,btn) {
-  btn.style.cursor='wait'
+  if (btn.disabled){
+
+  }else{
+    btn.style.cursor='wait'
     btn.disabled=true
-        $.ajax({
-            url: '/text/delete-clip/' + clipId + '/', 
-            type: 'DELETE', 
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            success: function(response) {
-              document.getElementById(`tr_${clipId}`).style.display='none'
-            },
-            error: function(xhr, status, error) {
-                alert("Error deleting music: " + error);
-            }
-        });
-    }
+      btn.disabled=true
+          $.ajax({
+              url: '/text/delete-clip/' + clipId + '/', 
+              type: 'DELETE', 
+              headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+              },
+              success: function(response) {
+                document.getElementById(`tr_${clipId}`).style.display='none'
+              },
+              error: function(xhr, status, error) {
+                  alert("Error deleting music: " + error);
+              }
+          });
+      
+        }
+
+  }
     
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
@@ -247,7 +254,6 @@ function addSlide() {
             </a>
 
         </td>`;
-
         document.getElementById(`slide_text_${currentNumber}`).focus()
     setTimeout(() => {
         handleEnterToHide(currentNumber,);
