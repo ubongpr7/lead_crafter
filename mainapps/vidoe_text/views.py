@@ -662,6 +662,7 @@ def download_video(
 def trim_video(request,textfile_id):
 
     text_file=TextFile.objects.get(id=textfile_id)
+    text_file.progress='0'
     def run_trim_command(textfile_id):
         try:
             call_command("trim_video", textfile_id)
@@ -688,6 +689,8 @@ def trim_video(request,textfile_id):
 @login_required
 @check_credits_and_ownership(textfile_id_param="textfile_id", credits_required=1)
 def add_leads(request,textfile_id):
+    text_file.progress='0'
+
     text_file=TextFile.objects.get(id=textfile_id)
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
     no_of_slides= len(line_clips)
