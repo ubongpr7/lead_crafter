@@ -663,6 +663,7 @@ def trim_video(request,textfile_id):
 
     text_file=TextFile.objects.get(id=textfile_id)
     text_file.progress='0'
+    text_file.save()
     def run_trim_command(textfile_id):
         try:
             call_command("trim_video", textfile_id)
@@ -692,6 +693,8 @@ def add_leads(request,textfile_id):
 
     text_file=TextFile.objects.get(id=textfile_id)
     text_file.progress='0'
+    text_file.save()
+
     line_clips= TextLineVideoClip.objects.filter(text_file=text_file)
     no_of_slides= len(line_clips)
     
@@ -706,6 +709,30 @@ def add_leads(request,textfile_id):
         except Exception as e:
             print(f"Error processing video: {e}")
     if request.method =="POST":
+        with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+                    for clip in text_file.video_clips.all():
+                        for subclip in clip.subclips.all():
+                            temp_file.write(subclip.subtittle + "\n")
+                    
+                    temp_file.flush() 
+
+                    with open(temp_file.name, "rb") as file_to_save:
+                        text_file.subclips_text_file.save(
+                            f"{text_file.id}_subclips.txt", file_to_save, save=True
+                        )
+        with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+                    for clip in text_file.video_clips.all():
+                        temp_file.write(clip.slide + "\n")
+                    
+                    temp_file.flush() 
+
+                    with open(temp_file.name, "rb") as file_to_save:
+                        text_file.text_file.save(
+                            f"{text_file.id}_video_clips.txt", file_to_save, save=True
+                        )
+            
+
+        
         thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
         thread.start()
 
