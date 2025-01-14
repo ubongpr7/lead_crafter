@@ -514,7 +514,7 @@ function handleSelection(cNumber) {
                 const span = wrapper.querySelector("span");
                 const ul = wrapper.querySelector(`#list-of-tags_${cNumber}`);
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
-                const errorMessage = querySelector(`#error-message_${cNumber}`);
+                const errorMessage =document.querySelector(`#error-message_${cNumber}`);
                 // submitCheck=true
                 document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
                   const selection = window.getSelection();
