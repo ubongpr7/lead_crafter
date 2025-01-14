@@ -411,7 +411,8 @@ function handleSelection(cNumber) {
                 const ul = wrapper.querySelector(`#list-of-tags_${cNumber}`);
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
                 const errorMessage = wrapper.querySelector(`#error-message_${cNumber}`);
-
+                clipId=span.dataset.id
+                console.log('clipid: ',clipId)
         submitCheck=true
         document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
             const selection = window.getSelection();
@@ -443,7 +444,7 @@ function handleSelection(cNumber) {
                     const remainingText = fullText.slice(selectedText.length).trim();
                     remainingInput.value = remainingText;
                     span.innerText = remainingText;
-                    openPopup(cNumber, selectedText, remainingText);
+                    openPopup(cNumber, selectedText, remainingText,clipId);
                     li.style.cursor='wait'
 
                     
@@ -459,7 +460,7 @@ function handleSelection(cNumber) {
         });
     }
     
-    function openPopup(cNumber, selectedText, remainingText) {
+    function openPopup(cNumber, selectedText, remainingText,clipId) {
     const modalContainer = document.getElementById('modal-cont');
     const popup = document.getElementById('add-subclip-popup');
     clearErrorMessages();
@@ -520,7 +521,7 @@ function handleSelection(cNumber) {
         popup.style.display = 'flex';
         document.getElementById(`add-subclip-form-${cNumber}`).addEventListener('submit', (e) => {
             e.preventDefault();
-            // attachValidation(`add-subclip-form-${cNumber}`, cNumber);
+            attachValidation(`add-subclip-form-${cNumber}`, cNumber,clipId);
         })
     }
 
@@ -528,8 +529,8 @@ function handleSelection(cNumber) {
 
 <!-- popup manipulation and submission -->
  <script>
-  function attachValidation(formId, clipId) {
-    const li = document.getElementById(`current_li_${clipId}`);
+  function attachValidation(formId, cNumber,clipId) {
+    const li = document.getElementById(`current_li_${cNumber}`);
     if (li) {
         li.disabled = true;
         li.style.cursor = 'wait';
@@ -540,22 +541,14 @@ function handleSelection(cNumber) {
 
     if (form) {
         const fileInput = document.getElementById('slide_file');
-        const videoSelect = document.getElementById('videoSelect');
 
-        if ((!fileInput.value || fileInput.value.trim() === "") &&
-            (!videoSelect || !videoSelect.value || videoSelect.value.trim() === "")) {
-            if (videoSelect.disabled){
+        if (!fileInput.value || fileInput.value.trim() === ""){
                 document.getElementById('upload-text').style.color='red'
-            }else{
-
-                document.getElementById('error-slide').textContent = 'Select A Clip';
             }
 
-            videoSelect.focus();
         } else {
             document.getElementById('upload-text').style.color='inherit'
 
-            document.getElementById('error-slide').textContent = ''; // Clear error message
             
             const popup = document.getElementById('add-subclip-popup');
             if (popup) popup.style.display = 'none';
@@ -574,18 +567,11 @@ function handleSelection(cNumber) {
                         if (li) {
                             li.id = `saved_li_${newId}`;
                             li.dataset.id = newId;
-                            if(response.video_clip){
-                                li.dataset.name=response.video_clip.name
-                                li.dataset.clipid=response.video_clip.id
-                                li.dataset.cat_id=response.video_clip.cat_id
-                                
-                                
-                            };
+                
                             li.dataset.current_file=response.current_file
                             li.disabled = false;
                             li.style.cursor = 'pointer';
                         }
-                        sessionStorage.setItem(`${newId}`,videoSelect.value)
                         
             
                         showSuccessMessage('Clip Added Successfully!');
@@ -617,7 +603,6 @@ function handleSelection(cNumber) {
             xhr.send(formData);
         }
     }
-}
   function saveInput(inputElement) {
             const uploadElement = document.getElementById('upload-text');
 
