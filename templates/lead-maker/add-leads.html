@@ -31,8 +31,6 @@
         <h5 class="text-center lead-title">Create Your New Lead</h5>
       </div>
 
-      <form class="lead-form" method="POST" action="."  enctype="multipart/form-data">
-        {% csrf_token %}
         <div class="d-flex justify-content-start">
           <a href="#!" id="createLeadBtn" class="btn proceed-btn" onclick="addSlide()">
             Add New Subtitle +
@@ -91,7 +89,7 @@
             </a>
             <a href="#!" 
                class="delete-row-btn" 
-               id="reset_${currentNumber}" 
+               id="reset_{{forloop.counter}}" 
                onclick="subclipReset('{{clip.id}}')">
               <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="reset" />
             </a>
@@ -112,6 +110,9 @@
             <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" />
           </button>
         </div>
+        
+      <form class="lead-form" method="POST" action="."  enctype="multipart/form-data">
+        {% csrf_token %}
       </form>
     </div>
   </section>
