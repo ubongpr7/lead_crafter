@@ -446,10 +446,10 @@ function clearErrorMessages(){
             ids.forEach((id) => {
                 if (spanIds.includes(id)) {
                     console.log(`ID matched: ${id}`);
-                    const matchingSpan = Array.from(tagBoxes).find(tagBox => 
+                    const matchingTagBox = Array.from(tagBoxes).find(tagBox => 
                         Number(tagBox.querySelector('ul span')?.dataset.id) === Number(id)
                     );
-                    console.log(matchingSpan)
+                    const matchingSpan=matchingTagBox.querySelector('ul span')
                     if (matchingSpan) {
                         matchingSpan.style.color='red'
                         console.log(matchingSpan.id.split('_').pop())
