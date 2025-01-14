@@ -436,7 +436,7 @@ function clearErrorMessages(){
     const tagBoxes = document.querySelectorAll('.tag-box');
     const spanIds = [];
     tagBoxes.forEach(tagBox => {
-        const span = tagBox.querySelector('span');
+        const span = tagBox.querySelector('ul span');
         if (span && span.dataset.id) {
             spanIds.push(span.dataset.id); 
         }
