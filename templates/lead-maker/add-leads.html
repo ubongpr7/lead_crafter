@@ -468,7 +468,7 @@ function handleSelection(cNumber) {
         modalContainer.innerHTML=`
         
 <form   class="popup-content" method="POST" enctype="multipart/form-data"
- id="add-subclip-form-${cNumber}"
+ id="add-subclip-form"
  
     style="grid-template-columns:  1fr;width:100%;">
     <br>
@@ -521,7 +521,7 @@ function handleSelection(cNumber) {
         popup.style.display = 'flex';
         document.getElementById(`add-subclip-form-${cNumber}`).addEventListener('submit', (e) => {
             e.preventDefault();
-            attachValidation(`add-subclip-form-${cNumber}`, cNumber,clipId);
+            attachValidation(`add-subclip-form`, cNumber,clipId);
         })
     }
 
@@ -551,7 +551,7 @@ function handleSelection(cNumber) {
 
             
             const popup = document.getElementById('add-subclip-popup');
-            if (popup) popup.style.display = 'none';
+            if (popup) {popup.style.display = 'none';}
             const formData = new FormData(form);
             const xhr = new XMLHttpRequest();
 
