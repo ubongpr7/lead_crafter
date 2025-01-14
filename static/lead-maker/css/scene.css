@@ -565,7 +565,7 @@ body {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-    max-width: 500px;
+    max-width: 400px;
     width: 90%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -675,7 +675,7 @@ select::-webkit-dropdown-arrow {
     border-radius: 8px;
     padding: 30px 30px;
     width: 100%;
-    max-width: 750px;
+    max-width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     animation: slide-down 0.3s ease-in-out;
 }
