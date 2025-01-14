@@ -241,6 +241,7 @@ function addSlide() {
             <a href="#!"  
                class="delete-row-btn" 
                id="edit_${currentNumber}" 
+               style="display:none;" 
                onclick="EditeSlide(${currentNumber})">
               <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
@@ -252,7 +253,6 @@ function addSlide() {
                onclick="">
               <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="reset" />
             </a>
-
         </td>`;
         document.getElementById(`slide_text_${currentNumber}`).focus()
     setTimeout(() => {
