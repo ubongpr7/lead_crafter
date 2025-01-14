@@ -516,50 +516,56 @@ function handleSelection(cNumber) {
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
                 const errorMessage =document.querySelector(`#error-message_${cNumber}`);
                 // submitCheck=true
-                document.getElementById(`wrapper_${cNumber}`).addEventListener("mouseup", function () {
+
+                document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
                   const selection = window.getSelection();
                   clip_Id=span.dataset.id
                   console.log('clipid: ',clip_Id)
-            if (selection && selection.toString().trim() ) {
-                const selectedText = selection.toString().trim();
-                const fullText = span.innerText.trim();
-                const words = fullText.split(/\s+/);
-                const selectedWords = selectedText.split(/\s+/);
+                  if (document.getElementById(`slide_text_${cNumber}`).style.display === 'none'){
 
-                const startsCorrectly = fullText.startsWith(selectedText);
-                const isWordAligned = selectedWords.every(word => words.includes(word));
-
-                if (startsCorrectly && isWordAligned) {
-                    errorMessage.innerText = "";
-
-                    const li = document.createElement("li");
-                    li.innerText = selectedText;
-                    li.dataset.id = cNumber;
-                    li.disabled=true
-                    li.onclick = function () {
-                            editCurrentLi(li);
-                        };
-                        num = span.dataset.num
-                        li.id=`current_li_${cNumber}`
-
-                    ul.insertBefore(li, span);
-
-                    const remainingText = fullText.slice(selectedText.length).trim();
-                    remainingInput.value = remainingText;
-                    span.innerText = remainingText;
-                    openPopup(cNumber, selectedText, remainingText,clip_Id);
-                    li.style.cursor='wait'
-
+                    if (selection && selection.toString().trim() ) {
+                        const selectedText = selection.toString().trim();
+                        const fullText = span.innerText.trim();
+                        const words = fullText.split(/\s+/);
+                        const selectedWords = selectedText.split(/\s+/);
+        
+                        const startsCorrectly = fullText.startsWith(selectedText);
+                        const isWordAligned = selectedWords.every(word => words.includes(word));
+        
+                        if (startsCorrectly && isWordAligned) {
+                            errorMessage.innerText = "";
+        
+                            const li = document.createElement("li");
+                            li.innerText = selectedText;
+                            li.dataset.id = cNumber;
+                            li.disabled=true
+                            li.onclick = function () {
+                                    editCurrentLi(li);
+                                };
+                                num = span.dataset.num
+                                li.id=`current_li_${cNumber}`
+        
+                            ul.insertBefore(li, span);
+        
+                            const remainingText = fullText.slice(selectedText.length).trim();
+                            remainingInput.value = remainingText;
+                            span.innerText = remainingText;
+                            openPopup(cNumber, selectedText, remainingText,clip_Id);
+                            li.style.cursor='wait'
+        
+                            
+        
+        
+                        } else {
+                            // errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
+                            errorMessage.innerText = "Highlighting Must Start From The First Unassigned Word Of The Sentence.";
+                        }
+                    }
+        
+                    selection.removeAllRanges();
+                  }else{
                     
-
-
-                } else {
-                    // errorMessage.innerText = "Invalid highlighting. Highlight full words starting from the beginning.";
-                    errorMessage.innerText = "Highlighting Must Start From The First Unassigned Word Of The Sentence.";
-                }
-            }
-
-            selection.removeAllRanges();
+                  }
         });
     }
     
