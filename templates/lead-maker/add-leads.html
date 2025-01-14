@@ -451,7 +451,16 @@ function clearErrorMessages(){
                     );
                     if (matchingSpan) {
                         matchingSpan.classList.add('highlight'); 
-                        console.log(document.getElementById(`error-message_${matchingSpan.id.split('_')[-1]}`))
+                        const errorMessage=document.getElementById(`error-message_${matchingSpan.id.split('_').pop()}`);
+                        if (errorMessage){
+                          if (matchingSpan.textContent===''){
+                            errorMessage.textContent='Please Wait For Clip To Process'
+
+                          }else{
+                            errorMessage.textContent='Add Clip To The Remaning Text'
+
+                          }
+                        }
                     }
                 }
             });
