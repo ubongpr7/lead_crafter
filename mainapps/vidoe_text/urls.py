@@ -13,6 +13,7 @@ urlpatterns = [
         name="progress_page",
     ),
     path("get_clips_id/<str:textfile_id>/", views.get_clips_id, name="get_clips_id"),
+    path("check_text_clip/<str:textfile_id>/", views.check_text_clip, name="check_text_clip"),
     path("add_text_clip_line/<str:textfile_id>/", views.add_text_clip_line, name="add_text_clip_line"),
     path("add_subcliphtmx/<str:id>/", views.add_subcliphtmx, name="add_subcliphtmx"),
     path("edit_subcliphtmx/<str:id>/", views.edit_subcliphtmx, name="edit_subcliphtmx"),
