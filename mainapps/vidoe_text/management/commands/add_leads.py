@@ -348,7 +348,8 @@ class Command(BaseCommand):
         final_video = concatenated_video.set_audio(
             original_audio
         )  
-        final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
+        # final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
+        final_video_speeded_up_clip = final_video
         if  self.text_file_instance.trimmed_video:
             main_clip=self.load_video_from_file_field(self.text_file_instance.trimmed_video)
         else:
@@ -365,7 +366,6 @@ class Command(BaseCommand):
         )
         final_video = self.save_final_video(main_clipped_video)
 
-        # final_video = self.save_final_video(final_video_speeded_up_clip)
         watermarked = self.add_static_watermark_to_instance()
         self.text_file_instance.track_progress(100)
 

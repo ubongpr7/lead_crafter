@@ -304,8 +304,6 @@ class Command(BaseCommand):
 
         final_blank_video = self.concatenate_clips(
             blank_video_segments,
-            target_resolution=MAINRESOLUTIONS[text_file_instance.resolution],
-            target_fps=30,
         )
         try:
             final__blank_audio = final_blank_video.audio
@@ -345,15 +343,13 @@ class Command(BaseCommand):
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
             final_video_segments,
-            target_resolution=MAINRESOLUTIONS[resolution],
-            target_fps=30,
         )
         original_audio = blank_vide_clip.audio.subclip(
             0, min(concatenated_video.duration, blank_vide_clip.audio.duration)
         )
         final_video = concatenated_video.set_audio(
             original_audio
-            
+
         )  # Removed overwriting with blank audio
         final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
         if  self.text_file_instance.trimmed_video:
@@ -365,8 +361,6 @@ class Command(BaseCommand):
         main_clips=[final_video_speeded_up_clip,main_clip]
         main_clipped_video=self.concatenate_clips(
             main_clips,
-            target_resolution=MAINRESOLUTIONS[resolution],
-            target_fps=30,
         )
         final_video = self.save_final_video(main_clipped_video)
         watermarked = self.add_static_watermark_to_instance()
