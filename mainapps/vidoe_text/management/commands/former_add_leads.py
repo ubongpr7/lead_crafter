@@ -1,4 +1,3 @@
-import concurrent.futures
 from django.core.management.base import BaseCommand
 from mainapps.vidoe_text.models import TextFile, TextLineVideoClip, LogoModel
 import sys
@@ -22,6 +21,7 @@ from moviepy.editor import (
     VideoFileClip,
 )
 from moviepy.video.fx.all import crop as fix_all_crop
+
 import moviepy.video.fx.resize as rz
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.loop import loop
@@ -245,18 +245,11 @@ class Command(BaseCommand):
 
         if audio_file or text_file_instance.generated_audio:
             srt_file = self.generate_srt_file()
-            subtitles_srt_file=self.generate_subclips_srt_file()
-
             self.text_file_instance.track_progress(25)
-            self.text_file_instance.track_progress(26)
 
         else:
             return
-        subclips_processed=self.generate_subclip_videos_with_duration()
-        # if  subclips_processed:
-
-
-        aligned_output = self.process_srt_file(self.text_file_instance.generated_srt)
+        aligned_output = self.process_srt_file()
         self.text_file_instance.track_progress(27)
 
         blank_video = self.generate_blank_video_with_audio()
@@ -283,7 +276,7 @@ class Command(BaseCommand):
             blank_vide_clip, subtitles
         )
         self.text_file_instance.track_progress(36)
-####################################################################################################################
+
         text_clips = TextLineVideoClip.objects.filter(text_file=self.text_file_instance)
 
         num_segments = len(text_clips)
@@ -301,26 +294,18 @@ class Command(BaseCommand):
             start = end
         self.text_file_instance.track_progress(39)
 
-        ################################################################
-
         replacement_video_files = self.get_video_paths_for_text_file()
         self.text_file_instance.track_progress(40)
 
         replacement_videos_per_combination = []
 
-        replacement_video_clips = []
-        for video_file in replacement_video_files:
-            clip = self.load_video_from_file_field(video_file)
-            clip = clip.set_fps(30)  
-            replacement_video_clips.append(clip)
-        replacement_video_clips = self.resize_clips_to_max_size(replacement_video_clips)
-        
         logging.info("Concatination Done")
         self.text_file_instance.track_progress(48)
 
         final_blank_video = self.concatenate_clips(
             blank_video_segments,
-
+            target_resolution=MAINRESOLUTIONS[text_file_instance.resolution],
+            target_fps=30,
         )
         try:
             final__blank_audio = final_blank_video.audio
@@ -330,114 +315,66 @@ class Command(BaseCommand):
             logging.error(f"Error loading background music: {e}")
             return
 
+        replacement_video_clips = []
+        for video_file in replacement_video_files:
+            clip = self.load_video_from_file_field(video_file)
+            replacement_video_clips.append(clip)
+        logging.info("Done Clipping replacements")
+        cropped_clips=[]
+        target_resolution=MAINRESOLUTIONS[resolution]
+        for clip in replacement_video_clips:
+            if self.is_video_clip(clip):
+                clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+                clip = clip.set_fps(30)  
+                cropped_clips.append(clip)
+            elif self.is_image_clip(clip):
+                clip = self.crop_to_aspect_ratio_(clip, target_resolution)
+                cropped_clips.append(clip)
+
+
+        resized_clips = self.resize_clips_to_max_size(cropped_clips)
         
 
+        logging.info("Done cropping replacements")
 
         self.text_file_instance.track_progress(54)
-        # replacement_video_clips=self.resize_clips_to_max_size(replacement_video_clips)
+        resized_video_clips=self.convert_clips_to_videos(resized_clips)
         final_video_segments = self.replace_video_segments(
-            output_video_segments, replacement_video_clips, subtitles, blank_vide_clip
+            output_video_segments, resized_video_clips, subtitles, blank_vide_clip
         )
         logging.info("Done  replace_video_segments")
         concatenated_video = self.concatenate_clips(
             final_video_segments,
+            target_resolution=MAINRESOLUTIONS[resolution],
+            target_fps=30,
         )
         original_audio = blank_vide_clip.audio.subclip(
             0, min(concatenated_video.duration, blank_vide_clip.audio.duration)
         )
         final_video = concatenated_video.set_audio(
             original_audio
-        )  
+        )  # Removed overwriting with blank audio
         final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
         if  self.text_file_instance.trimmed_video:
             main_clip=self.load_video_from_file_field(self.text_file_instance.trimmed_video)
         else:
             main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+
+        logging.info("generated_final_video successful")
         main_clips=[final_video_speeded_up_clip,main_clip]
-        
         main_clipped_video=self.concatenate_clips(
             main_clips,
             target_resolution=MAINRESOLUTIONS[resolution],
             target_fps=30,
         )
         final_video = self.save_final_video(main_clipped_video)
-
-        # final_video = self.save_final_video(final_video_speeded_up_clip)
         watermarked = self.add_static_watermark_to_instance()
         self.text_file_instance.track_progress(100)
 
         self.stdout.write(
             self.style.SUCCESS(f"Processing complete for {text_file_id}.")
         )
-    
-
-# I'm
-    def generate_subclip_videos_with_duration(self):
-        
-        extracted_times = self.extract_start_end(self.text_file_instance.generated_subclips_srt)
-        logging.debug(f"Extracted times: {extracted_times}")
-        
-        file_clips = []
-        clip_subclips = []
-        logging.debug("Starting to process video clips.")
-        
-        for clip in self.text_file_instance.video_clips.all():
-            logging.debug(f"Processing clip with ID: {clip.id}")
-            clip_subclip=[]
-            for subclip in clip.subclips.all():
-                clip_subclips.append(subclip)
-        if len(clip_subclips) != len(extracted_times):
-            logging.error("Mismatch between the number of clips and JSON fragments.")
-            raise ValueError("Mismatch between the number of clips and JSON fragments.")
-        
-        from decimal import Decimal
-        for i,subclip in enumerate(clip_subclips):
-            start,end=extracted_times[i]
-            subclip.start=Decimal(self.srt_time_to_float(start))
-            subclip.end=Decimal(self.srt_time_to_float(end))
-            subclip.save()
-        for clip in self.text_file_instance.video_clips.all():
-            clip_subclips = []
-            for subclip in clip.subclips.all():
-                logging.debug(f"Processing subclip with ID: {subclip.id}")
-                mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-                clip_with_duration = mv_clip.set_duration(float(subclip.end - subclip.start))
-                logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
-                cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
-                logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
-                clip_subclips.append(cropped_clip)
-            if len(clip_subclips) == 1:
-                self.write_clip_file(clip_subclips[0], clip.video_file,clip)
-            else:
-
-                resized_subclips = self.resize_clips_to_max_size(clip_subclips)
-                concatenated_clip = self.concatenate_clips(resized_subclips)
-                self.write_clip_file(concatenated_clip, clip.video_file,clip)
-
-
-        return True 
-             
-    def process_for_clip(self,clip):
-        logging.debug(f"Processing clip with ID: {clip.id}")
-        clip_subclips = []
-        for subclip in clip.subclips.all():
-            logging.debug(f"Processing subclip with ID: {subclip.id}")
-            mv_clip = self.load_video_from_file_field(subclip.to_dict().get('video_path'))
-            clip_with_duration = mv_clip.set_duration(float(subclip.end - subclip.start))
-            logging.debug(f"Loaded video clip from path: {subclip.to_dict().get('video_path')}")
-            cropped_clip = self.crop_to_aspect_ratio_(clip_with_duration, MAINRESOLUTIONS[self.text_file_instance.resolution])
-            logging.debug(f"Cropped clip to resolution: {MAINRESOLUTIONS[self.text_file_instance.resolution]}")
-            clip_subclips.append(cropped_clip)
-        if len(clip_subclips) == 1:
-            self.write_clip_file(clip_subclips[0], clip.video_file,clip)
-        else:
-
-            resized_subclips = self.resize_clips_to_max_size(clip_subclips)
-            concatenated_clip = self.concatenate_clips(resized_subclips)
-            self.write_clip_file(concatenated_clip, clip.video_file,clip)
-
-
-    def extract_start_end(self,generated_srt):
+    def extract_start_end(self):
         """
         Extracts the start and end times from each index in the aligned_output list.
 
@@ -447,7 +384,7 @@ class Command(BaseCommand):
         Returns:
             list: A list of tuples containing the start and end times for each entry.
         """
-        aligned_output = self.process_srt_file(generated_srt)
+        aligned_output = self.process_srt_file()
 
         time_data = []
 
@@ -464,7 +401,7 @@ class Command(BaseCommand):
         
         return time_data
 
-    def convert_clips_to_videos(self, clips,generated_srt):
+    def convert_clips_to_videos(self, clips):
         """
         Converts a list of ImageClips to VideoClips using durations from the processed SRT file.
 
@@ -474,7 +411,7 @@ class Command(BaseCommand):
         Returns:
             list: List of converted VideoClips with specified durations.
         """
-        extracted_times= self.extract_start_end(generated_srt)
+        extracted_times= self.extract_start_end()
 
         if len(clips) != len(extracted_times):
             raise ValueError("Mismatch between the number of clips and JSON fragments.")
@@ -495,45 +432,6 @@ class Command(BaseCommand):
         
         return video_clips
 
-    def write_clip_file(self, clip,file_to_write,main_clip):
-        with tempfile.NamedTemporaryFile(
-            suffix=".mp4", delete=False
-        ) as temp_output_video:
-
-            clip.write_videofile(
-                temp_output_video.name,
-                codec="libx264",
-                preset="ultrafast",
-                audio_codec="aac",
-                fps=30,
-                # temp_audiofile='temp-audio.m4a', 
-                # remove_temp=True
-                # ffmpeg_params=["-movflags", "+faststart"],
-            )
-
-            if file_to_write:
-                file_to_write.delete(save=False)
-
-            with open(temp_output_video.name, "rb") as output_video_file:
-                video_content = output_video_file.read()
-
-                file_to_write.save(
-                    f"video_{main_clip.id}_{self.generate_random_string()}_{timestamp}.mp4",
-                    ContentFile(video_content),
-                )
-            return True
-
-
-    def generate_random_string(self,length=10):
-        import random
-        import string
-
-        characters = string.ascii_letters + string.digits
-        return ''.join(random.choice(characters) for _ in range(length))
-
-    # Example usage
-    random_string = generate_random_string(12)  # Generate a string of length 12
-    print("Random String:", random_string)
 
     def save_final_video(self, clip):
         with tempfile.NamedTemporaryFile(
@@ -547,9 +445,7 @@ class Command(BaseCommand):
                 preset="ultrafast",
                 audio_codec="aac",
                 fps=30,
-                # temp_audiofile='temp-audio.m4a', 
-                # remove_temp=True
-                # ffmpeg_params=["-movflags", "+faststart"],
+                ffmpeg_params=["-movflags", "+faststart"],
             )
             self.text_file_instance.track_progress(70)
 
@@ -671,128 +567,30 @@ class Command(BaseCommand):
         except ValueError:
             raise ValueError(f"Invalid SRT time format: {srt_time}")
 
-    def generate_subclips_srt_file(self):
-        """
-        Download the audio and text files from S3, and process them using a subprocess.
-        """
-        text_file_instance = self.text_file_instance
-
-        s3_text_url = (
-            text_file_instance.subclips_text_file.name
-        ) 
-        s3_audio_url = (
-            text_file_instance.generated_audio.name
-        )  
-
-        logging.info(f"Downloading audio from S3: {s3_audio_url}")
-        logging.info(f"Downloading text from S3: {s3_text_url}")
-
-        if not s3_audio_url or not s3_text_url:
-            logging.error("Audio or text file path from S3 is empty")
-            return False
-
-        with tempfile.NamedTemporaryFile(
-            suffix=".mp3", delete=False
-        ) as temp_audio, tempfile.NamedTemporaryFile(
-            suffix=".txt", delete=False
-        ) as temp_text, tempfile.NamedTemporaryFile(
-            suffix=".json", delete=False
-        ) as temp_srt:
-
-            audio_content = download_from_s3(s3_audio_url, temp_audio.name)
-            if not audio_content:
-                logging.error(f"Failed to download audio file {s3_audio_url}")
-                return False
-
-            with open(temp_audio.name, "wb") as audio_file:
-                audio_file.write(audio_content)
-
-            text_content = download_from_s3(s3_text_url, temp_text.name)
-            # self.text_file_instance.track_progress(16)
-
-            if not text_content:
-                logging.error(f"Failed to download text file {s3_text_url}")
-                return False
-
-            with open(temp_text.name, "wb") as text_file:
-                text_file.write(text_content)
-
-            command = (
-                f'python3.10 -m aeneas.tools.execute_task "{temp_audio.name}" "{temp_text.name}" '
-                f'"task_language=eng|is_text_type=plain|os_task_file_format=json" "{temp_srt.name}"'
-            )
-
-            try:
-                logging.info(f"Running command: {command}")
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True,
-                )
-                self.text_file_instance.track_progress(20)
-
-                # Log command output
-                logging.info(f"Command output: {result.stdout}")
-                logging.error(f"Command error (if any): {result.stderr}")
-
-                # Check for errors in subprocess execution
-                if result.returncode == 0:
-                    logging.info(f"SRT content generated successfully")
-
-                    # Save the SRT content to the TextFile instance's srt_file field
-                    with open(temp_srt.name, "rb") as srt_file:
-                        srt_content = srt_file.read()
-
-                    srt_file_name = f"{text_file_instance.id}_subclip_generated.json"
-
-                    # If there is an existing SRT file, delete it first
-                    if text_file_instance.generated_subclips_srt:
-                        text_file_instance.generated_subclips_srt.delete(save=False)
-                        # self.text_file_instance.track_progress(22)
-
-                    # Save the new SRT content to the srt_file field
-                    text_file_instance.generated_subclips_srt.save(
-                        srt_file_name, ContentFile(srt_content)
-                    )
-
-                    logging.info(f"SRT file saved to instance: {srt_file_name}")
-                    time.sleep(3)
-                    # self.text_file_instance.track_progress(24)
-
-                    return text_file_instance.generated_subclips_srt
-
-                else:
-                    logging.error(f"Error generating SRT file: {result.stderr}")
-                    return False
-            except Exception as e:
-                logging.error(
-                    f"An unexpected error occurred while generating the SRT file: {e}"
-                )
-                return False
-
     def generate_srt_file(self):
         """
         Download the audio and text files from S3, and process them using a subprocess.
         """
         text_file_instance = self.text_file_instance
 
+        # Extract the S3 bucket and file key from the audio and text files
         s3_text_url = (
             text_file_instance.text_file.name
-        ) 
+        )  # This gives the S3 key (path within the bucket)
         s3_audio_url = (
             text_file_instance.generated_audio.name
-        )  
+        )  # This gives the S3 key (path within the bucket)
 
         logging.info(f"Downloading audio from S3: {s3_audio_url}")
         logging.info(f"Downloading text from S3: {s3_text_url}")
         self.text_file_instance.track_progress(12)
 
+        # Ensure file paths are not empty
         if not s3_audio_url or not s3_text_url:
             logging.error("Audio or text file path from S3 is empty")
             return False
 
+        # Create temporary files to store downloaded audio, text, and SRT files
         with tempfile.NamedTemporaryFile(
             suffix=".mp3", delete=False
         ) as temp_audio, tempfile.NamedTemporaryFile(
@@ -802,14 +600,17 @@ class Command(BaseCommand):
         ) as temp_srt:
             self.text_file_instance.track_progress(14)
 
+            # Download the audio file from S3 and write it to the temp file
             audio_content = download_from_s3(s3_audio_url, temp_audio.name)
             if not audio_content:
                 logging.error(f"Failed to download audio file {s3_audio_url}")
                 return False
 
+            # Write the audio content to the temporary audio file
             with open(temp_audio.name, "wb") as audio_file:
                 audio_file.write(audio_content)
 
+            # Download the text file from S3 and write it to the temp file
             text_content = download_from_s3(s3_text_url, temp_text.name)
             self.text_file_instance.track_progress(16)
 
@@ -817,9 +618,11 @@ class Command(BaseCommand):
                 logging.error(f"Failed to download text file {s3_text_url}")
                 return False
 
+            # Write the text content to the temporary text file
             with open(temp_text.name, "wb") as text_file:
                 text_file.write(text_content)
 
+            # Run the subprocess to generate SRT using Aeneas or other tool
             command = (
                 f'python3.10 -m aeneas.tools.execute_task "{temp_audio.name}" "{temp_text.name}" '
                 f'"task_language=eng|is_text_type=plain|os_task_file_format=json" "{temp_srt.name}"'
@@ -875,7 +678,7 @@ class Command(BaseCommand):
                 )
                 return False
 
-    def process_srt_file(self,generated_srt):
+    def process_srt_file(self):
         """
         Downloads the generated SRT file from S3, processes it, and returns the aligned output.
 
@@ -887,7 +690,7 @@ class Command(BaseCommand):
         """
         text_file_instance = self.text_file_instance
         s3_srt_key = (
-            generated_srt.name
+            text_file_instance.generated_srt.name
         )  # S3 key (SRT file path in the bucket)
 
         if not s3_srt_key:
@@ -1243,202 +1046,7 @@ class Command(BaseCommand):
         video_clips = TextLineVideoClip.objects.filter(
             text_file=self.text_file_instance
         )
-
-        return [clip.video_file for clip in video_clips ]
-
-    # def load_video_from_file_field(self, file_field) -> VideoFileClip:
-    #     """
-    #     Load a video from a file field, downloading it from S3,
-    #     and return it as a MoviePy VideoFileClip.
-
-    #     Args:
-    #         file_field: The FileField containing the S3 path for the video file.
-
-    #     Returns:
-    #         VideoFileClip: The loaded video clip.
-
-    #     Raises:
-    #         ValueError: If the file field is empty or not a valid video file.
-    #     """
-    #     try:
-    #         if not file_field or not file_field.name:
-    #             raise ValueError("File field is empty or invalid.")
-    #         file_extension = os.path.splitext(file_field.name)[1].lower()
-
-    #         with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_file:
-    #             file_content = download_from_s3(file_field.name, temp_file.name)
-
-    #             if not file_content:
-    #                 raise ValueError("Failed to download the video from S3.")
-    #             clip=None
-    #             with open(temp_file.name, "wb") as video_file:
-    #                 video_file.write(file_content)
-    #             if file_extension in VIDEO_EXTENSIONS:
-    #                 clip = VideoFileClip(os.path.normpath(temp_file.name))
-    #             elif file_extension in IMAGE_EXTENSIONS:
-    #                 clip = ImageClip(os.path.normpath(temp_file.name))
-
-    #             # Return the video clip
-    #             return clip
-
-    #     except Exception as e:
-    #         logging.error(f"Error loading video from file field: {e}")
-    #         raise
-
-    # def load_video_from_file_field(self,file_field) -> VideoFileClip:
-    #     """
-    #     Load a video or image from a file field, downloading it from S3, converting if necessary,
-    #     and returning it as a MoviePy VideoFileClip or ImageClip.
-
-    #     Args:
-    #         file_field: The FileField containing the S3 path for the file.
-
-    #     Returns:
-    #         VideoFileClip or ImageClip: The loaded clip.
-
-    #     Raises:
-    #         ValueError: If the file field is empty or not a valid video/image file.
-    #     """
-    #     try:
-    #         if not file_field or not file_field.name:
-    #             raise ValueError("File field is empty or invalid.")
-
-    #         file_extension = os.path.splitext(file_field.name)[1].lower()
-
-    #         # Create a temporary file to store the downloaded content
-    #         with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as temp_file:
-    #             file_path = temp_file.name
-    #             file_content = download_from_s3(file_field.name, file_path)
-
-    #             if not file_content:
-    #                 raise ValueError("Failed to download the file from S3.")
-
-    #             # Check if the file is a video
-    #             if file_extension in VIDEO_EXTENSIONS:
-    #                 if file_extension == ".mp4":
-    #                     # Load the video clip directly if it's already an mp4
-    #                     clip = VideoFileClip(os.path.normpath(file_path))
-    #                 else:
-    #                     # Convert to mp4 using ffmpeg
-    #                     with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as converted_file:
-    #                         converted_path = converted_file.name
-    #                         ffmpeg_command = [
-    #                             "ffmpeg",
-    #                             "-i", os.path.normpath(file_path),
-    #                             "-vcodec", "h264",
-    #                             "-acodec", "mp2",
-    #                             os.path.normpath(converted_path)
-    #                         ]
-
-    #                         subprocess.run(ffmpeg_command, check=True)
-    #                         logging.info(f'ffmpeg is done converting {file_extension} to .mp4')
-    #                         # Load the converted video clip
-    #                         clip = VideoFileClip(os.path.normpath(converted_path))
-
-    #             # Check if the file is an image
-    #             elif file_extension in IMAGE_EXTENSIONS:
-    #                 clip = ImageClip(os.path.normpath(file_path))
-
-    #             else:
-    #                 raise ValueError("Unsupported file type.")
-
-    #             # Return the loaded clip
-    #             return clip
-
-    #     except subprocess.CalledProcessError as ffmpeg_error:
-    #         logging.error(f"FFmpeg error during conversion: {ffmpeg_error}")
-    #         raise
-
-    #     except Exception as e:
-    #         logging.error(f"Error loading video from file field: {e}")
-    #     raise
-   
-    def repair_and_load_video(self, file_field) -> VideoFileClip:
-        """
-        Load a video or image from a file field, downloading it from S3, repairing it with untrunc if necessary,
-        and returning it as a MoviePy VideoFileClip or ImageClip.
-
-        Args:
-            file_field: The FileField containing the S3 path for the file.
-
-        Returns:
-            VideoFileClip or ImageClip: The loaded clip.
-
-        Raises:
-            ValueError: If the file field is empty or not a valid video/image file.
-        """
-        try:
-            if not file_field or not file_field.name:
-                raise ValueError("File field is empty or invalid.")
-
-            file_extension = os.path.splitext(file_field.name)[1].lower()
-
-            # Create temp files for the corrupted video and repaired video
-            with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as bad_video:
-                bad_video_path = bad_video.name
-
-                # Download the corrupted video from S3
-                download_from_s3(file_field.name, bad_video_path)
-
-                # Create another tempfile for the repaired video
-                with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as repaired_video:
-                    repaired_video_path = repaired_video.name
-
-                    # Use untrunc to repair the video
-                    reference_video_path = "/app/reference.mp4"  # Reference video must be mounted in the untrunc container
-                    repair_command = [
-                        "docker", "exec", "untrunc_service",  # Run the command in the 'untrunc' container
-                        "untrunc",
-                        reference_video_path,
-                        bad_video_path,
-                    ]
-
-                    subprocess.run(repair_command, check=True)
-                    logging.info(f"Video repaired: {repaired_video_path}")
-
-                    # Load the repaired video clip into MoviePy
-                    clip = VideoFileClip(repaired_video_path)
-
-                    # Clean up the temp files
-                    os.unlink(bad_video_path)
-                    os.unlink(repaired_video_path)
-
-                    return clip
-        except subprocess.CalledProcessError as untrunc_error:
-            logging.error(f"Untrunc error during video repair: {untrunc_error}")
-            raise
-
-        except Exception as e:
-            logging.error(f"Error loading video from file field: {e}")
-            raise
-
-    def add_moov_atom(self,input_path, output_path):
-        """
-        Adds the moov atom to a .mov video using FFmpeg.
-
-        Args:
-            input_path (str): Path to the input .mov video.
-            output_path (str): Path to save the output .mov video with moov atom.
-
-        Returns:
-            str: Path to the fixed video file.
-        Raises:
-            Exception: If FFmpeg fails to process the file.
-        """
-        try:
-            ffmpeg_command = [
-                "ffmpeg",
-                "-i", input_path,
-                "-c:v", "copy",
-                "-c:a", "copy",
-                "-movflags", "faststart",
-                output_path
-            ]
-            subprocess.run(ffmpeg_command, check=True)
-            print(f"Successfully added moov atom to: {output_path}")
-            return output_path
-        except subprocess.CalledProcessError as e:
-            raise Exception(f"FFmpeg error: {e}")
+        return [clip.to_dict().get("video_path") for clip in video_clips]
 
     def load_video_from_file_field(self, file_field) -> VideoFileClip:
         """
@@ -1479,6 +1087,7 @@ class Command(BaseCommand):
             logging.error(f"Error loading video from file field: {e}")
             raise
 
+
     def add_margin_based_on_aspect_ratio(self,clip, target_aspect_ratio):
         """
         Adds margins to a video clip to achieve the desired aspect ratio.
@@ -1511,17 +1120,21 @@ class Command(BaseCommand):
         original_width, original_height = clip.size
 
         original_aspect_ratio = original_width / original_height
-
-        if (
-            abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
-        ):  
-            return clip
-        
         if desired_aspect_ratio==9/16:
             crop_width = original_height * 9/16
 
             cropped_clip = fix_all_crop(clip, width=600, height=5000, x_center=original_width/2, y_center=original_height/2)
             return cropped_clip
+        
+
+        if (
+            abs(original_aspect_ratio - desired_aspect_ratio) < 0.01
+        ):  
+            return clip
+        # else:
+        #     clip= self.add_margin_based_on_aspect_ratio(clip,desired_aspect_ratio)
+        #     return clip
+
         
         if original_aspect_ratio > desired_aspect_ratio:
             new_width = int(original_height * desired_aspect_ratio)
@@ -1538,7 +1151,6 @@ class Command(BaseCommand):
         y2 = y1 + new_height
 
         return crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
-    
     def is_image_clip(self,clip):
         """
         Checks if the provided MoviePy clip is an ImageClip.
@@ -1550,16 +1162,29 @@ class Command(BaseCommand):
         Checks if the provided MoviePy clip is a VideoFileClip.
         """
         return isinstance(clip, VideoFileClip)
-    
     def concatenate_clips(self, clips, target_resolution=None, target_fps=None):
+        """
+        Concatenates a list of VideoFileClip objects into a single video clip.
+
+        Args:
+            clips (list): List of VideoFileClip objects to concatenate.
+            target_resolution (tuple, optional): Target resolution (width, height) to resize videos. Defaults to None.
+            target_fps (int, optional): Target frames per second to unify videos. Defaults to None.
+
+        Returns:
+            VideoFileClip: The concatenated video clip.
+        """
 
         final_clip = concatenate_videoclips(clips, method="compose")
         logging.info("Clip has been concatenated: ")
         return final_clip
 
     def resize_clips_to_max_size(self, clips):
-        max_width = max(clip.w for clip in clips)
-        max_height = max(clip.h for clip in clips)
+        # max_width = max(clip.w for clip in clips)
+        # max_height = max(clip.h for clip in clips)
+        main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+        max_width = main_clip.w
+        max_height = main_clip.h
 
         resized_clips = [clip.resize(newsize=(max_width, max_height)) for clip in clips]
 
@@ -1795,12 +1420,11 @@ class Command(BaseCommand):
             ) as temp_output_video:
                 watermarked.write_videofile(
                     temp_output_video.name,
-                    codec='libx264',
-                    preset="ultrafast",
-                    audio_codec="aac",
-                    fps=30,
-                    # temp_audiofile='temp-audio.m4a', 
-                    # remove_temp=True
+                    # codec='libx264',
+                    # preset="ultrafast",
+                    # audio_codec="aac",
+                    # fps=30,
+                    # ffmpeg_params=["-movflags", "+faststart"]
                 )
                 self.text_file_instance.track_progress(95)
 
