@@ -546,7 +546,7 @@ function handleSelection(cNumber) {
                 document.getElementById('upload-text').style.color='red'
             }
 
-        } else {
+         else {
             document.getElementById('upload-text').style.color='inherit'
             
             const popup = document.getElementById('add-subclip-popup');
@@ -602,7 +602,7 @@ function handleSelection(cNumber) {
             xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
             xhr.send(formData);
         }
-    }
+    }}
   function saveInput(inputElement) {
             const uploadElement = document.getElementById('upload-text');
 
