@@ -5,7 +5,7 @@ p {
     color: red;
 }
 .file-button {
-    background: #864af9;
+    background: #3663ff;
     border: none;
     border-radius: 5px;
     padding: 10px 10px;
@@ -126,15 +126,15 @@ h6 {
 }
 
 #reset-btn {
-    border: 1px solid #864AF9;
+    border: 1px solid #3663ff;
     background-color: transparent;
-    color: #864AF9;
+    color: #3663ff;
     padding: 5px 15px;
     cursor: pointer;
 }
 
 #done-btn {
-    background-color: #864AF9;
+    background-color: #3663ff;
     color: white;
     padding: 5px 15px;
     border: none;
@@ -142,12 +142,12 @@ h6 {
 }
 
 #reset-btn:hover {
-    background-color: #864AF9;
+    background-color: #3663ff;
     color: white;
 }
 
 #done-btn:hover {
-    background-color: #864AF9;
+    background-color: #3663ff;
 }
 
 .details button {
@@ -320,7 +320,7 @@ body {
 
 
 .grid-item.title {
-    background-color: #864AF9;
+    background-color: #3663ff;
     font-size: 24px;
     color: white;
     text-align: center;
@@ -394,7 +394,7 @@ body {
 }
 
 #proceed-button {
-    background: #864AF9;
+    background: #3663ff;
     color: white;
     padding: 12px 20px;
     font-size: 16px;
@@ -406,7 +406,7 @@ body {
 }
 
 #proceed-button:hover {
-    background: #6a36cc;
+    background: #3663ff;
 }
 
 
@@ -469,7 +469,7 @@ body {
 
 .form-input:focus,
 .form-select:focus {
-    border-color: #864AF9;
+    border-color: #3663ff;
     outline: none;
 }
 
@@ -497,7 +497,7 @@ body {
 }
 
 .title {
-    background: #864AF9;
+    background: #3663ff;
     color: white;
     border-top: none;
     font-size: 24px;
@@ -579,7 +579,7 @@ body {
     align-items: center;
     width: 30px;
     height: 30px;
-    background-color: #864AF9;
+    background-color: #3663ff;
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -607,7 +607,7 @@ body {
 /* Modal Header */
 .popup-content .title {
     border-left: 1px solid #00000080;
-    background: #864AF9;
+    background: #3663ff;
     color: white;
     border-top: none;
     font-size: 24px;
@@ -647,7 +647,7 @@ select::-webkit-dropdown-arrow {
     gap: 10px;
     padding: 12px 24px;
     color: white;
-    background: #864AF9;
+    background: #3663ff;
     border-radius: 8px;
     font-size: 18px;
     font-weight: 500;
@@ -693,7 +693,7 @@ select::-webkit-dropdown-arrow {
 }
 
 .submit-btn {
-    background-color: #864AF9;
+    background-color: #3663ff;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -703,7 +703,7 @@ select::-webkit-dropdown-arrow {
 }
 
 .submit-btn:hover {
-    background-color: #864AF9;
+    background-color: #3663ff;
     opacity: 0.8;
 }
 
