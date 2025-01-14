@@ -447,8 +447,9 @@ function clearErrorMessages(){
                 if (spanIds.includes(id)) {
                     console.log(`ID matched: ${id}`);
                     const matchingSpan = Array.from(tagBoxes).find(tagBox => 
-                        Number(tagBox.querySelector('span')?.dataset.id) === id
+                        Number(tagBox.querySelector('ul span')?.dataset.id) === id
                     );
+                    
                     if (matchingSpan) {
                         matchingSpan.style.color='red'
                         console.log(matchingSpan.id.split('_').pop())
