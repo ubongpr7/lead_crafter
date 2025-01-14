@@ -411,8 +411,8 @@ function handleSelection(cNumber) {
                 const ul = wrapper.querySelector(`#list-of-tags_${cNumber}`);
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
                 const errorMessage = wrapper.querySelector(`#error-message_${cNumber}`);
-                clipId=span.dataset.id
-                console.log('clipid: ',clipId)
+                clip_Id=span.dataset.id
+                console.log('clipid: ',clip_Id)
         submitCheck=true
         document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
             const selection = window.getSelection();
@@ -428,7 +428,6 @@ function handleSelection(cNumber) {
                 if (startsCorrectly && isWordAligned) {
                     errorMessage.innerText = "";
 
-                    clip_id = cNumber
                     const li = document.createElement("li");
                     li.innerText = selectedText;
                     li.dataset.id = cNumber;
@@ -444,7 +443,7 @@ function handleSelection(cNumber) {
                     const remainingText = fullText.slice(selectedText.length).trim();
                     remainingInput.value = remainingText;
                     span.innerText = remainingText;
-                    openPopup(cNumber, selectedText, remainingText,clipId);
+                    openPopup(cNumber, selectedText, remainingText,clip_Id);
                     li.style.cursor='wait'
 
                     
@@ -460,7 +459,7 @@ function handleSelection(cNumber) {
         });
     }
     
-    function openPopup(cNumber, selectedText, remainingText,clipId) {
+    function openPopup(cNumber, selectedText, remainingText,clip_Id) {
     const modalContainer = document.getElementById('modal-cont');
     const popup = document.getElementById('add-subclip-popup');
     clearErrorMessages();
@@ -521,7 +520,7 @@ function handleSelection(cNumber) {
         popup.style.display = 'flex';
         document.getElementById(`add-subclip-form`).addEventListener('submit', (e) => {
             e.preventDefault();
-            attachValidation(`add-subclip-form`, cNumber,clipId);
+            attachValidation(`add-subclip-form`, cNumber,clip_Id);
         })
     }
 
@@ -550,7 +549,6 @@ function handleSelection(cNumber) {
             document.getElementById('upload-text').style.color='inherit'
             
             const popup = document.getElementById('add-subclip-popup');
-            console.log('popup: ',popup)
             if (popup) {popup.style.display = 'none';}
             const formData = new FormData(form);
             const xhr = new XMLHttpRequest();
