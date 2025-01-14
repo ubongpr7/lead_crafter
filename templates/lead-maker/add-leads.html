@@ -451,7 +451,7 @@ function clearErrorMessages(){
                     );
                     const matchingSpan=matchingTagBox.querySelector('ul span')
                     if (matchingSpan) {
-                        matchingSpan.style.color='red'
+                        // matchingSpan.style.color='red'
                         console.log(matchingSpan.id.split('_').pop())
                         const errorMessage=document.getElementById(`error-message_${matchingSpan.id.split('_').pop()}`);
                         if (errorMessage){
