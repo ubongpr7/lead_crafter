@@ -150,6 +150,7 @@ def add_text_clip_line(request, textfile_id):
 
 @csrf_exempt 
 def edit_text_clip_line(request, id):
+    clip = TextLineVideoClip.objects.get(id=id )
 
     if request.method == "POST":
         try:
@@ -158,13 +159,12 @@ def edit_text_clip_line(request, id):
 
             if not slide_text:
                 return JsonResponse({"success": False, "error": "Slide text is required"}, status=400)
-
-            clip = TextLineVideoClip.objects.get(id=id )
-            clip.slide=slide_text
-            clip.remaining=slide_text
-            clip.save()
-            for subclip in clip.subclips.all():
-                subclip.delete()
+            elif slide_text != clip.slide:
+                clip.slide=slide_text
+                clip.remaining=slide_text
+                clip.save()
+                for subclip in clip.subclips.all():
+                    subclip.delete()
             return JsonResponse({"success": True, "id": clip.id})
 
         except json.JSONDecodeError:
