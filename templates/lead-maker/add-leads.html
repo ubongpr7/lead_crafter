@@ -411,11 +411,11 @@ function handleSelection(cNumber) {
                 const ul = wrapper.querySelector(`#list-of-tags_${cNumber}`);
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
                 const errorMessage = wrapper.querySelector(`#error-message_${cNumber}`);
-                clip_Id=span.dataset.id
-                console.log('clipid: ',clip_Id)
-        submitCheck=true
-        document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
-            const selection = window.getSelection();
+                // submitCheck=true
+                document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
+                  const selection = window.getSelection();
+                  clip_Id=span.dataset.id
+                  console.log('clipid: ',clip_Id)
             if (selection && selection.toString().trim() ) {
                 const selectedText = selection.toString().trim();
                 const fullText = span.innerText.trim();
