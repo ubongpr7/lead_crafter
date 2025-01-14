@@ -486,9 +486,8 @@ function handleSelection(cNumber) {
         
 
         <input type="text" value="${remainingText}" hidden id="remaining" name="remaining">
-        <div style="display: grid;grid-template-columns: 0.7fr 1fr;border-radius: 8px;border: 1px solid #00000080;overflow: hidden;"  class="form-grid-cont">
+        <div style="display: grid;grid-template-columns: 1fr;border-radius: 8px;border: 1px solid #00000080;overflow: hidden;"  class="form-grid-cont">
         <div class="grid-item title  form-grid-item begin column-1"><span style="height:50px;align-items: center;">Upload Scene</span></div>
-        <div class="grid-item title form-grid-item end column-2"><span style="height:50px;align-items: center;margin-left: -18px;">Upload Scene From Assets Folder</span></div>
         <div class="form-grid-item main-item">
             <div  class="form-group" style="height:100%;">
                 <div class="upload-container">
@@ -531,13 +530,12 @@ function handleSelection(cNumber) {
 
 </script>
 
-<!-- popup manipulation -->
+<!-- popup manipulation and submission -->
  <script>
   function saveInput(inputElement) {
             const uploadElement = document.getElementById('upload-text');
 
             if (inputElement.type === 'file') {
-                console.log(inputElement.value);
 
                 if (inputElement.value) {
                 document.getElementById('upload-text').style.color='black'
@@ -547,7 +545,12 @@ function handleSelection(cNumber) {
                     uploadElement.textContent=fileName.slice(0,13)
                     document.getElementById('currentFile').textContent = ''
                     document.getElementById('clear-file').style.display='flex'
-                   
+                    
+                  }else{
+                  uploadElement.textContent=fileName.slice(0,13)
+                  // document.getElementById('currentFile').textContent = ''
+                  document.getElementById('clear-file').style.display='none'
+
                 }
 
             }
