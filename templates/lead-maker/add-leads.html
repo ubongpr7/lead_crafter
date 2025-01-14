@@ -6,9 +6,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css">
 <style>
   .highlight {
-    background-color: yellow;
     color: red;
-    font-weight: bold;
 }
 
 </style>
@@ -453,7 +451,7 @@ function clearErrorMessages(){
                     );
                     if (matchingSpan) {
                         matchingSpan.classList.add('highlight'); 
-                        console.log(document.getElementById(`error-message_${span.id.split('_')[-1]}`))
+                        console.log(document.getElementById(`error-message_${matchingSpan.id.split('_')[-1]}`))
                     }
                 }
             });
