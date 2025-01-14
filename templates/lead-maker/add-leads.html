@@ -519,7 +519,7 @@ function handleSelection(cNumber) {
         };
         
         popup.style.display = 'flex';
-        document.getElementById(`add-subclip-form-${cNumber}`).addEventListener('submit', (e) => {
+        document.getElementById(`add-subclip-form`).addEventListener('submit', (e) => {
             e.preventDefault();
             attachValidation(`add-subclip-form`, cNumber,clipId);
         })
