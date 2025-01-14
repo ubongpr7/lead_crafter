@@ -516,7 +516,7 @@ function handleSelection(cNumber) {
                 const remainingInput = wrapper.querySelector(`#remaining_${cNumber}`);
                 const errorMessage =document.querySelector(`#error-message_${cNumber}`);
                 // submitCheck=true
-                document.getElementById(`highlightable_${cNumber}`).addEventListener("mouseup", function () {
+                document.getElementById(`wrapper_${cNumber}`).addEventListener("mouseup", function () {
                   const selection = window.getSelection();
                   clip_Id=span.dataset.id
                   console.log('clipid: ',clip_Id)
