@@ -548,9 +548,9 @@ function handleSelection(cNumber) {
 
         } else {
             document.getElementById('upload-text').style.color='inherit'
-
             
             const popup = document.getElementById('add-subclip-popup');
+            console.log('popup: ',popup)
             if (popup) {popup.style.display = 'none';}
             const formData = new FormData(form);
             const xhr = new XMLHttpRequest();
