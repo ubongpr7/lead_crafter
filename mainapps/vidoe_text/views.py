@@ -28,6 +28,7 @@ from django.http import JsonResponse
 import json
 import tempfile
 
+import time
 
 
 def add_subcliphtmx(request, id):
@@ -54,8 +55,10 @@ def add_subcliphtmx(request, id):
                             video_file=ContentFile(file_content, name=os.path.basename(converted_file_path)),
                             main_line=text_clip,
                         )
-
+                    time.sleep(1)  # Adjust as needed
                     os.remove(converted_file_path)
+
+                    # os.remove(converted_file_path)
                 except Exception as e:
                     print(e)
                     return JsonResponse({"success": False, "error": str(e)}, status=500)
