@@ -601,6 +601,14 @@ function handleSelection(cNumber) {
 
 <!-- popup manipulation and submission/validation -->
  <script>
+  
+function clearFileInput(){
+    document.getElementById('slide_file').value=''
+    document.getElementById('clear-file').style.display='none'
+    document.getElementById('upload-text').textContent='Choose File'
+
+
+}
   function clearCurrentFile(){
     document.getElementById('currentFile').innerHTML=''
 }
