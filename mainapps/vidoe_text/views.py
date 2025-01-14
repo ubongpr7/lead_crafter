@@ -103,7 +103,7 @@ def edit_subcliphtmx(request,id):
                         file_content = converted_file.read()
                         subclip.video_file=ContentFile(file_content, name=os.path.basename(converted_file_path))
 
-
+                    time.sleep(1)
                     os.remove(converted_file_path)
                 except Exception as e:
                     print(e)
