@@ -531,4 +531,28 @@ function handleSelection(cNumber) {
 
 </script>
 
+<!-- popup manipulation -->
+ <script>
+  function saveInput(inputElement) {
+            const uploadElement = document.getElementById('upload-text');
+
+            if (inputElement.type === 'file') {
+                console.log(inputElement.value);
+
+                if (inputElement.value) {
+                document.getElementById('upload-text').style.color='black'
+
+                    
+                    const fileName = inputElement.files.length > 0 ? inputElement.files[0].name : "Choode File";
+                    uploadElement.textContent=fileName.slice(0,13)
+                    document.getElementById('currentFile').textContent = ''
+                    document.getElementById('clear-file').style.display='flex'
+                   
+                }
+
+            }
+            
+        };
+    
+ </script>
 {% endblock content %}
