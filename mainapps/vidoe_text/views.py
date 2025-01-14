@@ -570,6 +570,8 @@ def add_text_video(request):
         voice_id = request.POST.get("voiceid")
         api_key = request.POST.get("elevenlabs_apikey")
         resolution = request.POST.get("resolution")
+        if resolution =='Unknown':
+            resolution='9:16'
         fontFile = request.FILES.get("fontFile")
         font_color = request.POST.get("font_color")
         subtitle_box_color = request.POST.get("subtitle_box_color")
