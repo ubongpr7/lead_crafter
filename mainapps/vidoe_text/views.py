@@ -588,7 +588,6 @@ def add_text_video(request):
             if voice_id and api_key:
                 text_obj = TextFile.objects.create(
                     user=request.user,
-                    video_file=videoFile,
                     voice_id=voice_id,
                     api_key=api_key,
                     font_file=fontFile,
@@ -598,8 +597,37 @@ def add_text_video(request):
                     font_size=font_size,
                     font_color=font_color,
                 )
+                
+            if videoFile:
+                file_extension = os.path.splitext(videoFile.name)[1].lower()
 
-                return redirect(f'/text/trim-video/{text_obj.id}')
+                if file_extension == ".mov":
+                    try:
+                        converted_file_path = convert_mov_to_mp4(videoFile)
+
+                        with open(converted_file_path, "rb") as converted_file:
+                            file_content = converted_file.read()
+                            text_obj.video_file=ContentFile(file_content, name=os.path.basename(converted_file_path))
+                            text_obj.save()
+                        time.sleep(1)  # Adjust as needed
+                        os.remove(converted_file_path)
+
+                        # os.remove(converted_file_path)
+                    except Exception as e:
+                        print(e)
+                        messages.error(request, f"Bad Video File: {e}")
+
+                        return render(
+                                request,
+                                "lead-maker/add_text_video.html",
+                                {"error": "Please provide all required fields."},
+                            )
+                else:
+                    text_obj.video_file=videoFile
+                    text_obj.save()
+                    
+
+                    return redirect(f'/text/trim-video/{text_obj.id}')
 
             else:
                 messages.error(request, "Please provide all required fields.")

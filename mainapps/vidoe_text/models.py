@@ -79,68 +79,6 @@ def text_file_upload_path(instance, filename):
     return os.path.join("text_files", filename)
 
 
-# class TextFile(models.Model):
-
-#     user = models.ForeignKey(
-#         "accounts.User", on_delete=models.SET_NULL, null=True, editable=False
-#     )
-#     text_file = models.FileField(upload_to='lead-maker/text_file', null=True, blank=True)
-#     video_file = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
-#     trimmed_video = models.FileField(upload_to=video_file_upload_path, null=True, blank=True)
-#     timestamp_start = models.FloatField(null=True, blank=True)
-#     timestamp_end = models.FloatField(null=True, blank=True)
-#     voice_id = models.CharField(max_length=100)
-#     processed = models.BooleanField(default=False)
-#     progress = models.CharField(default="0", max_length=100)
-#     api_key = models.CharField(max_length=200)
-#     font_file = models.FileField(upload_to=font_file_upload_path, blank=True, null=True)
-#     font = models.CharField(max_length=50, blank=True,null=True, default="Arial")
-#     font_color = models.CharField(max_length=7)  # e.g., hex code: #ffffff
-#     subtitle_box_color = models.CharField(max_length=7, blank=True, null=True)
-#     font_size = models.IntegerField()
-#     resolution=models.CharField(max_length=7, blank=True, null=True) 
-#     bg_music_text = models.FileField(upload_to="lead-editor/background_txt/", blank=True, null=True)
-#     audio_file = models.FileField(upload_to="lead-editor/audio_files", blank=True, null=True)
-#     srt_file = models.FileField(
-#         upload_to="lead-editor/srt_files/", blank=True, null=True
-#     ) 
-#     blank_video = models.FileField(upload_to="lead-editor/blank_video/", blank=True, null=True)
-#     subtitle_file = models.FileField(upload_to="lead-editor/subtitles/", blank=True, null=True)
-#     generated_audio = models.FileField(
-#         upload_to="lead-editor/generated_audio/", blank=True, null=True
-#     )
-#     generated_srt = models.FileField(upload_to="lead-editor/generated_srt/", blank=True, null=True)
-#     generated_blank_video = models.FileField(
-#         upload_to="lead-editor/generated_blank_video/", blank=True, null=True
-#     )
-#     generated_final_video = models.FileField(
-#         upload_to="lead-editor/generated_final_video/", blank=True, null=True
-#     )
-#     generated_watermarked_video = models.FileField(
-#         upload_to="lead-editor/generated_watermarked_video/", blank=True, null=True
-#     )
-#     generated_final_bgm_video = models.FileField(
-#         upload_to="lead-editor/generated_bgm_video/", blank=True, null=True
-#     )
-#     generated_final_bgmw_video = models.FileField(
-#         upload_to="lead-editor/generated_bgmw_video/", blank=True, null=True
-#     )
-
-#     @staticmethod
-#     def is_valid_hex_color(color_code):
-#         """Validate if a color code is a valid hex value."""
-#         if len(color_code) != 7 or color_code[0] != "#":
-#             return False
-#         try:
-#             int(color_code[1:], 16)
-#             return True
-#         except ValueError:
-#             return False
-
-#     def track_progress(self, increase):
-#         self.progress = str(increase)
-#         self.save()
-
 
 class TextFile(models.Model):
     user = models.ForeignKey(
@@ -273,50 +211,6 @@ class TextFile(models.Model):
 def text_clip_upload_path(instance, filename):
     """Generate a unique file path for each uploaded text file."""
     return os.path.join("text_clip", str(instance.main_line.id), filename)
-
-
-# class TextLineVideoClip(models.Model):
-#     text_file = models.ForeignKey(
-#         TextFile, on_delete=models.CASCADE, related_name="video_clips"
-#     )
-#     text=models.CharField(max_length=100,null=True, blank=True)
-#     video_file_path = models.FileField(upload_to=text_clip_upload_path,null=True,blank=True)
-#     line_number = models.IntegerField()
-#     timestamp_start = models.FloatField(null=True, blank=True)
-#     timestamp_end = models.FloatField(null=True, blank=True)
-
-#     def to_dict(self):
-#         if self.video_file_path:
-#             video_path = self.video_file_path 
-#         else:
-#             video_path = ""  
-
-#         return {
-#             "line_number": self.line_number,
-#             "video_path": video_path,  # Return the URL, not the path
-#             "timestamp_start": self.timestamp_start,
-#             "timestamp_end": self.timestamp_end,
-#             "text":self.text,
-#         }
-
-#     def get_file_status(self):
-#         if self.video_file_path:
-#             return "filled"
-#         else:
-#             return "empty"
-
-#     def get_video_file_name(self):
-#         filename = self.video_file_path.name.split("/")[-1]
-
-#         return filename[:15]
-
-#     def __str__(self):
-#         return f"VideoClip for line {self.line_number} of {self.text_file}"
-
-#     class Meta:
-#         unique_together = ("text_file", "line_number")
-
-#         ordering = ["line_number", "text_file"]
 
 
 
