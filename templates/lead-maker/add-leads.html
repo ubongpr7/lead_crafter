@@ -447,16 +447,16 @@ function clearErrorMessages(){
                 if (spanIds.includes(id)) {
                     console.log(`ID matched: ${id}`);
                     const matchingSpan = Array.from(tagBoxes).find(tagBox => 
-                        Number(tagBox.querySelector('ul span')?.dataset.id) === id
+                        Number(tagBox.querySelector('ul span')?.dataset.id) === Number(id)
                     );
-                    
+                    console.log(matchingSpan)
                     if (matchingSpan) {
                         matchingSpan.style.color='red'
                         console.log(matchingSpan.id.split('_').pop())
                         const errorMessage=document.getElementById(`error-message_${matchingSpan.id.split('_').pop()}`);
                         if (errorMessage){
                           console.log(errorMessage)
-                          if (matchingSpan.textContent===''){
+                          if (matchingSpan.textContent.trim() === ''){
                             errorMessage.textContent='Please Wait For Clip To Process'
 
                           }else{
