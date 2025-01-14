@@ -408,7 +408,7 @@ function clearErrorMessages(){
 <script>
     async function fetchNoSubclipIds() {
         try {
-            textfileId = textfile_id
+            textfileId = "{{text_file.id}}"
             const url = `/text/check_text_clip/${textfileId}/`;
 
             const response = await fetch(url, {
