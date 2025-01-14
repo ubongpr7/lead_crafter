@@ -439,7 +439,7 @@ function clearErrorMessages(){
         const span = tagBox.querySelector('ul span');
 
         if (span && span.dataset.id) {
-            spanIds.push(span.dataset.id); 
+            spanIds.push(Number(span.dataset.id)); 
         }
     });
     console.log(spanIds)
