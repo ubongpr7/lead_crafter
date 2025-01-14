@@ -353,6 +353,7 @@ class Command(BaseCommand):
         )
         final_video = concatenated_video.set_audio(
             original_audio
+            
         )  # Removed overwriting with blank audio
         final_video_speeded_up_clip = self.speed_up_video_with_audio(final_video, 1)
         if  self.text_file_instance.trimmed_video:
