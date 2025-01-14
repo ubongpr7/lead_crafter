@@ -702,11 +702,11 @@ def add_leads(request,textfile_id):
             call_command("add_leads", textfile_id)
         except Exception as e:
             print(f"Error processing video: {e}")
-        if request.method =="POST":
-            thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
-            thread.start()
+    if request.method =="POST":
+        thread = threading.Thread(target=run_add_lead_command, args=(textfile_id,))
+        thread.start()
 
-            return redirect(f'/text/progress_page/add_leads/{textfile_id}') 
+        return redirect(f'/text/progress_page/add_leads/{textfile_id}') 
         
 
 
