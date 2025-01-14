@@ -231,19 +231,19 @@ function addSlide() {
             <a href="#!" class="delete-row-btn" id="delete_${currentNumber}" onclick="deleteSlide(this)">
               <img src="{% static 'lead-maker/images/delete-icn.svg' %}" alt="delete" />
             </a>
-            
+            <a href="#!"  
+               class="delete-row-btn" 
+               id="edit_${currentNumber}" 
+               onclick="EditeSlide(${currentNumber})">
+              <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
+            </a>
+
             <a href="#!" 
                style="display:none; " 
                class="delete-row-btn" 
                id="reset_${currentNumber}" 
                onclick="">
               <img src="{% static 'lead-maker/images/reset-svgrepo-com.svg' %}" alt="reset" />
-            </a>
-            <a href="#!"  
-               class="delete-row-btn" 
-               id="edit_${currentNumber}" 
-               onclick="EditeSlide(${currentNumber})">
-              <img src="{% static 'lead-maker/images/edit-button-svgrepo-com.svg' %}" alt="edit" />
             </a>
 
         </td>`;
