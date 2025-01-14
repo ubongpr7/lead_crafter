@@ -627,7 +627,7 @@ def add_text_video(request):
                     text_obj.save()
                     
 
-                    return redirect(f'/text/trim-video/{text_obj.id}')
+                return redirect(f'/text/trim-video/{text_obj.id}')
 
             else:
                 messages.error(request, "Please provide all required fields.")
