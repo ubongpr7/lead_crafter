@@ -542,7 +542,7 @@ function handleSelection(cNumber) {
 <form   class="popup-content" method="POST" enctype="multipart/form-data"
  id="edit-subclip-form"
  
-    style="grid-template-columns: 0.7fr 1fr;width:100%;">
+    style="grid-template-columns: 1fr;width:100%;">
     <br>
     {% csrf_token %}
 
@@ -555,7 +555,7 @@ function handleSelection(cNumber) {
         
 
         <input type="text" value="some text" hidden id="remaining" name="remaining">
-        <div style="display: grid;grid-template-columns: 0.7fr 1fr;border-radius: 8px;border: 1px solid #00000080;overflow: hidden;"  class="form-grid-cont">
+        <div style="display: grid;grid-template-columns:  1fr;border-radius: 8px;border: 1px solid #00000080;overflow: hidden;"  class="form-grid-cont">
         <div class="grid-item title  form-grid-item begin column-1"><span style="height:50px;align-items: center;">Upload Scene</span></div>
           <div class="form-grid-item main-item">
               <div  class="form-group" style="height:100%;">
