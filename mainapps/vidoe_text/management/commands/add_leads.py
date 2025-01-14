@@ -353,11 +353,13 @@ class Command(BaseCommand):
             main_clip=self.load_video_from_file_field(self.text_file_instance.trimmed_video)
         else:
             main_clip=self.load_video_from_file_field(self.text_file_instance.video_file)
+
         cropped_main_clip=self.crop_to_aspect_ratio_(main_clip,MAINRESOLUTIONS[self.text_file_instance.resolution])
         main_clips=[final_video_speeded_up_clip,cropped_main_clip]
+        resized_clips=self.resize_clips_to_max_size(main_clips)
         
         main_clipped_video=self.concatenate_clips(
-            main_clips,
+            resized_clips,
             target_resolution=MAINRESOLUTIONS[resolution],
             target_fps=30,
         )
