@@ -450,9 +450,11 @@ function clearErrorMessages(){
                         Number(tagBox.querySelector('span')?.dataset.id) === id
                     );
                     if (matchingSpan) {
-                        matchingSpan.classList.add('highlight'); 
+                        matchingSpan.style.color='red'
+                        console.log(matchingSpan.id.split('_').pop())
                         const errorMessage=document.getElementById(`error-message_${matchingSpan.id.split('_').pop()}`);
                         if (errorMessage){
+                          console.log(errorMessage)
                           if (matchingSpan.textContent===''){
                             errorMessage.textContent='Please Wait For Clip To Process'
 
