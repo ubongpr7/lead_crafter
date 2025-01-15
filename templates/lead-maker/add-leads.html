@@ -452,13 +452,23 @@ function deleteSavedSlide(clipId,btn) {
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
+    edit=false
+
     updateSubtitleNumbers(document.getElementById('leadsTable').getElementsByTagName('tbody')[0])
 }
 
 function addSlide() {
-  edit=false
+  edit=true
     let currentNumber = document.getElementById('no_of_slides').value;
+    if (currentNumber >0){
+      const slide_text_=document.getElementById(`slide_text_${currentNumber}`)
+      if (slide_text_){
+        if(slide_text_.style.display !='none'){
+          handleAutomateToHide(currentNumber)
+        }
 
+      }
+    }
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     if (checkRowCount(table)){
       var newRow = table.insertRow(-1);
@@ -547,7 +557,72 @@ function updateSubtitleNumbers(tableBody) {
 
   let edit=false
 
-  
+  function handleAutomateToHide(currentNumber) {
+    edit = false;
+    const textarea = document.getElementById(`slide_text_${currentNumber}`);
+    const wrapper = document.getElementById(`wrapper_${currentNumber}`);
+    const slide_span = document.getElementById(`slide_span_${currentNumber}`);
+    const edit_ = document.getElementById(`edit_${currentNumber}`);
+    const delete_ = document.getElementById(`delete_${currentNumber}`);
+    const reset_ = document.getElementById(`reset_${currentNumber}`);
+    let clip_id = slide_span.dataset.id;
+
+    if (textarea.value) {
+        textarea.style.display = 'none';
+        wrapper.style.display = 'flex';
+        edit_.style.display = 'flex';
+        slide_span.textContent = textarea.value;
+
+        const payload = JSON.stringify({
+            text: textarea.value, // Send the textarea value
+        });
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('load', function () {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+
+                if (response.success) {
+                    slide_span.textContent = textarea.value;
+                    slide_span.dataset.id = response.id;
+                    clip_id = response.id;
+
+                    if (reset_) {
+                        reset_.onclick = function () {
+                            subclipReset(clip_id);
+                        };
+                        reset_.style.display = 'flex';
+                        delete_.onclick = function () {
+                            deleteSavedSlide(clip_id, delete_);
+                        };
+                        console.log(delete_);
+                    }
+
+                    showSuccessMessage(`Subtitle submitted successfully!`);
+                } else {
+                    alert(response.error || 'Failed to submit the text.');
+                }
+            } else {
+                alert('An error occurred while submitting the text.');
+            }
+        });
+
+        xhr.addEventListener('error', function () {
+            alert('An error occurred during the request.');
+        });
+
+        if (clip_id) {
+            xhr.open('POST', `/text/edit_text_clip_line/${clip_id}/`);
+        } else {
+            xhr.open('POST', `/text/add_text_clip_line/{{text_file.id}}/`);
+        }
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        xhr.send(payload);
+    }
+}
+
 function subclipReset(mainId) {
         
             const textfileID = "{{textfile.id}}"
@@ -578,7 +653,7 @@ function subclipReset(mainId) {
         }
 
 function handleEnterToHide(currentNumber) {
-  edit =true
+  edit =false
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper = document.getElementById(`wrapper_${currentNumber}`);
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
@@ -651,6 +726,7 @@ function handleEnterToHide(currentNumber) {
 }
 
   function EditeSlide(currentNumber) {
+    edit=true
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper=document.getElementById(`wrapper_${currentNumber}`);
     const slide_span=document.getElementById(`slide_span_${currentNumber}`);
@@ -763,6 +839,8 @@ function clearErrorMessages(){
     }).catch((error) => {
         console.error("Error fetching no subclip IDs:", error);
     });
+  }else{
+    alert('You Need To Save or Delete The Current Text')
   }
 
 }
