@@ -318,7 +318,8 @@
 
     <div class="plans">
       <div class="p-cards-grid-container">
-        <!-- <div class="p-cards-grid-item mid">
+        {% if user.subscription.plan.name|lower == "free"%}
+        <div class="p-cards-grid-item mid">
           <div class="mp">
             <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.0.name }} Plan</span>
             <span class="hype">Most popular</span>
@@ -338,7 +339,7 @@
                class="p-button"
                style="text-decoration: none">Get Started</a>
           </div>
-           -->
+          {% endif %}
           <div class="p-cards-grid-item">
 
             <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.1.name }} Plan</span>
