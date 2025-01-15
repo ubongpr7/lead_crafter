@@ -318,7 +318,7 @@ function validateAPIKey(event) {
   let apiKeyValid = false; // Separate variable to track API key validation
 
   if (!videoFile) {
-    videoErrorTxt.text('Please Upload an input video file');
+    videoErrorTxt.textContent='Please Upload an input video file'
     videoInput.focus();
     formValid = false;
   }
