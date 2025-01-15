@@ -808,7 +808,7 @@ function clearErrorMessages(){
     });
 
     console.log(spanIds)
-    if (!edit){
+    if (areAllTextareasHidden){
     fetchNoSubclipIds().then((ids) => {
         if (Array.isArray(ids) && ids.length > 0) {
             ids.forEach((id) => {
@@ -853,6 +853,31 @@ function clearErrorMessages(){
     alert('You Need To Save or Delete The Current Text')
   }
 
+}
+function areAllTextareasHidden() {
+  // Select all textarea elements
+  const textareas = document.querySelectorAll('textarea');
+
+  // Loop through each textarea
+  for (const textarea of textareas) {
+    // Get the computed style of the textarea
+    const style = window.getComputedStyle(textarea);
+
+    // If any textarea's display is not 'none', return false
+    if (style.display !== 'none') {
+      return false;
+    }
+  }
+
+  // If the loop completes, all textareas are hidden
+  return true;
+}
+
+// Example usage
+if (areAllTextareasHidden()) {
+  console.log("All textareas are hidden.");
+} else {
+  console.log("At least one textarea is visible.");
 }
 
     function closeModal() {
