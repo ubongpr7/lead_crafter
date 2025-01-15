@@ -26,7 +26,6 @@
           <a href="#!">Download</a>
         </li>
       </ul>
-
       <div class="lead-container-new">
         <h5 class="text-center lead-title"> Create Your Perfect Leads: <br class="d-none d-md-block" /> Upload, Customize, and Download! </h5>
         <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
@@ -318,27 +317,27 @@ function validateAPIKey(event) {
   let apiKeyValid = false; // Separate variable to track API key validation
 
   if (!videoFile) {
-    videoErrorTxt.textContent='Please Upload an input video file'
     videoInput.focus();
+    videoErrorTxt.text('Please Upload an input video file');
     formValid = false;
   }
 
   if (!apiKey) {
-    apiKeyError.text('API key is required.');
     apiKeyInput.focus();
+    apiKeyError.text('API key is required.');
     formValid = false;
   }
 
   if (!voiceId) {
-    voiceIdError.text('Voice ID is required.');
     voiceIdInput.focus();
+    voiceIdError.text('Voice ID is required.');
     formValid = false;
   }
 
   if (!font_) {
     font_select.required = true;
-    font_error.text('Please Upload a font file');
     font_select.focus();
+    font_error.text('Please Upload a font file');
     formValid = false;
   }
 
