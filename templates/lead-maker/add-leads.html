@@ -318,7 +318,7 @@
 
     <div class="plans">
       <div class="p-cards-grid-container">
-        {% if user.subscription.plan.name|lower == "free"%}
+        {% if user.subscription.plan.name|lower != "premium"  %}
         <div class="p-cards-grid-item mid">
           <div class="mp">
             <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.0.name }} Plan</span>
@@ -328,7 +328,7 @@
           <div class="price">
             <span><span class="bold-size">${{ plans.0.price }}</span> <span class="font">/Month</span><span>
               <br />
-              <span class="price-promo">Just ${{ plans.0.price_per_vsl }} Per VSL</span>
+              <span class="price-promo">Just ${{ plans.0.price_per_vsl }} Per VSL Upto 15 Slides</span>
             </div>
             <div class="benefits">
               <img src="{% static 'assets/icons/check.svg' %}" alt="" />
@@ -347,7 +347,7 @@
             <div class="price">
               <span><span class="bold-size">${{ plans.1.price }}</span> <span class="font">/Month</span><span>
                 <br />
-                <span class="price-promo">Just ${{ plans.1.price_per_vsl }} Per VSL</span>
+                <span class="price-promo">Just ${{ plans.1.price_per_vsl }} Per VSL Unlimited Slides</span>
               </div>
               <div class="benefits">
                 <img src="{% static 'assets/icons/check.svg' %}" alt="" />
@@ -373,9 +373,11 @@
 
 function hidePopup() {
   const popupContainer = document.querySelector('.plans-popup-container');
-  popupContainer.classList.add('hidden'); // Add 'hidden' class to hide the popup
-  document.body.classList.remove('no-scroll'); // Re-enable background scrolling
+  popupContainer.classList.add('hidden'); 
+  document.body.classList.remove('no-scroll'); 
 }
+
+document.querySelector('.close-popup img').addEventListener('click', hidePopup);
 
 </script>
 
