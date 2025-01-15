@@ -267,9 +267,21 @@ function addSlide() {
         handleSelection(currentNumber);
     }, 0); 
 }
-    
+
+var tableBody_ = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
+function checkRowCount() {
+
+    var rowCount = tableBody_.rows.length; 
+    if (rowCount > 15) {
+        console.log("Row count exceeded 15!"); 
+        alert("The number of rows in the table has exceeded 15!");
+    }
+}
+
+tableBody_.addEventListener('DOMNodeInserted', function (event) {
+    checkRowCount();
+});
 </script>
-<!-- lines -->
 <script>
 
   let edit=false
