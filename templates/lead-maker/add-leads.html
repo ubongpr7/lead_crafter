@@ -318,7 +318,7 @@
 
     <div class="plans">
       <div class="p-cards-grid-container">
-        {% if user.subscription.plan.name|lower != "premium"  %}
+        {% if user.subscription.plan.name|lower == "free"  %}
         <div class="p-cards-grid-item mid">
           <div class="mp">
             <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.0.name }} Plan</span>
@@ -515,7 +515,7 @@ function addSlide() {
 function checkRowCount(tableBody) {
     var rowCount = tableBody.rows.length;
     const userPlan = "{{user.subscription.plan.name}}".toLowerCase(); // Convert to lowercase
-    const unlimitedPlans = ['premium',]; // Plans should also be lowercase for comparison
+    const unlimitedPlans = ['premium','admin']; // Plans should also be lowercase for comparison
     console.log(userPlan);
 
     // Check if userPlan is not in unlimitedPlans
