@@ -456,6 +456,7 @@ function deleteSlide(btn) {
 }
 
 function addSlide() {
+  edit=false
     let currentNumber = document.getElementById('no_of_slides').value;
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
@@ -577,6 +578,7 @@ function subclipReset(mainId) {
         }
 
 function handleEnterToHide(currentNumber) {
+  edit =true
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     const wrapper = document.getElementById(`wrapper_${currentNumber}`);
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
@@ -718,7 +720,9 @@ function clearErrorMessages(){
             spanIds.push(Number(span.dataset.id)); 
         }
     });
+
     console.log(spanIds)
+    if (!edit){
     fetchNoSubclipIds().then((ids) => {
         if (Array.isArray(ids) && ids.length > 0) {
             ids.forEach((id) => {
@@ -759,6 +763,8 @@ function clearErrorMessages(){
     }).catch((error) => {
         console.error("Error fetching no subclip IDs:", error);
     });
+  }
+
 }
 
     function closeModal() {
