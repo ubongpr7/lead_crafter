@@ -211,10 +211,10 @@ function addSlide() {
     let currentNumber = document.getElementById('no_of_slides').value;
 
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-    var newRow = table.insertRow(-1);
-    var slideCell = newRow.insertCell(0);
-    currentNumber++;
-  if (checkRowCount(table)){
+    if (checkRowCount(table)){
+      var newRow = table.insertRow(-1);
+      var slideCell = newRow.insertCell(0);
+      currentNumber++;
 
     document.getElementById('no_of_slides').value = currentNumber;
     slideCell.innerText = `Subtitle ${currentNumber}`;
@@ -269,17 +269,19 @@ function addSlide() {
     }, 0); 
 }
 }
-
-
 function checkRowCount(tableBody) {
+    var rowCount = tableBody.rows.length;
+    const userPlan = "{{user.subscription.plan.name}}".toLowerCase(); // Convert to lowercase
+    const unlimitedPlans = ['premium']; // Plans should also be lowercase for comparison
+    console.log(userPlan);
 
-    var rowCount = tableBody.rows.length; 
-    if (rowCount >= 15) {
-        console.log("Row count exceeded 15!"); 
+    // Check if userPlan is not in unlimitedPlans
+    if (rowCount >= 16 && !unlimitedPlans.includes(userPlan)) {
+        console.log("Row count exceeded 15!");
         alert("The number of rows in the table has exceeded 15!");
-        return false 
-    }else{
-      return true
+        return false;
+    } else {
+        return true;
     }
 }
 
