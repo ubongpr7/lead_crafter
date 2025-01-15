@@ -434,7 +434,11 @@ function deleteSavedSlide(clipId,btn) {
                   'X-CSRFToken': '{{ csrf_token }}'
               },
               success: function(response) {
-                document.getElementById(`tr_${clipId}`).style.display='none'
+                var row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+                // document.getElementById(`tr_${clipId}`).style.display='none'
+    updateSubtitleNumbers(document.getElementById('leadsTable').getElementsByTagName('tbody')[0])
+
               },
               error: function(xhr, status, error) {
                   alert("Error deleting music: " + error);
@@ -448,6 +452,7 @@ function deleteSavedSlide(clipId,btn) {
 function deleteSlide(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
+    updateSubtitleNumbers(document.getElementById('leadsTable').getElementsByTagName('tbody')[0])
 }
 
 function addSlide() {
@@ -509,6 +514,7 @@ function addSlide() {
     setTimeout(() => {
         handleEnterToHide(currentNumber,);
         handleSelection(currentNumber);
+        updateSubtitleNumbers(table)
     }, 0); 
 }
 }
@@ -528,6 +534,12 @@ function checkRowCount(tableBody) {
         return true;
     }
 }
+function updateSubtitleNumbers(tableBody) {
+    for (let i = 0; i < tableBody.rows.length; i++) {
+        tableBody.rows[i].cells[0].textContent = `Subtitle ${i + 1}`;
+    }
+}
+
 
 </script>
 <script>
