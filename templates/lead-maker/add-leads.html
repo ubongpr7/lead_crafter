@@ -466,7 +466,14 @@ function addSlide() {
       const slide_text_=document.getElementById(`slide_text_${currentNumber}`)
       if (slide_text_){
         if(slide_text_.style.display !='none'){
-          handleAutomateToHide(currentNumber)
+          if (slide_text_.value === ''){
+            alert('Fill the Empty Text Area')
+            return
+          }else{
+            handleAutomateToHide(currentNumber)
+
+          }
+          
         }
 
       }
