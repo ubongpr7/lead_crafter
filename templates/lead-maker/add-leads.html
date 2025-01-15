@@ -460,7 +460,6 @@ function deleteSlide(btn) {
 }
 
 function addSlide() {
-  edit=true
     let currentNumber = document.getElementById('no_of_slides').value;
     if (currentNumber >0){
       const slide_text_=document.getElementById(`slide_text_${currentNumber}`)
@@ -472,12 +471,15 @@ function addSlide() {
           }else{
             handleAutomateToHide(currentNumber)
 
+
           }
           
         }
 
       }
     }
+  edit=true
+
     var table = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
     if (checkRowCount(table)){
       var newRow = table.insertRow(-1);
