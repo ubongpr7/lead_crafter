@@ -214,6 +214,7 @@ function addSlide() {
     var newRow = table.insertRow(-1);
     var slideCell = newRow.insertCell(0);
     currentNumber++;
+  if (checkRowCount(table)){
 
     document.getElementById('no_of_slides').value = currentNumber;
     slideCell.innerText = `Subtitle ${currentNumber}`;
@@ -267,20 +268,21 @@ function addSlide() {
         handleSelection(currentNumber);
     }, 0); 
 }
+}
 
-var tableBody_ = document.getElementById('leadsTable').getElementsByTagName('tbody')[0];
-function checkRowCount() {
 
-    var rowCount = tableBody_.rows.length; 
-    if (rowCount > 15) {
+function checkRowCount(tableBody) {
+
+    var rowCount = tableBody.rows.length; 
+    if (rowCount >= 15) {
         console.log("Row count exceeded 15!"); 
         alert("The number of rows in the table has exceeded 15!");
+        return false 
+    }else{
+      return true
     }
 }
 
-tableBody_.addEventListener('DOMNodeInserted', function (event) {
-    checkRowCount();
-});
 </script>
 <script>
 
