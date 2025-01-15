@@ -2,6 +2,7 @@ import threading
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+from mainapps.accounts.models import Plan
 from mainapps.audio.models import BackgroundMusic
 from mainapps.vidoe_text.decorators import (
     check_credits_and_ownership,
@@ -731,7 +732,9 @@ def add_leads(request,textfile_id):
     context={
         'text_file':text_file,
         'clips':line_clips,
-        "no_of_slides":no_of_slides
+        "no_of_slides":no_of_slides,
+        "plans": apps.get_model("accounts", "Plan").objects.all(),
+
         }
     def run_add_lead_command(textfile_id):
         try:

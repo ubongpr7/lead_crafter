@@ -134,8 +134,248 @@
         </div>
     </div>
 </div>
+
+<style>
+  #plansPopup {
+    padding: 46px;
+    position: relative;
+    background: white;
+    border-radius: 16px
+  }
+
+  .plans-popup-container {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .close-popup {
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: lightgray;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .p-cards-grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 400px);
+    column-gap: 20px;
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+  }
+
+  .p-cards-grid-item {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border: solid 0.2px #0000001a;
+    border-radius: 8px;
+    padding: 28px 28px;
+  }
+
+  .p-cards-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+  }
+
+  .mid {
+    border: solid 2px #0e44ff;
+  }
+
+  .g-head {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32.4px;
+    letter-spacing: -0.01em;
+    text-align: left;
+  }
+
+  .g-p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .bold-size {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 54px;
+    text-align: center;
+  }
+
+  .font {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -0.6px;
+    font-weight: 800;
+    color: #00000080;
+  }
+
+  .price-promo {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .price {
+    margin-bottom: 20px;
+  }
+
+  .benefits {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    justify-items: center;
+    margin-bottom: 20px;
+  }
+
+  .benefits-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    text-align: left;
+  }
+
+  .p-button {
+    width: 250px;
+    background: #0e44ff;
+    padding: 12px 32px;
+    width: 82%;
+    border: solid 1px #0e44ff;
+    border-radius: 8px;
+    text-align: center;
+    display: block;
+    color: white;
+    transition: 0.3s ease;
+  }
+
+  .p-button:hover {
+    background-color: #6b4fc1;
+  }
+
+  .mp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hype {
+    color: #0e44ff;
+    background: #9dbdff33;
+    font-size: 14px;
+    padding: 4px 8px 4px 8px;
+    border: solid 1px #9dbdff33;
+    border-radius: 50px;
+  }
+
+  .middle {
+    margin-bottom: 32px;
+  }
+
+  .bottom-heading {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .more-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+</style>
+
+<div class="plans-popup-container hidden">
+  <div id="plansPopup">
+    <div class="close-popup">
+      <img src="{% static 'assets/icons/x.svg' %}" alt="" />
+    </div>
+
+    <div class="plans">
+      <div class="p-cards-grid-container">
+        <!-- <div class="p-cards-grid-item mid">
+          <div class="mp">
+            <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.0.name }} Plan</span>
+            <span class="hype">Most popular</span>
+          </div>
+          <p class="g-p">Perfect For Scaling Your Video Advertising Campaigns</p>
+          <div class="price">
+            <span><span class="bold-size">${{ plans.0.price }}</span> <span class="font">/Month</span><span>
+              <br />
+              <span class="price-promo">Just ${{ plans.0.price_per_vsl }} Per VSL</span>
+            </div>
+            <div class="benefits">
+              <img src="{% static 'assets/icons/check.svg' %}" alt="" />
+              <span class="benefits-text">Create Up To {{ plans.0.vsl_limit }} VSLs Per Month</span>
+            </div>
+
+            <a href="{% url 'accounts:upgrade_subscription' price_id=plans.0.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/add-leads/{{text_file.id}}/"
+               class="p-button"
+               style="text-decoration: none">Get Started</a>
+          </div>
+           -->
+          <div class="p-cards-grid-item">
+
+            <span class="highlight g-head" style="text-transform: capitalize;">{{ plans.1.name }} Plan</span>
+            <p class="g-p">Ideal For High-Volume Marketers And Agencies</p>
+            <div class="price">
+              <span><span class="bold-size">${{ plans.1.price }}</span> <span class="font">/Month</span><span>
+                <br />
+                <span class="price-promo">Just ${{ plans.1.price_per_vsl }} Per VSL</span>
+              </div>
+              <div class="benefits">
+                <img src="{% static 'assets/icons/check.svg' %}" alt="" />
+                <span class="benefits-text">Create Up To {{ plans.1.vsl_limit }} VSLs Per Month</span>
+              </div>
+              
+                 <a href="{% url 'accounts:upgrade_subscription' price_id=plans.1.stripe_price_id %}?success_path=/accounts/manage-subscription&cancel_path=/accounts/manage-subscription&user_url=/text/add-leads/{{text_file.id}}"
+                    class="p-button"
+                    style="text-decoration: none">Get Started</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
 <script>
-    
+    function showPopup() {
+  const popupContainer = document.querySelector('.plans-popup-container');
+  popupContainer.classList.remove('hidden');
+  document.body.classList.add('no-scroll');
+}
+
+function hidePopup() {
+  const popupContainer = document.querySelector('.plans-popup-container');
+  popupContainer.classList.add('hidden'); // Add 'hidden' class to hide the popup
+  document.body.classList.remove('no-scroll'); // Re-enable background scrolling
+}
+
 </script>
 
 </div>
@@ -272,13 +512,14 @@ function addSlide() {
 function checkRowCount(tableBody) {
     var rowCount = tableBody.rows.length;
     const userPlan = "{{user.subscription.plan.name}}".toLowerCase(); // Convert to lowercase
-    const unlimitedPlans = ['premium']; // Plans should also be lowercase for comparison
+    const unlimitedPlans = ['premium',]; // Plans should also be lowercase for comparison
     console.log(userPlan);
 
     // Check if userPlan is not in unlimitedPlans
     if (rowCount >= 15 && !unlimitedPlans.includes(userPlan)) {
         console.log("Row count exceeded 15!");
-        alert("The number of rows in the table has exceeded 15!");
+        alert("Your Current Package Only Allows You 15 Slide Please Upgrade To Unlock Unlimitedb Slides");
+        showPopup()
         return false;
     } else {
         return true;
