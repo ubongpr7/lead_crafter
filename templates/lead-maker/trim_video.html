@@ -98,19 +98,25 @@
   text-align: center;
   margin-bottom: 20px;
 }
-
 .canvas-container {
   display: flex;
-  gap: 10px;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden; 
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .canvas-container .thumbnail {
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  padding: 4px;
+  margin: 0; 
+  flex-shrink: 0; 
+}
+
+
+.canvas-container .thumbnail {
+  /* border: 2px solid #ddd; */
+  /* border-radius: 4px; */
+  /* padding: 4px; */
   cursor: pointer;
 }
 
