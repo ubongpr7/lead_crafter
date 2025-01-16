@@ -220,7 +220,8 @@
             const rectWidth = rect.width;
 
             // Scale sensitivity based on video duration
-            const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+            // const timeChange = (deltaX / rectWidth) * (videoDuration / SENSITIVITY_FACTOR);
+            const timeChange =0.1
 
             let newStartTime = initialStartTime + timeChange;
             newStartTime = Math.max(0, Math.min(newStartTime, endTime - 1));
