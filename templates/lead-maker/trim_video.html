@@ -343,8 +343,8 @@
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
 
-      canvas.width = step/1000; // Thumbnail width
-      canvas.height = 90; // Thumbnail height
+      canvas.width = step/100; 
+      canvas.height = 90;
 
       video.currentTime = time;
       video.addEventListener("seeked", function captureThumbnail() {
