@@ -267,8 +267,9 @@
 
 
 <script>
+  textFileId
   function clearFileInput(cNumber){
-    document.getElementById(`mp3-${cNumber}`).value=''
+    document.getElementById(`mp3-${textFileId}-${cNumber}`).value=''
     document.getElementById(`clear-file-${cNumber}`).style.display='none'
     document.getElementById(`uploadText-${cNumber}`).textContent='Choose File'
 
