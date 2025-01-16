@@ -387,7 +387,7 @@
   // Update Start and End Time Inputs
   
   function initializeCanvasTrimmer() {
-  const thumbnailInterval = 1; // Interval between thumbnails in seconds
+  const thumbnailInterval = 5; // Interval between thumbnails in seconds
   const numThumbnails = Math.ceil(videoDuration / thumbnailInterval); // Dynamically calculate the number of thumbnails
   const step = videoDuration / numThumbnails; // Adjusted step to ensure full coverage
 
@@ -448,6 +448,7 @@
     trimButton.style.display = "inline-block";
     undoButton.style.display = "inline-block";
     proceedButton.style.display = "none";
+
   }
 
   // Undo Trimming
