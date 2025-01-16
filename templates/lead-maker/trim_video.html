@@ -331,16 +331,74 @@
   let startTime = 0;
   let endTime = 0;
 
+//   function initializeCanvasTrimmer() {
+//   const numThumbnails = 20;
+//   const step = videoDuration / numThumbnails;
+
+//   canvasContainer.innerHTML = ""; 
+//   let currentIndex = 0;
+
+//   function captureThumbnail() {
+//     const time = currentIndex * step;
+//     video.currentTime = time; 
+
+//     video.addEventListener("seeked", function handleSeeked() {
+//       const canvas = document.createElement("canvas");
+//       const context = canvas.getContext("2d");
+
+//       canvas.width = 90; 
+//       canvas.height = 90;
+
+//       context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+//       const thumbnail = document.createElement("div");
+//       thumbnail.className = "thumbnail";
+//       thumbnail.appendChild(canvas);
+//       thumbnail.dataset.time = time;
+
+//       // Add click listener for trimming logic
+//       thumbnail.addEventListener("click", () => {
+//         const selectedTime = parseFloat(thumbnail.dataset.time);
+//         if (selectedTime < endTime) {
+//           startTime = selectedTime;
+//         } else {
+//           endTime = selectedTime;
+//         }
+//         updateInputs();
+//       });
+
+//       canvasContainer.appendChild(thumbnail);
+//       video.removeEventListener("seeked", handleSeeked); // Remove the event listener after execution
+
+//       currentIndex++; // Move to the next thumbnail
+//       if (currentIndex < numThumbnails) {
+//         captureThumbnail(); // Process the next thumbnail
+//       }
+//     });
+//   }
+
+//   // Start capturing thumbnails
+//   startTime = 0;
+//   endTime = videoDuration;
+//   updateInputs();
+//   captureThumbnail(); // Kickstart the recursive thumbnail generation
+// }
+
+  // Update Start and End Time Inputs
+  
   function initializeCanvasTrimmer() {
-  const numThumbnails = 20;
-  const step = videoDuration / numThumbnails;
+  const thumbnailInterval = 1; // Interval between thumbnails in seconds
+  const numThumbnails = Math.ceil(videoDuration / thumbnailInterval); // Dynamically calculate the number of thumbnails
+  const step = videoDuration / numThumbnails; // Adjusted step to ensure full coverage
 
   canvasContainer.innerHTML = ""; 
   let currentIndex = 0;
 
   function captureThumbnail() {
     const time = currentIndex * step;
-    video.currentTime = time; 
+
+    // Ensure the time does not exceed video duration
+    video.currentTime = Math.min(time, videoDuration);
 
     video.addEventListener("seeked", function handleSeeked() {
       const canvas = document.createElement("canvas");
@@ -384,7 +442,6 @@
   captureThumbnail(); // Kickstart the recursive thumbnail generation
 }
 
-  // Update Start and End Time Inputs
   function updateInputs() {
     startInput.value = startTime.toFixed(2);
     endInput.value = endTime.toFixed(2);
