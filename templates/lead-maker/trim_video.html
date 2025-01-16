@@ -421,6 +421,7 @@ addSliderEvents();
       const sliderStart = document.getElementById('sliderStart');
       const sliderFilled = document.getElementById('slider-filled');
       const startTimeDisplay = document.getElementById('startTime');
+      const sliderIndicator = document.getElementById('sliderIndicator');
       const startTimeInput = document.getElementById('start');
       let isDragging = false;
       let videoDuration = 0;
@@ -432,6 +433,9 @@ addSliderEvents();
     
         sliderStart.style.left = `${startPercent}%`;
         sliderFilled.style.width = `${startPercent}%`;
+        sliderIndicator.style.left = `${startPercent}%`;
+        sliderIndicator.textContent = formatTime(startTime);
+      
     
         startTimeDisplay.textContent = startTime.toFixed(2); // Update time display
         startTimeInput.value = startTime.toFixed(2); // Update form input value
@@ -448,7 +452,7 @@ addSliderEvents();
           const percent = Math.min(100, Math.max(0, (offsetX / rect.width) * 100));
           startTime = (percent / 100) * videoDuration;
     
-          video.currentTime = startTime; // Update video to reflect slider position
+          video.currentTime = startTime; 
           updateSlider();
         };
     
@@ -475,6 +479,16 @@ addSliderEvents();
           updateSlider();
         }
       });
+      
+
+      
+        function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      
     </script>
     
     {% endblock content %}
