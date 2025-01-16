@@ -5,7 +5,7 @@
 {% include "lead-maker/includes/header.html" %}
 
 {% include "lead-maker/accounts/new_messages.html" %}
-<!-- <style>
+<style>
   
 
   .slider-container {
@@ -87,55 +87,8 @@
   text-align: center;
 }
 
-</style> -->
-<style>
-  body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
-
-.video-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.canvas-container {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.canvas-container .thumbnail {
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  padding: 4px;
-  cursor: pointer;
-}
-
-.canvas-container .thumbnail:hover {
-  border-color: #5f83ff;
-}
-
-.btn {
-  background-color: #5f83ff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.btn.proceed-btn {
-  background-color: #28a745;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
 </style>
+
 <div class="content contain">
   <section class="login-sec voice-subtitle">
     <div class="container">
@@ -163,34 +116,53 @@
           </a>
           <h5 class="text-center lead-title"> Trim Your Video </h5>
         </div>
-        <form class="trim-form" action="." method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="video-container">
-            <video id="video" controls>
-              <source src="{{ text_file.video_file.url }}" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+        <form class="lead-form" id="lead-form" action="." method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <figure class="video-place" style="background-color: white;" >
+              <div class="video-container">
+                <video id="video" height="400" controls>
+                  <source src="{{text_file.video_file.url}}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </figure>
+
+        <div class="slider-container">
+          <div class="slider-track">
+            <div class="slider-filled" id="slider-filled"></div>
           </div>
-      
-          <div id="canvasContainer" class="canvas-container"></div>
-      
-          <div>
-            <input type="hidden" name="start" id="start" value="0">
-            <input type="hidden" name="end" id="end" value="0">
-          </div>
-      
-          <button type="button" class="btn" id="undo" style="display: none;">Undo Trimming</button>
-      
-          <div id="actionContainer">
-            <a class="btn proceed-btn" href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
+          <div class="slider-thumb" id="sliderStart"></div>
+          <div class="slider-thumb end" style="display:none;" id="sliderEnd"></div>
+          <div class="slider-indicator" id="sliderIndicator">0:00</div>
+        </div>
+        
+        <div>
+          <p>Start Time: <span id="startTime">0</span>s</p>
+          <p style="display:none;">End Time: <span id="endTime" >0</span>s</p>
+          <p class="error" id="error" style="display: none;">Start time cannot be greater than or equal to end time!</p>
+        </div>
+        <input type='number' hidden name='start'step="any" id="start" value="0" >
+        <input type='number' hidden name='end'step="any" id="end" value="0">
+        <button type="button" class="btn" id="undo" style="display: none;" onclick="removeTrimming()">Undo Trimming</button>
+        <div id="actionContainer">
+
+          <a  class="btn proceed-btn"href="/text/add-leads/{{text_file.id}}"   id="proceedWithoutTrimming">
+            <span id="button-text" style="color:white;">
               Proceed without Trimming
-            </a>
-            <button type="submit" class="btn proceed-btn" style="display: none;" id="trimButton">
+            </span>
+            <!-- <img class="btn-arrow" src="{% static 'lead-maker/images/btn-arrow.svg' %}" alt="arrow" /> -->
+          </a>
+          <button type="submit" class="btn proceed-btn" style="display: none;margin-top: 10px;"  id="trimButton">
+            <span id="button-text" style="color:white;">
               Trim Video
-            </button>
-          </div>
+            </span>
+        </button>
+        </div>
+        
+
+            
         </form>
-      
+        
       </div>
     </div>
   </section>
@@ -204,7 +176,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--     
+    
     <script>
       const video = document.getElementById('video');
       const sliderStart = document.getElementById('sliderStart');
@@ -310,90 +282,7 @@
       }
 
       
-    </script> -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById("video");
-  const canvasContainer = document.getElementById("canvasContainer");
-  const startInput = document.getElementById("start");
-  const endInput = document.getElementById("end");
-  const trimButton = document.getElementById("trimButton");
-  const undoButton = document.getElementById("undo");
-  const proceedButton = document.getElementById("proceedWithoutTrimming");
-
-  let videoDuration = 0;
-  let startTime = 0;
-  let endTime = 0;
-
-  // Initialize Canvas-Based Trimmer
-  function initializeCanvasTrimmer() {
-    const numThumbnails = 10;
-    const step = videoDuration / numThumbnails;
-
-    canvasContainer.innerHTML = ""; // Clear existing thumbnails
-
-    for (let i = 0; i < numThumbnails; i++) {
-      const time = i * step;
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-
-      canvas.width = 160; // Thumbnail width
-      canvas.height = 90; // Thumbnail height
-
-      video.currentTime = time;
-      video.addEventListener("seeked", function captureThumbnail() {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-        thumbnail.appendChild(canvas);
-        thumbnail.dataset.time = time;
-
-        thumbnail.addEventListener("click", () => {
-          const selectedTime = parseFloat(thumbnail.dataset.time);
-          if (selectedTime < endTime) {
-            startTime = selectedTime;
-          } else {
-            endTime = selectedTime;
-          }
-          updateInputs();
-        });
-
-        canvasContainer.appendChild(thumbnail);
-        video.removeEventListener("seeked", captureThumbnail);
-      });
-    }
-
-    startTime = 0;
-    endTime = videoDuration;
-    updateInputs();
-  }
-
-  // Update Start and End Time Inputs
-  function updateInputs() {
-    startInput.value = startTime.toFixed(2);
-    endInput.value = endTime.toFixed(2);
-    trimButton.style.display = "inline-block";
-    undoButton.style.display = "inline-block";
-    proceedButton.style.display = "none";
-  }
-
-  // Undo Trimming
-  undoButton.addEventListener("click", () => {
-    startTime = 0;
-    endTime = videoDuration;
-    updateInputs();
-    trimButton.style.display = "none";
-    undoButton.style.display = "none";
-    proceedButton.style.display = "inline-block";
-  });
-
-  // Initialize when video metadata is loaded
-  video.addEventListener("loadedmetadata", () => {
-    videoDuration = Math.floor(video.duration);
-    initializeCanvasTrimmer();
-  });
-});
-
     </script>
+    
     {% endblock content %}
  
