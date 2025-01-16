@@ -423,11 +423,37 @@ addSliderEvents();
       const startTimeDisplay = document.getElementById('startTime');
       const sliderIndicator = document.getElementById('sliderIndicator');
       const startTimeInput = document.getElementById('start');
+      const undoBtn=document.getElementById('undo')
+
       let isDragging = false;
       let videoDuration = 0;
       let startTime = 0;
     
-      // Update slider based on the video duration and start time
+      function handleInteraction() {
+        document.getElementById('proceedWithoutTrimming').style.display = 'none'; 
+        document.getElementById('undo').style.display = 'inline-block';
+        trimButton.style.display = 'inline-block';
+            }
+
+      function removeTrimming() {
+    startTime = 0;
+    endTime = videoDuration; 
+    currentRangeStart = 0; 
+    startTimeInput.value = startTime.toFixed(2);
+    endTimeInput.value = endTime.toFixed(2);
+
+    startPercent = 0;
+    endPercent = 100;
+
+    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    video.currentTime = startTime;
+
+    trimmingVisible=false
+    updateSlider();
+}
       function updateSlider() {
         const startPercent = (startTime / videoDuration) * 100;
     
@@ -437,11 +463,12 @@ addSliderEvents();
         sliderIndicator.textContent = formatTime(startTime);
       
     
-        startTimeDisplay.textContent = startTime.toFixed(2); // Update time display
-        startTimeInput.value = startTime.toFixed(2); // Update form input value
+        startTimeDisplay.textContent = startTime.toFixed(2); 
+        startTimeInput.value = startTime.toFixed(2); 
+        if (document.getElementById('proceedWithoutTrimming').style.display !='none')
+        handleInteraction();
       }
     
-      // Handle slider drag events
       sliderStart.addEventListener('mousedown', (e) => {
         isDragging = true;
     
@@ -473,12 +500,12 @@ addSliderEvents();
       });
     
       // Sync slider position with video playback
-      video.addEventListener('timeupdate', () => {
-        if (!isDragging) {
-          // startTime = video.currentTime;
-          // updateSlider();
-        }
-      });
+      // video.addEventListener('timeupdate', () => {
+      //   if (!isDragging) {
+      //     // startTime = video.currentTime;
+      //     // updateSlider();
+      //   }
+      // });
       
 
       
