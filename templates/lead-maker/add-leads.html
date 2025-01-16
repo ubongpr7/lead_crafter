@@ -695,14 +695,14 @@ function handleEnterToHide(currentNumber,) {
                             textarea.style.display = 'none';
                             wrapper.style.display = 'flex';
                             edit_.style.display = 'flex';
-                        }else{
+                        }
+                        else{
                           textarea.style.display = 'none';
                           wrapper.style.display = 'flex';
                           edit_.style.display = 'flex';
                           slide_span.textContent = textarea.value;
                         }
                         if (response.success) {
-                            slide_span.textContent = textarea.value;
                             slide_span.dataset.id=response.id
                             clip_id=response.id
                             if (reset_){
