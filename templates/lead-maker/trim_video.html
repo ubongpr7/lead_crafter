@@ -332,16 +332,15 @@
   let endTime = 0;
 
   function initializeCanvasTrimmer() {
-  const numThumbnails = 10; // Number of thumbnails
-  const step = videoDuration / numThumbnails; // Time interval between thumbnails
+  const numThumbnails = 20;
+  const step = videoDuration / numThumbnails;
 
-  canvasContainer.innerHTML = ""; // Clear existing thumbnails
-
-  let currentIndex = 0; // Index to track which thumbnail is being processed
+  canvasContainer.innerHTML = ""; 
+  let currentIndex = 0;
 
   function captureThumbnail() {
-    const time = currentIndex * step; // Calculate time for the current thumbnail
-    video.currentTime = time; // Seek to the calculated time
+    const time = currentIndex * step;
+    video.currentTime = time; 
 
     video.addEventListener("seeked", function handleSeeked() {
       const canvas = document.createElement("canvas");
