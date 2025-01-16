@@ -370,11 +370,14 @@ let currentNumber = n_musics.value;
 function handleFileInputChange(number) {
     const fileInput = document.getElementById(`mp3-${textFileId}-${number}`);
     const uploadText = document.getElementById(`uploadText-${number}`);
+    const clearFile= document.getElementById(`clear-flie-${number}`);
 
     fileInput.addEventListener('change', function () {
         if (fileInput.files.length > 0) {
             uploadText.textContent = fileInput.files[0].name;
-        } else {
+            clearFile.style.display='flex'
+          } else {
+          clearFile.style.display='none'
             uploadText.textContent = 'Choose File';
         }
     });
