@@ -169,7 +169,8 @@ def edit_text_clip_line(request, id):
                 clip.save()
                 for subclip in clip.subclips.all():
                     subclip.delete()
-            return JsonResponse({"success": True, "id": clip.id})
+                return JsonResponse({"success": True, "id": clip.id,"changed":True})
+            return JsonResponse({"success": True, "id": clip.id,"changed":False})
 
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "error": "Invalid JSON payload"}, status=400)

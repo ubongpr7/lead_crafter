@@ -460,6 +460,7 @@ function deleteSlide(btn) {
 }
 
 function addSlide() {
+  
     let currentNumber = document.getElementById('no_of_slides').value;
     if (currentNumber >0){
       const slide_text_=document.getElementById(`slide_text_${currentNumber}`)
@@ -662,9 +663,10 @@ function subclipReset(mainId) {
             }
         }
 
-function handleEnterToHide(currentNumber) {
+function handleEnterToHide(currentNumber,initialValue='') {
   edit =false
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
+    
     const wrapper = document.getElementById(`wrapper_${currentNumber}`);
     const slide_span = document.getElementById(`slide_span_${currentNumber}`);
     const edit_ = document.getElementById(`edit_${currentNumber}`);
@@ -676,21 +678,29 @@ function handleEnterToHide(currentNumber) {
             event.preventDefault();
 
             if (textarea.value) {
-                textarea.style.display = 'none';
-                wrapper.style.display = 'flex';
-                edit_.style.display = 'flex';
-                slide_span.textContent = textarea.value;
-
+                
                 const payload = JSON.stringify({
                     text: textarea.value, // Send the textarea value
                 });
 
                 const xhr = new XMLHttpRequest();
-
                 xhr.addEventListener('load', function () {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
+                        if (clip_id){
+                          if (response.changed){
+                            slide_span.textContent = textarea.value;
 
+                          }
+                            textarea.style.display = 'none';
+                            wrapper.style.display = 'flex';
+                            edit_.style.display = 'flex';
+                        }else{
+                          textarea.style.display = 'none';
+                          wrapper.style.display = 'flex';
+                          edit_.style.display = 'flex';
+                          slide_span.textContent = textarea.value;
+                        }
                         if (response.success) {
                             slide_span.textContent = textarea.value;
                             slide_span.dataset.id=response.id
@@ -704,7 +714,6 @@ function handleEnterToHide(currentNumber) {
                                 deleteSavedSlide(clip_id,delete_);
 
                             };
-                            console.log(delete_)
                           };
 
                             showSuccessMessage(`Subtitle submitted successfully!`);
