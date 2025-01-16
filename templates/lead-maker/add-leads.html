@@ -579,10 +579,7 @@ function updateSubtitleNumbers(tableBody) {
     let clip_id = slide_span.dataset.id;
 
     if (textarea.value) {
-        textarea.style.display = 'none';
-        wrapper.style.display = 'flex';
-        edit_.style.display = 'flex';
-        slide_span.textContent = textarea.value;
+        
 
         const payload = JSON.stringify({
             text: textarea.value, // Send the textarea value
@@ -593,7 +590,22 @@ function updateSubtitleNumbers(tableBody) {
         xhr.addEventListener('load', function () {
             if (xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
+                if (!response.new){
+                          if (response.changed){
+                            slide_span.textContent = textarea.value;
+                            deleteAllLi(currentNumber)
 
+                          }
+                            textarea.style.display = 'none';
+                            wrapper.style.display = 'flex';
+                            edit_.style.display = 'flex';
+                        }
+                        else{
+                          textarea.style.display = 'none';
+                          wrapper.style.display = 'flex';
+                          edit_.style.display = 'flex';
+                          slide_span.textContent = textarea.value;
+                        }
                 if (response.success) {
                     slide_span.textContent = textarea.value;
                     slide_span.dataset.id = response.id;
@@ -662,6 +674,18 @@ function subclipReset(mainId) {
                     });
             }
         }
+        function deleteAllLi(cNumber) {
+  const ul = document.getElementById(`list-of-tags_${cNumber}`); // Get the <ul> element by ID
+  if (ul) {
+    // Select all <li> elements within the <ul>
+    const liElements = ul.querySelectorAll("li");
+    
+    // Loop through the <li> elements and remove each one
+    liElements.forEach(li => li.remove());
+  } else {
+    console.error("Element with ID 'list-of-tags' not found.");
+  }
+}
 
 function handleEnterToHide(currentNumber,) {
   edit =false
@@ -690,6 +714,7 @@ function handleEnterToHide(currentNumber,) {
                         if (!response.new){
                           if (response.changed){
                             slide_span.textContent = textarea.value;
+                            deleteAllLi(currentNumber)
 
                           }
                             textarea.style.display = 'none';
