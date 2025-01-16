@@ -110,6 +110,7 @@
                     <img src="{% static 'lead-maker/images/upload-icn-black.svg' %}" alt="" />Choose file </a>
                 </div>
                 <p id="uploadText-{{ forloop.counter}}" style="color: inherit;"></p>
+                <i id="clear-file-{{ forloop.counter}}" style="display:none" onclick="clearFileInput('{{ forloop.counter}}')" class="ri-close-circle-line"></i>
               </div>
             </div>
             
@@ -317,6 +318,8 @@ let currentNumber = n_musics.value;
         </a>
       </div>
       <p   id="uploadText-${currentNumber}"></p>
+       <i id="clear-file-${currentNumber}" style="display:none" onclick="clearFileInput(${currentNumber})" class="ri-close-circle-line"></i>
+      
     </div>`;
 
   const newSection2 = document.createElement("div");
