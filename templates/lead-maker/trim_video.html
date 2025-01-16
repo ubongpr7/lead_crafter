@@ -328,11 +328,11 @@
   // Initialize Canvas-Based Trimmer
   function initializeCanvasTrimmer() {
     const numThumbnails = 10;
-    const step = videoDuration / numThumbnails;
+    const step = videoDuration * numThumbnails;
 
     canvasContainer.innerHTML = ""; // Clear existing thumbnails
 
-    for (let i = 0; i < numThumbnails; i++) {
+    for (let i = 0; i < step; i++) {
       const time = i * step;
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
