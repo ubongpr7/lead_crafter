@@ -370,7 +370,7 @@ let currentNumber = n_musics.value;
 function handleFileInputChange(number) {
     const fileInput = document.getElementById(`mp3-${textFileId}-${number}`);
     const uploadText = document.getElementById(`uploadText-${number}`);
-    const clearFile= document.getElementById(`clear-flie-${number}`);
+    const clearFile= document.getElementById(`clear-file-${number}`);
 
     fileInput.addEventListener('change', function () {
         if (fileInput.files.length > 0) {
@@ -389,6 +389,7 @@ function inputHander(c_number) {
   const startTimeInput = document.getElementById(`starts-${textFileId}-${c_number}`);
   const endTimeInput = document.getElementById(`ends-${textFileId}-${c_number}`);
   const currentFileP = document.getElementById(`mp3_${c_number}_current`)
+  const clearFile= document.getElementById(`clear-file-${number}`);
 
 fileInput.addEventListener('change', function() {
 
@@ -396,6 +397,8 @@ fileInput.addEventListener('change', function() {
   if (fileInput.files.length > 0) {
     uploadText.textContent = fileInput.files[0].name.slice(0, 25);
     startTimeInput.required = true;
+    clearFile.style.display='flex'
+
     endTimeInput.required = true;
     submitForm.style.display = 'flex';
     proceed.style.display = 'none';
@@ -412,6 +415,8 @@ fileInput.addEventListener('change', function() {
     uploadText.textContent = 'Choose File';
     startTimeInput.required = false
     endTimeInput.required = false
+    clearFile.style.display='none'
+
 
     if (c_number === 1){
       // clearBtn.style.display = 'none'
