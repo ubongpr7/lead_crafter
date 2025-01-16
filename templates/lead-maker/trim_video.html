@@ -466,10 +466,10 @@ addSliderEvents();
     
         startTimeDisplay.textContent = startTime.toFixed(2); 
         startTimeInput.value = startTime.toFixed(2); 
-        if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
+        // if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
 
-          handleInteraction();
-        }
+        //   handleInteraction();
+        // }
       }
     
       sliderStart.addEventListener('mousedown', (e) => {
@@ -484,6 +484,8 @@ addSliderEvents();
     
           video.currentTime = startTime; 
           updateSlider();
+          handleInteraction();
+
         };
     
         const onMouseUp = () => {
