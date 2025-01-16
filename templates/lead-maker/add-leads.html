@@ -663,7 +663,7 @@ function subclipReset(mainId) {
             }
         }
 
-function handleEnterToHide(currentNumber,initialValue='') {
+function handleEnterToHide(currentNumber,) {
   edit =false
     const textarea = document.getElementById(`slide_text_${currentNumber}`);
     
@@ -687,7 +687,7 @@ function handleEnterToHide(currentNumber,initialValue='') {
                 xhr.addEventListener('load', function () {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
-                        if (clip_id){
+                        if (!response.new){
                           if (response.changed){
                             slide_span.textContent = textarea.value;
 

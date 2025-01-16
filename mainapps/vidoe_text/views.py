@@ -144,7 +144,7 @@ def add_text_clip_line(request, textfile_id):
                 slide=slide_text,
                 remaining=slide_text,
             )
-            return JsonResponse({"success": True, "id": clip.id})
+            return JsonResponse({"success": True, "id": clip.id,'new':True})
 
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "error": "Invalid JSON payload"}, status=400)
