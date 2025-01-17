@@ -430,7 +430,7 @@ function handleInteraction() {
   // }
 
   function initializeCanvasTrimmer() {
-    video.addEventListener("loadeddata", () => {
+    // video.addEventListener("loadeddata", () => {
         videoDuration = video.duration;
         console.log(`Video duration: ${videoDuration} seconds`);
 
@@ -451,8 +451,8 @@ function handleInteraction() {
         startTime = 0;
         endTime = videoDuration;
         updateGreyOverlay();
-    });
-}
+    };
+
 
 function generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth) {
     const canvas = document.createElement("canvas");
@@ -561,12 +561,10 @@ function generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth)
     isDraggingLeft = false;
     isDraggingRight = false;
   });
-  // video.addEventListener("loadedmetadata", () => {
-  //   console.log("Video metadata loaded.");
-  //   initializeCanvasTrimmer();
-  // });
-
-  initializeCanvasTrimmer()
+  video.addEventListener("loadedmetadata", () => {
+    console.log("Video metadata loaded.");
+    initializeCanvasTrimmer();
+  });
 });
 
    </script>
