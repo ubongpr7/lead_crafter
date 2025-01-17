@@ -455,6 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
     endTime = videoDuration;
     updateGreyOverlay();
   }
+  
 
   function generateThumbnails(step, numThumbnails, thumbnailWidth) {
     let currentIndex = 0;
@@ -496,6 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateGreyOverlay() {
     const leftPercent = (startTime / videoDuration) * 100;
     const rightPercent = 100 - (endTime / videoDuration) * 100;
+    video.currentTime=startTime
 
     greyOverlay.style.background = `
       linear-gradient(to right,
