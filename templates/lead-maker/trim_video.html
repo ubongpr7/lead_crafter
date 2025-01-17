@@ -342,77 +342,14 @@ function removeTrimming() {
 
 document.getElementById('undo').addEventListener('click',removeTrimming )
 
-  // function initializeCanvasTrimmer() {
-  //   videoDuration = video.duration;
-  //   console.log(`Video duration: ${videoDuration} seconds`);
-
-  //   const canvasContainerWidth = canvasContainer.offsetWidth;
-  //   const thumbnailWidth = 50; 
-  //   const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
-  //   const step = videoDuration / numThumbnails;
-
-  //   canvasContainer.innerHTML = ""; 
-  //   canvasContainer.appendChild(greyOverlay);
-  //   greyOverlay.style.width = "100%";
-  //   greyOverlay.style.position = "absolute";
-  //   greyOverlay.style.top = 0;
-  //   greyOverlay.style.height = "100%";
-  //   greyOverlay.style.pointerEvents = "none";
-
-  //   generateThumbnails(step, numThumbnails, thumbnailWidth);
-    
-  //   startTime = 0;
-  //   endTime = videoDuration;
-  //   updateGreyOverlay();
-  // }
-
-    
-  // function generateThumbnails(step, numThumbnails, thumbnailWidth) {
-  //   let currentIndex = 0;
-
-  //   function captureThumbnail() {
-  //     const time = currentIndex * step;
-  //     video.currentTime = time;
-
-  //     video.addEventListener("seeked", function handleSeeked() {
-  //       const canvas = document.createElement("canvas");
-  //       const context = canvas.getContext("2d");
-
-  //       canvas.width = thumbnailWidth;
-  //       canvas.height = 50; 
-
-  //       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  //       const thumbnail = document.createElement("div");
-  //       thumbnail.className = "thumbnail";
-  //       thumbnail.style.width = `${thumbnailWidth}px`;
-  //       thumbnail.appendChild(canvas);
-  //       thumbnail.dataset.time = time;
-
-  //       canvasContainer.appendChild(thumbnail);
-  //       console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
-
-  //       video.removeEventListener("seeked", handleSeeked);
-
-  //       currentIndex++;
-  //       if (currentIndex < numThumbnails) {
-  //         captureThumbnail(); 
-  //       }
-  //     });
-  //   }
-
-  //   captureThumbnail(); 
-  // }
-
   function initializeCanvasTrimmer() {
     videoDuration = video.duration;
     console.log(`Video duration: ${videoDuration} seconds`);
 
-    const canvasContainerWidth = canvasContainer.offsetWidth; // Fixed container width
-    const thumbnailWidth = 50; // Fixed width per thumbnail
-    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth); // Fixed number of thumbnails
-
-    const timePerThumbnail = videoDuration / numThumbnails; // Time interval per thumbnail
+    const canvasContainerWidth = canvasContainer.offsetWidth;
+    const thumbnailWidth = 50; 
+    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
+    const step = videoDuration / numThumbnails;
 
     canvasContainer.innerHTML = ""; 
     canvasContainer.appendChild(greyOverlay);
@@ -422,42 +359,51 @@ document.getElementById('undo').addEventListener('click',removeTrimming )
     greyOverlay.style.height = "100%";
     greyOverlay.style.pointerEvents = "none";
 
-    generateThumbnails(timePerThumbnail, numThumbnails, thumbnailWidth);
-
+    generateThumbnails(step, numThumbnails, thumbnailWidth);
+    
     startTime = 0;
     endTime = videoDuration;
     updateGreyOverlay();
-}
+  }
 
-function generateThumbnails(timePerThumbnail, numThumbnails, thumbnailWidth) {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+    
+  function generateThumbnails(step, numThumbnails, thumbnailWidth) {
+    let currentIndex = 0;
 
-    // Set canvas dimensions
-    canvas.width = thumbnailWidth;
-    canvas.height = (video.videoHeight / video.videoWidth) * thumbnailWidth;
+    function captureThumbnail() {
+      const time = currentIndex * step;
+      video.currentTime = time;
 
-    for (let i = 0; i < numThumbnails; i++) {
-        const time = i * timePerThumbnail; // Time corresponding to the thumbnail
-        video.currentTime = time; // Set video to the specific frame
+      video.addEventListener("seeked", function handleSeeked() {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
 
-        video.addEventListener("seeked", function handleSeeked() {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.width = thumbnailWidth;
+        canvas.height = 50; 
 
-            const thumbnail = document.createElement("div");
-            thumbnail.className = "thumbnail";
-            thumbnail.style.width = `${thumbnailWidth}px`;
-            thumbnail.style.display = "inline-block";
-            thumbnail.appendChild(canvas.cloneNode(true)); // Clone the canvas for each thumbnail
-            thumbnail.dataset.time = time; // Set the time attribute for interaction
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            canvasContainer.appendChild(thumbnail);
-            console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+        thumbnail.style.width = `${thumbnailWidth}px`;
+        thumbnail.appendChild(canvas);
+        thumbnail.dataset.time = time;
 
-            video.removeEventListener("seeked", handleSeeked);
-        });
+        canvasContainer.appendChild(thumbnail);
+        console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
+
+        video.removeEventListener("seeked", handleSeeked);
+
+        currentIndex++;
+        if (currentIndex < numThumbnails) {
+          captureThumbnail(); 
+        }
+      });
     }
-}
+
+    captureThumbnail(); 
+  }
+
 
   function getCanvasWidth() {
     const video = document.getElementById('video');
