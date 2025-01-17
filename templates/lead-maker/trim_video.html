@@ -436,6 +436,7 @@ function handleInteraction() {
     const indicator = document.getElementById("left-indicator");
 
       indicator.style.left = `${leftPercent}%`;
+      leftHandle.style.left = `${leftPercent}%`;
       indicator.textContent=formatTime(startTime)
  
     greyOverlay.style.background = `
