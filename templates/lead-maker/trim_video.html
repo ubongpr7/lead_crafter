@@ -312,6 +312,8 @@
   const canvasContainer = document.getElementById("canvasContainer");
   const startInput = document.getElementById("start");
   const endInput = document.getElementById("end");
+  const seekVideo = document.getElementById('seekVideo');
+
  function getCanvasWidth() {
     const video = document.getElementById('video');
     if (!video) {
@@ -397,14 +399,14 @@ function handleInteraction() {
       const time = currentIndex * step;
       video.currentTime = time;
 
-      video.addEventListener("seeked", function handleSeeked() {
+      seekVideo.addEventListener("seeked", function handleSeeked() {
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
 
         canvas.width = thumbnailWidth;
         canvas.height = 50; 
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        context.drawImage(seekVideo, 0, 0, canvas.width, canvas.height);
 
         const thumbnail = document.createElement("div");
         thumbnail.className = "thumbnail";
@@ -415,7 +417,7 @@ function handleInteraction() {
         canvasContainer.appendChild(thumbnail);
         console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
 
-        video.removeEventListener("seeked", handleSeeked);
+        seekVideo.removeEventListener("seeked", handleSeeked);
 
         currentIndex++;
         if (currentIndex < numThumbnails) {
@@ -510,8 +512,7 @@ function handleInteraction() {
     isDraggingLeft = false;
     isDraggingRight = false;
   });
-  const seekVideo = document.getElementById('seekVideo')
-  seekVideo.addEventListener("loadedmetadata", () => {
+  video.addEventListener("loadedmetadata", () => {
     console.log("Video metadata loaded.");
     initializeCanvasTrimmer();
   });
