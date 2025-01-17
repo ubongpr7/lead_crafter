@@ -429,44 +429,47 @@ function handleInteraction() {
   //   captureThumbnail(); 
   // }
 
-
   function initializeCanvasTrimmer() {
-    videoDuration = video.duration;
-    console.log(`Video duration: ${videoDuration} seconds`);
+    video.addEventListener("loadeddata", () => {
+        videoDuration = video.duration;
+        console.log(`Video duration: ${videoDuration} seconds`);
 
-    const canvasContainerWidth = canvasContainer.offsetWidth;
-    const thumbnailWidth = 50; 
-    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
+        const canvasContainerWidth = canvasContainer.offsetWidth;
+        const thumbnailWidth = 50; 
+        const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
 
-    canvasContainer.innerHTML = ""; 
-    canvasContainer.appendChild(greyOverlay);
-    greyOverlay.style.width = "100%";
-    greyOverlay.style.position = "absolute";
-    greyOverlay.style.top = 0;
-    greyOverlay.style.height = "100%";
-    greyOverlay.style.pointerEvents = "none";
+        canvasContainer.innerHTML = ""; 
+        canvasContainer.appendChild(greyOverlay);
+        greyOverlay.style.width = "100%";
+        greyOverlay.style.position = "absolute";
+        greyOverlay.style.top = 0;
+        greyOverlay.style.height = "100%";
+        greyOverlay.style.pointerEvents = "none";
 
-    generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth);
-    
-    startTime = 0;
-    endTime = videoDuration;
-    updateGreyOverlay();
+        generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth);
+
+        startTime = 0;
+        endTime = videoDuration;
+        updateGreyOverlay();
+    });
 }
 
 function generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth) {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
 
+    // Scale the canvas dimensions to match the aspect ratio of the video
     canvas.width = thumbnailWidth;
     canvas.height = (video.videoHeight / video.videoWidth) * thumbnailWidth;
 
     for (let i = 0; i < numThumbnails; i++) {
-        // Draw the same frame (e.g., the first frame) for all thumbnails
+        // Draw the first frame (or current frame) for thumbnails
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const thumbnail = document.createElement("div");
         thumbnail.className = "thumbnail";
         thumbnail.style.width = `${thumbnailWidth}px`;
+        thumbnail.style.display = "inline-block"; // Ensure proper layout
         thumbnail.appendChild(canvas.cloneNode(true)); // Clone the canvas for each thumbnail
         thumbnail.dataset.time = (i / numThumbnails) * videoDuration; // Assign corresponding time
 
