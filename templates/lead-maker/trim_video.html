@@ -516,7 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const indicator = document.getElementById("left-indicator");
 
       indicator.style.left = `${leftPercent}%`;
-      indicator.textContent=formatTime(startTime.toFixed(2))
+      indicator.textContent=formatTime(startTime)
  
     greyOverlay.style.background = `
       linear-gradient(to right,
@@ -557,10 +557,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHandles();
   }
   function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs.toString().padStart(2, '0')}`;
-      }
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    const millis = ((seconds % 1) * 100).toFixed(0); // Extract milliseconds up to 2 decimal places
+    return `${minutes}:${secs.toString().padStart(2, '0')}:${millis.padStart(2, '0')}`;
+}
+
   leftHandle.addEventListener("mousedown", () => {
     isDraggingLeft = true;
     console.log("Dragging left handle...");
