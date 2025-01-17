@@ -433,122 +433,67 @@ document.addEventListener("DOMContentLoaded", () => {
   greyOverlay.id = "greyOverlay";
   canvasContainer.appendChild(greyOverlay);
 
-  // function initializeCanvasTrimmer() {
-  //   videoDuration = video.duration;
-  //   console.log(`Video duration: ${videoDuration} seconds`);
-
-  //   const canvasContainerWidth = canvasContainer.offsetWidth;
-  //   const thumbnailWidth = 32; 
-  //   const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
-  //   const step = videoDuration / numThumbnails;
-
-  //   canvasContainer.innerHTML = ""; 
-  //   canvasContainer.appendChild(greyOverlay);
-  //   greyOverlay.style.width = "100%";
-  //   greyOverlay.style.position = "absolute";
-  //   greyOverlay.style.top = 0;
-  //   greyOverlay.style.height = "100%";
-  //   greyOverlay.style.pointerEvents = "none";
-
-  //   generateThumbnails(step, numThumbnails, thumbnailWidth);
-    
-  //   startTime = 0;
-  //   endTime = videoDuration;
-  //   updateGreyOverlay();
-  // }
   function initializeCanvasTrimmer() {
-  videoDuration = video.duration;
-  console.log(`Video duration: ${videoDuration} seconds`);
+    videoDuration = video.duration;
+    console.log(`Video duration: ${videoDuration} seconds`);
 
-  const videoAspectRatio = video.videoHeight / video.videoWidth; // Calculate aspect ratio
-  const canvasContainerWidth = canvasContainer.offsetWidth;
-  const thumbnailWidth = 32;
-  const thumbnailHeight = thumbnailWidth * videoAspectRatio; // Maintain aspect ratio
-  const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
-  const step = videoDuration / numThumbnails;
+    const canvasContainerWidth = canvasContainer.offsetWidth;
+    const thumbnailWidth = 32; 
+    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
+    const step = videoDuration / numThumbnails;
 
-  canvasContainer.innerHTML = ""; // Clear existing thumbnails
+    canvasContainer.innerHTML = ""; 
+    canvasContainer.appendChild(greyOverlay);
+    greyOverlay.style.width = "100%";
+    greyOverlay.style.position = "absolute";
+    greyOverlay.style.top = 0;
+    greyOverlay.style.height = "100%";
+    greyOverlay.style.pointerEvents = "none";
 
-  // Create a grey overlay for trimmed sections
-  canvasContainer.appendChild(greyOverlay);
-  greyOverlay.style.width = "100%";
-  greyOverlay.style.position = "absolute";
-  greyOverlay.style.top = 0;
-  greyOverlay.style.height = `${thumbnailHeight}px`; // Match canvas height
-  greyOverlay.style.pointerEvents = "none";
-  greyOverlay.style.backgroundColor = "rgba(128, 128, 128, 0.5)";
-
-  generateThumbnails(step, numThumbnails, thumbnailWidth, thumbnailHeight);
-
-  startTime = 0;
-  endTime = videoDuration;
-  updateGreyOverlay();
-}
-function generateThumbnails(step, numThumbnails, thumbnailWidth, thumbnailHeight) {
-  for (let i = 0; i < numThumbnails; i++) {
-    const canvas = document.createElement("canvas");
-    canvas.width = thumbnailWidth;
-    canvas.height = thumbnailHeight; // Maintain aspect ratio
-
-    const context = canvas.getContext("2d");
-    const time = step * i;
-
-    // Capture video frame for the thumbnail
-    video.currentTime = time;
-    video.addEventListener("seeked", function handleSeeked() {
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      video.removeEventListener("seeked", handleSeeked);
-    });
-
-    const thumbnailWrapper = document.createElement("div");
-    thumbnailWrapper.className = "thumbnail";
-    thumbnailWrapper.style.width = `${thumbnailWidth}px`;
-    thumbnailWrapper.style.height = `${thumbnailHeight}px`;
-    thumbnailWrapper.style.position = "relative";
-    thumbnailWrapper.style.display = "inline-block";
-    thumbnailWrapper.appendChild(canvas);
-
-    canvasContainer.appendChild(thumbnailWrapper);
+    generateThumbnails(step, numThumbnails, thumbnailWidth);
+    
+    startTime = 0;
+    endTime = videoDuration;
+    updateGreyOverlay();
   }
-}
+  
 
+  function generateThumbnails(step, numThumbnails, thumbnailWidth) {
+    let currentIndex = 0;
 
-  // function generateThumbnails(step, numThumbnails, thumbnailWidth) {
-  //   let currentIndex = 0;
+    function captureThumbnail() {
+      const time = currentIndex * step;
+      video.currentTime = time;
 
-  //   function captureThumbnail() {
-  //     const time = currentIndex * step;
-  //     video.currentTime = time;
+      video.addEventListener("seeked", function handleSeeked() {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
 
-  //     video.addEventListener("seeked", function handleSeeked() {
-  //       const canvas = document.createElement("canvas");
-  //       const context = canvas.getContext("2d");
+        canvas.width = thumbnailWidth;
+        canvas.height = 50; 
 
-  //       canvas.width = thumbnailWidth;
-  //       canvas.height = 50; 
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  //       context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+        thumbnail.style.width = `${thumbnailWidth}px`;
+        thumbnail.appendChild(canvas);
+        thumbnail.dataset.time = time;
 
-  //       const thumbnail = document.createElement("div");
-  //       thumbnail.className = "thumbnail";
-  //       thumbnail.style.width = `${thumbnailWidth}px`;
-  //       thumbnail.appendChild(canvas);
-  //       thumbnail.dataset.time = time;
+        canvasContainer.appendChild(thumbnail);
+        console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
 
-  //       canvasContainer.appendChild(thumbnail);
-  //       console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
+        video.removeEventListener("seeked", handleSeeked);
 
-  //       video.removeEventListener("seeked", handleSeeked);
+        currentIndex++;
+        if (currentIndex < numThumbnails) {
+          captureThumbnail(); 
+        }
+      });
+    }
 
-  //       currentIndex++;
-  //       if (currentIndex < numThumbnails) {
-  //         captureThumbnail(); 
-  //       }
-  //     });
-  //   }
-
-  //   captureThumbnail(); 
-  // }
+    captureThumbnail(); 
+  }
 
   function updateGreyOverlay() {
     const leftPercent = (startTime / videoDuration) * 100;
