@@ -281,232 +281,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!--     
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById("video");
-  const canvasContainer = document.getElementById("canvasContainer");
-  const startInput = document.getElementById("start");
-  const endInput = document.getElementById("end");
-  const trimButton = document.getElementById("trimButton");
-  const undoButton = document.getElementById("undo");
-  const proceedButton = document.getElementById("proceedWithoutTrimming");
-
-  let videoDuration = 0;
-  let startTime = 0;
-  let endTime = 0;
-
-function initializeCanvasTrimmer() {
-  const canvasContainerWidth = canvasContainer.offsetWidth; // Get the width of the container
-  const thumbnailWidth = 90; // Set the width of each thumbnail
-  const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth); // Calculate how many thumbnails fit in the container
-  const step = videoDuration / numThumbnails; // Duration between each thumbnail
-
-  canvasContainer.innerHTML = ""; 
-  let currentIndex = 0;
-
-  function captureThumbnail() {
-    const time = currentIndex * step;
-    video.currentTime = time; 
-
-    video.addEventListener("seeked", function handleSeeked() {
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-
-      canvas.width = thumbnailWidth; 
-      canvas.height = 90; // Keep the aspect ratio consistent
-
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const thumbnail = document.createElement("div");
-      thumbnail.className = "thumbnail";
-      thumbnail.style.width = `${thumbnailWidth}px`;
-      thumbnail.appendChild(canvas);
-      thumbnail.dataset.time = time;
-
-      // Add click listener for trimming logic
-      thumbnail.addEventListener("click", () => {
-        const selectedTime = parseFloat(thumbnail.dataset.time);
-        if (selectedTime < endTime) {
-          startTime = selectedTime;
-        } else {
-          endTime = selectedTime;
-        }
-        updateInputs();
-      });
-
-      canvasContainer.appendChild(thumbnail);
-      video.removeEventListener("seeked", handleSeeked); // Remove the event listener after execution
-
-      currentIndex++; // Move to the next thumbnail
-      if (currentIndex < numThumbnails) {
-        captureThumbnail(); // Process the next thumbnail
-      }
-    });
-  }
-
-  // Start capturing thumbnails
-  startTime = 0;
-  endTime = videoDuration;
-  updateInputs();
-  captureThumbnail(); // Kickstart the recursive thumbnail generation
-}
-
-  function updateInputs() {
-    startInput.value = startTime.toFixed(2);
-    endInput.value = endTime.toFixed(2);
-    trimButton.style.display = "inline-block";
-    undoButton.style.display = "inline-block";
-    proceedButton.style.display = "none";
-
-  }
-
-  // Undo Trimming
-  undoButton.addEventListener("click", () => {
-    startTime = 0;
-    endTime = videoDuration;
-    updateInputs();
-    trimButton.style.display = "none";
-    undoButton.style.display = "none";
-    proceedButton.style.display = "inline-block";
-  });
-
-  // Initialize when video metadata is loaded
-  video.addEventListener("loadedmetadata", () => {
-    videoDuration = Math.floor(video.duration);
-    initializeCanvasTrimmer();
-  });
-});
-
-    </script> -->
-
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById("video");
-  const canvasContainer = document.getElementById("canvasContainer");
-  const startSlider = document.getElementById("startSlider");
-  const endSlider = document.getElementById("endSlider");
-  const startTimeIndicator = document.getElementById("startTimeIndicator");
-  const endTimeIndicator = document.getElementById("endTimeIndicator");
-  const startInput = document.getElementById("start");
-  const endInput = document.getElementById("end");
-  const trimButton = document.getElementById("trimButton");
-  const undoButton = document.getElementById("undo");
-  const proceedButton = document.getElementById("proceedWithoutTrimming");
-
-  let videoDuration = 0;
-  let startTime = 0;
-  let endTime = 0;
-
-  function updateIndicators() {
-    startTimeIndicator.textContent = formatTime(startTime);
-    endTimeIndicator.textContent = formatTime(endTime);
-    startInput.value = startTime.toFixed(2);
-    endInput.value = endTime.toFixed(2);
-  }
-
-  function formatTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  }
-
-  function initializeCanvasTrimmer() {
-    const canvasContainerWidth = canvasContainer.offsetWidth;
-    const thumbnailWidth = 50;
-    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
-    const step = videoDuration / numThumbnails;
-
-    canvasContainer.innerHTML = "";
-    let currentIndex = 0;
-
-    function captureThumbnail() {
-      const time = currentIndex * step;
-      video.currentTime = time;
-
-      video.addEventListener("seeked", function handleSeeked() {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-
-        canvas.width = thumbnailWidth;
-        canvas.height = 50;
-
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-        thumbnail.style.width = `${thumbnailWidth}px`;
-        thumbnail.appendChild(canvas);
-        thumbnail.dataset.time = time;
-
-        canvasContainer.appendChild(thumbnail);
-        video.removeEventListener("seeked", handleSeeked);
-
-        currentIndex++;
-        if (currentIndex < numThumbnails) {
-          captureThumbnail();
-        }
-      });
-    }
-
-    startTime = 0;
-    endTime = videoDuration;
-    updateIndicators();
-    captureThumbnail();
-  }
-
-  function updateGreyedOutAreas() {
-    const thumbnails = canvasContainer.querySelectorAll(".thumbnail");
-    thumbnails.forEach((thumbnail) => {
-      const time = parseFloat(thumbnail.dataset.time);
-      if (time < startTime || time > endTime) {
-        thumbnail.style.opacity = 0.5;
-      } else {
-        thumbnail.style.opacity = 1;
-      }
-    });
-  }
-
-  startSlider.addEventListener("input", () => {
-    startTime = (startSlider.value / 100) * videoDuration;
-    if (startTime >= endTime) {
-      startTime = endTime - 0.1;
-      startSlider.value = (startTime / videoDuration) * 100;
-    }
-    updateIndicators();
-    updateGreyedOutAreas();
-    video.currentTime = startTime;
-  });
-
-  endSlider.addEventListener("input", () => {
-    endTime = (endSlider.value / 100) * videoDuration;
-    if (endTime <= startTime) {
-      endTime = startTime + 0.1;
-      endSlider.value = (endTime / videoDuration) * 100;
-    }
-    updateIndicators();
-    updateGreyedOutAreas();
-    video.currentTime = endTime;
-  });
-
-  undoButton.addEventListener("click", () => {
-    startTime = 0;
-    endTime = videoDuration;
-    startSlider.value = 0;
-    endSlider.value = 100;
-    updateIndicators();
-    updateGreyedOutAreas();
-  });
-
-  video.addEventListener("loadedmetadata", () => {
-    videoDuration = video.duration;
-    initializeCanvasTrimmer();
-  });
-});
-
-    </script> -->
    <script>
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("video");
   const trimmer = document.getElementById("trimmer");
   const leftHandle = document.getElementById("leftHandle");
@@ -520,25 +296,23 @@ function initializeCanvasTrimmer() {
   let endTime = 0;
   let isDraggingLeft = false;
   let isDraggingRight = false;
-  let containerWidth = canvasContainer.offsetWidth;
-
-  // function initializeCanvasTrimmer() {
-  //   videoDuration = Math.floor(video.duration);
-  //   startTime = 0;
-  //   endTime = videoDuration;
-
-  //   updateHandles();
-  //   createThumbnails();
-  // }
-
 
   function initializeCanvasTrimmer() {
+    videoDuration = video.duration; // Ensure videoDuration is accurate
+    console.log(`Video duration: ${videoDuration} seconds`);
+
     const canvasContainerWidth = canvasContainer.offsetWidth;
-    const thumbnailWidth = 50;
+    const thumbnailWidth = 50; // Define fixed thumbnail width
     const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
     const step = videoDuration / numThumbnails;
 
-    canvasContainer.innerHTML = "";
+    canvasContainer.innerHTML = ""; // Clear existing thumbnails
+    console.log(`Generating ${numThumbnails} thumbnails...`);
+
+    generateThumbnails(step, numThumbnails, thumbnailWidth);
+  }
+
+  function generateThumbnails(step, numThumbnails, thumbnailWidth) {
     let currentIndex = 0;
 
     function captureThumbnail() {
@@ -550,7 +324,7 @@ function initializeCanvasTrimmer() {
         const context = canvas.getContext("2d");
 
         canvas.width = thumbnailWidth;
-        canvas.height = 50;
+        canvas.height = 50; // Fixed height for thumbnail
 
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -561,19 +335,18 @@ function initializeCanvasTrimmer() {
         thumbnail.dataset.time = time;
 
         canvasContainer.appendChild(thumbnail);
+        console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
+
         video.removeEventListener("seeked", handleSeeked);
 
         currentIndex++;
         if (currentIndex < numThumbnails) {
-          captureThumbnail();
+          captureThumbnail(); // Recursively generate the next thumbnail
         }
       });
     }
 
-    startTime = 0;
-    endTime = videoDuration;
-    // updateIndicators();
-    captureThumbnail();
+    captureThumbnail(); // Start generating thumbnails
   }
 
   function updateHandles() {
@@ -585,36 +358,12 @@ function initializeCanvasTrimmer() {
 
     startInput.value = startTime.toFixed(2);
     endInput.value = endTime.toFixed(2);
-  }
 
-  function createThumbnails() {
-    const step = videoDuration / (canvasContainer.offsetWidth / 90);
-    canvasContainer.innerHTML = ""; // Clear existing thumbnails
-
-    for (let i = 0; i < videoDuration; i += step) {
-      const thumbnail = document.createElement("div");
-      thumbnail.className = "thumbnail";
-      thumbnail.style.width = "90px";
-      thumbnail.dataset.time = i;
-
-      const canvas = document.createElement("canvas");
-      canvas.width = 90;
-      canvas.height = 90; // Fixed aspect ratio
-
-      const context = canvas.getContext("2d");
-      video.currentTime = i;
-
-      video.addEventListener("seeked", function handleSeeked() {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        thumbnail.appendChild(canvas);
-        video.removeEventListener("seeked", handleSeeked);
-      });
-
-      canvasContainer.appendChild(thumbnail);
-    }
+    console.log(`Handles updated: Start time: ${startTime.toFixed(2)}, End time: ${endTime.toFixed(2)}`);
   }
 
   function updateTrimmer(startX, endX) {
+    const containerWidth = canvasContainer.offsetWidth;
     const startPercent = Math.min(Math.max(startX / containerWidth, 0), 1);
     const endPercent = Math.min(Math.max(endX / containerWidth, 0), 1);
 
@@ -624,25 +373,39 @@ function initializeCanvasTrimmer() {
     updateHandles();
   }
 
-  leftHandle.addEventListener("mousedown", () => (isDraggingLeft = true));
-  rightHandle.addEventListener("mousedown", () => (isDraggingRight = true));
+  leftHandle.addEventListener("mousedown", () => {
+    isDraggingLeft = true;
+    console.log("Dragging left handle...");
+  });
+
+  rightHandle.addEventListener("mousedown", () => {
+    isDraggingRight = true;
+    console.log("Dragging right handle...");
+  });
 
   document.addEventListener("mousemove", (e) => {
     if (isDraggingLeft || isDraggingRight) {
       const rect = canvasContainer.getBoundingClientRect();
       const startX = isDraggingLeft ? e.clientX - rect.left : 0;
-      const endX = isDraggingRight ? e.clientX - rect.left : containerWidth;
+      const endX = isDraggingRight ? e.clientX - rect.left : canvasContainer.offsetWidth;
 
       updateTrimmer(startX, endX);
+      console.log(`Mouse move: Start X: ${startX}, End X: ${endX}`);
     }
   });
 
   document.addEventListener("mouseup", () => {
+    if (isDraggingLeft || isDraggingRight) {
+      console.log("Mouse up: Stopped dragging.");
+    }
     isDraggingLeft = false;
     isDraggingRight = false;
   });
 
-  video.addEventListener("loadedmetadata", initializeCanvasTrimmer);
+  video.addEventListener("loadedmetadata", () => {
+    console.log("Video metadata loaded.");
+    initializeCanvasTrimmer();
+  });
 });
 
    </script>
