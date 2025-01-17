@@ -260,6 +260,10 @@
               </video>
             </div>
           </figure>
+          <video style="display: none;" id="seekVideo" height="400" controls>
+            <source src="{{text_file.video_file.url}}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           <div id="trimmerContainer" class="trimmer-container">
             <div id="trimmer" class="trimmer">
               <div id="leftHandle" class="handle left-handle"></div>
@@ -506,8 +510,8 @@ function handleInteraction() {
     isDraggingLeft = false;
     isDraggingRight = false;
   });
-
-  video.addEventListener("loadedmetadata", () => {
+  const seekVideo = document.getElementById('seekVideo')
+  seekVideo.addEventListener("loadedmetadata", () => {
     console.log("Video metadata loaded.");
     initializeCanvasTrimmer();
   });
