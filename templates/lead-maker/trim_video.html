@@ -522,13 +522,58 @@ function initializeCanvasTrimmer() {
   let isDraggingRight = false;
   let containerWidth = canvasContainer.offsetWidth;
 
+  // function initializeCanvasTrimmer() {
+  //   videoDuration = Math.floor(video.duration);
+  //   startTime = 0;
+  //   endTime = videoDuration;
+
+  //   updateHandles();
+  //   createThumbnails();
+  // }
+
+
   function initializeCanvasTrimmer() {
-    videoDuration = Math.floor(video.duration);
+    const canvasContainerWidth = canvasContainer.offsetWidth;
+    const thumbnailWidth = 50;
+    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
+    const step = videoDuration / numThumbnails;
+
+    canvasContainer.innerHTML = "";
+    let currentIndex = 0;
+
+    function captureThumbnail() {
+      const time = currentIndex * step;
+      video.currentTime = time;
+
+      video.addEventListener("seeked", function handleSeeked() {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = thumbnailWidth;
+        canvas.height = 50;
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+        thumbnail.style.width = `${thumbnailWidth}px`;
+        thumbnail.appendChild(canvas);
+        thumbnail.dataset.time = time;
+
+        canvasContainer.appendChild(thumbnail);
+        video.removeEventListener("seeked", handleSeeked);
+
+        currentIndex++;
+        if (currentIndex < numThumbnails) {
+          captureThumbnail();
+        }
+      });
+    }
+
     startTime = 0;
     endTime = videoDuration;
-
-    updateHandles();
-    createThumbnails();
+    updateIndicators();
+    captureThumbnail();
   }
 
   function updateHandles() {
