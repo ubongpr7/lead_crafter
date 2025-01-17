@@ -393,6 +393,8 @@ document.getElementById('undo').addEventListener('click',removeTrimming )
         currentIndex++;
         if (currentIndex < numThumbnails) {
           captureThumbnail(); 
+        }else{
+          video.currentTime=0
         }
       });
     }
