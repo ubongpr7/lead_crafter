@@ -512,7 +512,7 @@ function handleInteraction() {
     isDraggingLeft = false;
     isDraggingRight = false;
   });
-  video.addEventListener("loadedmetadata", () => {
+  seekVideo.addEventListener("loadedmetadata", () => {
     console.log("Video metadata loaded.");
     initializeCanvasTrimmer();
   });
