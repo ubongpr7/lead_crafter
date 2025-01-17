@@ -162,7 +162,9 @@
   .trimmer-container {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 50px;
+  border-radius: 5px;
+
   margin-bottom: 20px;
 }
 
@@ -281,7 +283,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-   <script>
+   <!-- <script>
 document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("video");
   const trimmer = document.getElementById("trimmer");
@@ -408,6 +410,165 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+   </script> -->
+    
+   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const video = document.getElementById("video");
+  const leftHandle = document.getElementById("leftHandle");
+  const rightHandle = document.getElementById("rightHandle");
+  const canvasContainer = document.getElementById("canvasContainer");
+  const startInput = document.getElementById("start");
+  const endInput = document.getElementById("end");
+
+  let videoDuration = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let isDraggingLeft = false;
+  let isDraggingRight = false;
+
+  const greyOverlay = document.createElement("div");
+  greyOverlay.id = "greyOverlay";
+  canvasContainer.appendChild(greyOverlay);
+
+  function initializeCanvasTrimmer() {
+    videoDuration = video.duration;
+    console.log(`Video duration: ${videoDuration} seconds`);
+
+    const canvasContainerWidth = canvasContainer.offsetWidth;
+    const thumbnailWidth = 50; 
+    const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
+    const step = videoDuration / numThumbnails;
+
+    canvasContainer.innerHTML = ""; 
+    canvasContainer.appendChild(greyOverlay);
+    greyOverlay.style.width = "100%";
+    greyOverlay.style.position = "absolute";
+    greyOverlay.style.top = 0;
+    greyOverlay.style.height = "100%";
+    greyOverlay.style.pointerEvents = "none";
+
+    generateThumbnails(step, numThumbnails, thumbnailWidth);
+    startTime = 0;
+    endTime = videoDuration;
+    updateGreyOverlay();
+  }
+
+  function generateThumbnails(step, numThumbnails, thumbnailWidth) {
+    let currentIndex = 0;
+
+    function captureThumbnail() {
+      const time = currentIndex * step;
+      video.currentTime = time;
+
+      video.addEventListener("seeked", function handleSeeked() {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = thumbnailWidth;
+        canvas.height = 50; 
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+        thumbnail.style.width = `${thumbnailWidth}px`;
+        thumbnail.appendChild(canvas);
+        thumbnail.dataset.time = time;
+
+        canvasContainer.appendChild(thumbnail);
+        console.log(`Thumbnail created for time: ${time.toFixed(2)} seconds`);
+
+        video.removeEventListener("seeked", handleSeeked);
+
+        currentIndex++;
+        if (currentIndex < numThumbnails) {
+          captureThumbnail(); 
+        }
+      });
+    }
+
+    captureThumbnail(); 
+  }
+
+  function updateGreyOverlay() {
+    const leftPercent = (startTime / videoDuration) * 100;
+    const rightPercent = 100 - (endTime / videoDuration) * 100;
+
+    greyOverlay.style.background = `
+      linear-gradient(to right,
+        rgba(0, 0, 0, 0.5) ${leftPercent}%,
+        transparent ${leftPercent}%,
+        transparent ${100 - rightPercent}%,
+        rgba(0, 0, 0, 0.5) ${100 - rightPercent}%)
+    `;
+
+    console.log(
+      `Grey overlay updated: Start time: ${startTime.toFixed(2)}, End time: ${endTime.toFixed(2)}`
+    );
+  }
+
+  function updateHandles() {
+    const leftPercent = (startTime / videoDuration) * 100;
+    const rightPercent = 100 - (endTime / videoDuration) * 100;
+
+    leftHandle.style.left = `${leftPercent}%`;
+    rightHandle.style.right = `${rightPercent}%`;
+
+    startInput.value = startTime.toFixed(2);
+    endInput.value = endTime.toFixed(2);
+
+    console.log(`Handles updated: Start time: ${startTime.toFixed(2)}, End time: ${endTime.toFixed(2)}`);
+
+    updateGreyOverlay();
+  }
+
+  function updateTrimmer(startX, endX) {
+    const containerWidth = canvasContainer.offsetWidth;
+    const startPercent = Math.min(Math.max(startX / containerWidth, 0), 1);
+    const endPercent = Math.min(Math.max(endX / containerWidth, 0), 1);
+
+    startTime = startPercent * videoDuration;
+    endTime = endPercent * videoDuration;
+
+    updateHandles();
+  }
+
+  leftHandle.addEventListener("mousedown", () => {
+    isDraggingLeft = true;
+    console.log("Dragging left handle...");
+  });
+
+  rightHandle.addEventListener("mousedown", () => {
+    isDraggingRight = true;
+    console.log("Dragging right handle...");
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (isDraggingLeft || isDraggingRight) {
+      const rect = canvasContainer.getBoundingClientRect();
+      const startX = isDraggingLeft ? e.clientX - rect.left : 0;
+      const endX = isDraggingRight ? e.clientX - rect.left : canvasContainer.offsetWidth;
+
+      updateTrimmer(startX, endX);
+      console.log(`Mouse move: Start X: ${startX}, End X: ${endX}`);
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDraggingLeft || isDraggingRight) {
+      console.log("Mouse up: Stopped dragging.");
+    }
+    isDraggingLeft = false;
+    isDraggingRight = false;
+  });
+
+  video.addEventListener("loadedmetadata", () => {
+    console.log("Video metadata loaded.");
+    initializeCanvasTrimmer();
+  });
+});
+
    </script>
-    {% endblock content %}
+   {% endblock content %}
  
