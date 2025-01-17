@@ -278,7 +278,7 @@
             <input type="hidden" name="end" id="end" value="0">
           </div>
           
-          <button type="button" onclick="removeTrimming()" class="btn" id="undo" style="display: none;">Undo Trimming</button>
+          <button type="button" class="btn" id="undo" style="display: none;">Undo Trimming</button>
           
           <div id="actionContainer">
             <a class="btn proceed-btn"  href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
@@ -307,6 +307,25 @@
    <script>
     
 
+    document.addEventListener("DOMContentLoaded", () => {
+  const video = document.getElementById("video");
+  const leftHandle = document.getElementById("leftHandle");
+  const rightHandle = document.getElementById("rightHandle");
+  const canvasContainer = document.getElementById("canvasContainer");
+  const startInput = document.getElementById("start");
+  const endInput = document.getElementById("end");
+  const seekVideo = document.getElementById('seekVideo');
+
+      let videoDuration = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let isDraggingLeft = false;
+  let isDraggingRight = false;
+
+  const greyOverlay = document.createElement("div");
+  greyOverlay.id = "greyOverlay";
+  canvasContainer.appendChild(greyOverlay);
+  
 function removeTrimming() {
     startTime = 0;
     endTime = videoDuration; 
@@ -326,25 +345,7 @@ function removeTrimming() {
     trimmingVisible=false
       }
 
-    document.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById("video");
-  const leftHandle = document.getElementById("leftHandle");
-  const rightHandle = document.getElementById("rightHandle");
-  const canvasContainer = document.getElementById("canvasContainer");
-  const startInput = document.getElementById("start");
-  const endInput = document.getElementById("end");
-  const seekVideo = document.getElementById('seekVideo');
-
-      let videoDuration = 0;
-  let startTime = 0;
-  let endTime = 0;
-  let isDraggingLeft = false;
-  let isDraggingRight = false;
-
-  const greyOverlay = document.createElement("div");
-  greyOverlay.id = "greyOverlay";
-  canvasContainer.appendChild(greyOverlay);
-
+document.getElementById('undo').addEventListener('click',removeTrimming )
   function initializeCanvasTrimmer() {
     videoDuration = video.duration;
     console.log(`Video duration: ${videoDuration} seconds`);
