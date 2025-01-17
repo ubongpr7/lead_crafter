@@ -329,20 +329,16 @@
 function removeTrimming() {
     startTime = 0;
     endTime = videoDuration; 
-    currentRangeStart = 0; 
-    startTimeInput.value = startTime.toFixed(2);
-    endTimeInput.value = endTime.toFixed(2);
+    startInput.value = startTime.toFixed(2);
+    endInput.value = endTime.toFixed(2);
 
-    startPercent = 0;
-    endPercent = 100;
 
-    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
     document.getElementById('undo').style.display = 'none';
     document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
 
     video.currentTime = startTime;
-
-    trimmingVisible=false
+  updateTrimmer()
       }
 
 document.getElementById('undo').addEventListener('click',removeTrimming )
