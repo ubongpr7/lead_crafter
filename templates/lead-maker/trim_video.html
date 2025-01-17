@@ -394,7 +394,7 @@ function initializeCanvasTrimmer() {
 
   function initializeCanvasTrimmer() {
     const canvasContainerWidth = canvasContainer.offsetWidth;
-    const thumbnailWidth = 90;
+    const thumbnailWidth = 50;
     const numThumbnails = Math.floor(canvasContainerWidth / thumbnailWidth);
     const step = videoDuration / numThumbnails;
 
@@ -410,7 +410,7 @@ function initializeCanvasTrimmer() {
         const context = canvas.getContext("2d");
 
         canvas.width = thumbnailWidth;
-        canvas.height = 90;
+        canvas.height = 50;
 
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
