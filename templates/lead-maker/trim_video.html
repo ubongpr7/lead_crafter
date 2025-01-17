@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
     video.currentTime=startTime
     const indicator = document.getElementById("left-indicator");
 
-      indicator.style.left = `${leftPercent * 100}%`;
+      indicator.style.left = `${leftPercent}%`;
       indicator.textContent=formatTime(startTime.toFixed(2))
  
     greyOverlay.style.background = `
