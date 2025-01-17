@@ -314,50 +314,7 @@
   const endInput = document.getElementById("end");
   const seekVideo = document.getElementById('seekVideo');
 
- function getCanvasWidth() {
-    const video = document.getElementById('video');
-    if (!video) {
-        throw new Error("Video element with ID 'video' not found.");
-    }
-
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
-    const canvasHeight = 50; // Fixed canvas height
-
-    if (videoHeight === 0) {
-        throw new Error("Video height cannot be zero.");
-    }
-
-    // Calculate the width while maintaining the aspect ratio
-    const canvasWidth = (canvasHeight / videoHeight) * videoWidth;
-    return Math.round(canvasWidth); // Round to the nearest whole number
-}
-    
-function handleInteraction() {
-        document.getElementById('proceedWithoutTrimming').style.display = 'none'; 
-        document.getElementById('undo').style.display = 'inline-block';
-        trimButton.style.display = 'inline-block';
-            }
-
-      function removeTrimming() {
-    startTime = 0;
-    endTime = videoDuration; 
-    currentRangeStart = 0; 
-    startTimeInput.value = startTime.toFixed(2);
-    endTimeInput.value = endTime.toFixed(2);
-
-    startPercent = 0;
-    endPercent = 100;
-
-    trimButton.style.display = 'none';
-    document.getElementById('undo').style.display = 'none';
-    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
-
-    video.currentTime = startTime;
-
-    trimmingVisible=false
-      }
-  let videoDuration = 0;
+      let videoDuration = 0;
   let startTime = 0;
   let endTime = 0;
   let isDraggingLeft = false;
@@ -392,6 +349,50 @@ function handleInteraction() {
   }
   
 
+  function getCanvasWidth() {
+    const video = document.getElementById('video');
+    if (!video) {
+        throw new Error("Video element with ID 'video' not found.");
+    }
+
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+    const canvasHeight = 50; // Fixed canvas height
+
+    if (videoHeight === 0) {
+        throw new Error("Video height cannot be zero.");
+    }
+
+    // Calculate the width while maintaining the aspect ratio
+    const canvasWidth = (canvasHeight / videoHeight) * videoWidth;
+    return Math.round(canvasWidth); // Round to the nearest whole number
+}
+    
+function handleInteraction() {
+    document.getElementById('proceedWithoutTrimming').style.display = 'none'; 
+    document.getElementById('undo').style.display = 'inline-block';
+    trimButton.style.display = 'inline-block';
+    }
+
+  function removeTrimming() {
+    startTime = 0;
+    endTime = videoDuration; 
+    currentRangeStart = 0; 
+    startTimeInput.value = startTime.toFixed(2);
+    endTimeInput.value = endTime.toFixed(2);
+
+    startPercent = 0;
+    endPercent = 100;
+
+    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    video.currentTime = startTime;
+
+    trimmingVisible=false
+      }
+  
   function generateThumbnails(step, numThumbnails, thumbnailWidth) {
     let currentIndex = 0;
 
