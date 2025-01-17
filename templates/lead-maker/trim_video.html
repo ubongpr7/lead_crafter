@@ -278,10 +278,10 @@
             <input type="hidden" name="end" id="end" value="0">
           </div>
           
-          <button type="button" class="btn" id="undo" style="display: none;">Undo Trimming</button>
+          <button type="button" onclick="removeTrimming()" class="btn" id="undo" style="display: none;">Undo Trimming</button>
           
           <div id="actionContainer">
-            <a class="btn proceed-btn" onclick="removeTrimming()" href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
+            <a class="btn proceed-btn"  href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
               Proceed without Trimming
             </a>
             <button type="submit" class="btn proceed-btn" style="display: none;" id="trimButton">
