@@ -88,7 +88,7 @@
 }
 
 </style> -->
-<style>
+<!-- <style>
   body {
   font-family: Arial, sans-serif;
   margin: 20px;
@@ -157,6 +157,54 @@
   opacity: 0.8;
 }
 
+</style> -->
+<style>
+  .trimmer-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.trimmer {
+  position: relative;
+  width: 100%;
+  height: 100px; /* Same as canvas-container */
+  border: 2px dashed #5f83ff;
+  box-sizing: border-box;
+}
+
+.handle {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  background-color: #5f83ff;
+  cursor: ew-resize;
+  z-index: 2;
+}
+
+.left-handle {
+  left: 0;
+}
+
+.right-handle {
+  right: 0;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  height: 100%; /* Ensure it aligns with trimmer height */
+}
+
+.canvas-container .thumbnail {
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
 </style>
 <div class="content contain">
   <section class="login-sec voice-subtitle">
@@ -185,33 +233,6 @@
           </a>
           <h5 class="text-center lead-title"> Trim Your Video </h5>
         </div>
-        <!-- <form class="trim-form" action="." method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="video-container">
-            <video id="video" controls>
-              <source src="{{ text_file.video_file.url }}" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-      
-          <div id="canvasContainer" class="canvas-container"></div>
-      
-          <div>
-            <input type="hidden" name="start" id="start" value="0">
-            <input type="hidden" name="end" id="end" value="0">
-          </div>
-      
-          <button type="button" class="btn" id="undo" style="display: none;">Undo Trimming</button>
-      
-          <div id="actionContainer">
-            <a class="btn proceed-btn" href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
-              Proceed without Trimming
-            </a>
-            <button type="submit" class="btn proceed-btn" style="display: none;" id="trimButton">
-              Trim Video
-            </button>
-          </div>
-        </form> -->
         <form class="trim-form" action="." method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="video-container">
@@ -220,24 +241,22 @@
               Your browser does not support the video tag.
             </video>
           </div>
-        
-          <div id="canvasContainer" class="canvas-container"></div>
-        
-          <!-- Sliders and Indicators -->
-          <div class="trimmer-controls">
-            <input type="range" id="startSlider" min="0" max="100" value="0" step="0.1">
-            <input type="range" id="endSlider" min="0" max="100" value="100" step="0.1">
-            <span id="startTimeIndicator">0:00</span>
-            <span id="endTimeIndicator">0:00</span>
+          
+          <div id="trimmerContainer" class="trimmer-container">
+            <div id="trimmer" class="trimmer">
+              <div id="leftHandle" class="handle left-handle"></div>
+              <div id="canvasContainer" class="canvas-container"></div>
+              <div id="rightHandle" class="handle right-handle"></div>
+            </div>
           </div>
-        
+          
           <div>
             <input type="hidden" name="start" id="start" value="0">
             <input type="hidden" name="end" id="end" value="0">
           </div>
-        
+          
           <button type="button" class="btn" id="undo" style="display: none;">Undo Trimming</button>
-        
+          
           <div id="actionContainer">
             <a class="btn proceed-btn" href="/text/add-leads/{{ text_file.id }}" id="proceedWithoutTrimming">
               Proceed without Trimming
@@ -361,7 +380,7 @@ function initializeCanvasTrimmer() {
 
     </script> -->
 
-    <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("video");
   const canvasContainer = document.getElementById("canvasContainer");
@@ -485,6 +504,102 @@ function initializeCanvasTrimmer() {
   });
 });
 
-    </script>
+    </script> -->
+   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const video = document.getElementById("video");
+  const trimmer = document.getElementById("trimmer");
+  const leftHandle = document.getElementById("leftHandle");
+  const rightHandle = document.getElementById("rightHandle");
+  const canvasContainer = document.getElementById("canvasContainer");
+  const startInput = document.getElementById("start");
+  const endInput = document.getElementById("end");
+
+  let videoDuration = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let isDraggingLeft = false;
+  let isDraggingRight = false;
+  let containerWidth = canvasContainer.offsetWidth;
+
+  function initializeCanvasTrimmer() {
+    videoDuration = Math.floor(video.duration);
+    startTime = 0;
+    endTime = videoDuration;
+
+    updateHandles();
+    createThumbnails();
+  }
+
+  function updateHandles() {
+    const leftPercent = (startTime / videoDuration) * 100;
+    const rightPercent = 100 - (endTime / videoDuration) * 100;
+
+    leftHandle.style.left = `${leftPercent}%`;
+    rightHandle.style.right = `${rightPercent}%`;
+
+    startInput.value = startTime.toFixed(2);
+    endInput.value = endTime.toFixed(2);
+  }
+
+  function createThumbnails() {
+    const step = videoDuration / (canvasContainer.offsetWidth / 90);
+    canvasContainer.innerHTML = ""; // Clear existing thumbnails
+
+    for (let i = 0; i < videoDuration; i += step) {
+      const thumbnail = document.createElement("div");
+      thumbnail.className = "thumbnail";
+      thumbnail.style.width = "90px";
+      thumbnail.dataset.time = i;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 90;
+      canvas.height = 90; // Fixed aspect ratio
+
+      const context = canvas.getContext("2d");
+      video.currentTime = i;
+
+      video.addEventListener("seeked", function handleSeeked() {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        thumbnail.appendChild(canvas);
+        video.removeEventListener("seeked", handleSeeked);
+      });
+
+      canvasContainer.appendChild(thumbnail);
+    }
+  }
+
+  function updateTrimmer(startX, endX) {
+    const startPercent = Math.min(Math.max(startX / containerWidth, 0), 1);
+    const endPercent = Math.min(Math.max(endX / containerWidth, 0), 1);
+
+    startTime = startPercent * videoDuration;
+    endTime = endPercent * videoDuration;
+
+    updateHandles();
+  }
+
+  leftHandle.addEventListener("mousedown", () => (isDraggingLeft = true));
+  rightHandle.addEventListener("mousedown", () => (isDraggingRight = true));
+
+  document.addEventListener("mousemove", (e) => {
+    if (isDraggingLeft || isDraggingRight) {
+      const rect = canvasContainer.getBoundingClientRect();
+      const startX = isDraggingLeft ? e.clientX - rect.left : 0;
+      const endX = isDraggingRight ? e.clientX - rect.left : containerWidth;
+
+      updateTrimmer(startX, endX);
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    isDraggingLeft = false;
+    isDraggingRight = false;
+  });
+
+  video.addEventListener("loadedmetadata", initializeCanvasTrimmer);
+});
+
+   </script>
     {% endblock content %}
  
