@@ -260,10 +260,6 @@
               </video>
             </div>
           </figure>
-          <video style="display: none;" id="seekVideo" height="400" controls>
-            <source src="{{text_file.video_file.url}}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
           <div id="trimmerContainer" class="trimmer-container">
             <div id="trimmer" class="trimmer">
               <div id="leftHandle" class="handle left-handle"></div>
@@ -307,14 +303,13 @@
    <script>
     
 
-    document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("video");
   const leftHandle = document.getElementById("leftHandle");
   const rightHandle = document.getElementById("rightHandle");
   const canvasContainer = document.getElementById("canvasContainer");
   const startInput = document.getElementById("start");
   const endInput = document.getElementById("end");
-  const seekVideo = document.getElementById('seekVideo');
 
       let videoDuration = 0;
   let startTime = 0;
