@@ -355,6 +355,7 @@ document.getElementById('undo').addEventListener('click',removeTrimming )
     greyOverlay.style.pointerEvents = "none";
 
     generateThumbnails(step, numThumbnails, thumbnailWidth);
+    video.currentTime=0
     
     startTime = 0;
     endTime = videoDuration;
