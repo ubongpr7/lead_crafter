@@ -178,6 +178,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <script>
+      
       const video = document.getElementById('video');
       const sliderStart = document.getElementById('sliderStart');
       const sliderFilled = document.getElementById('slider-filled');
@@ -227,10 +228,10 @@
     
         startTimeDisplay.textContent = startTime.toFixed(2); 
         startTimeInput.value = startTime.toFixed(2); 
-        if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
+        // if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
 
-          handleInteraction();
-        }
+        //   handleInteraction();
+        // }
       }
     
       sliderStart.addEventListener('mousedown', (e) => {
