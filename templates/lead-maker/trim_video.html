@@ -561,10 +561,12 @@ function generateThumbnails(numThumbnails, thumbnailWidth, canvasContainerWidth)
     isDraggingLeft = false;
     isDraggingRight = false;
   });
-  video.addEventListener("loadedmetadata", () => {
-    console.log("Video metadata loaded.");
-    initializeCanvasTrimmer();
-  });
+  // video.addEventListener("loadedmetadata", () => {
+  //   console.log("Video metadata loaded.");
+  //   initializeCanvasTrimmer();
+  // });
+
+  initializeCanvasTrimmer()
 });
 
    </script>
