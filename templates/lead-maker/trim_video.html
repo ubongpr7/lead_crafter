@@ -337,7 +337,8 @@ function removeTrimming() {
     document.getElementById('undo').style.display = 'none';
     document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
 
-  updateTrimmer()
+    // video.currentTime = startTime;
+    updateGreyOverlay();
       }
 
 document.getElementById('undo').addEventListener('click',removeTrimming )
