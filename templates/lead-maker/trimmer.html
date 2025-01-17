@@ -227,10 +227,10 @@
     
         startTimeDisplay.textContent = startTime.toFixed(2); 
         startTimeInput.value = startTime.toFixed(2); 
-        // if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
+        if (document.getElementById('proceedWithoutTrimming').style.display !='none'){
 
-        //   handleInteraction();
-        // }
+          handleInteraction();
+        }
       }
     
       sliderStart.addEventListener('mousedown', (e) => {
@@ -265,15 +265,6 @@
         updateSlider();
       });
     
-      // Sync slider position with video playback
-      // video.addEventListener('timeupdate', () => {
-      //   if (!isDragging) {
-      //     // startTime = video.currentTime;
-      //     // updateSlider();
-      //   }
-      // });
-      
-
       
         function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
