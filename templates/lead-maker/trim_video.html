@@ -305,6 +305,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
    <script>
+    
+
+function removeTrimming() {
+    startTime = 0;
+    endTime = videoDuration; 
+    currentRangeStart = 0; 
+    startTimeInput.value = startTime.toFixed(2);
+    endTimeInput.value = endTime.toFixed(2);
+
+    startPercent = 0;
+    endPercent = 100;
+
+    trimButton.style.display = 'none';
+    document.getElementById('undo').style.display = 'none';
+    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
+
+    video.currentTime = startTime;
+
+    trimmingVisible=false
+      }
+
     document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById("video");
   const leftHandle = document.getElementById("leftHandle");
@@ -373,25 +394,6 @@ function handleInteraction() {
     document.getElementById('undo').style.display = 'inline-block';
     trimButton.style.display = 'inline-block';
     }
-
-  function removeTrimming() {
-    startTime = 0;
-    endTime = videoDuration; 
-    currentRangeStart = 0; 
-    startTimeInput.value = startTime.toFixed(2);
-    endTimeInput.value = endTime.toFixed(2);
-
-    startPercent = 0;
-    endPercent = 100;
-
-    trimButton.style.display = 'none';
-    document.getElementById('undo').style.display = 'none';
-    document.getElementById('proceedWithoutTrimming').style.display = 'inline-block';
-
-    video.currentTime = startTime;
-
-    trimmingVisible=false
-      }
   
   function generateThumbnails(step, numThumbnails, thumbnailWidth) {
     let currentIndex = 0;
@@ -517,7 +519,9 @@ function handleInteraction() {
     console.log("Video metadata loaded.");
     initializeCanvasTrimmer();
   });
+
 });
+
 
    </script>
    {% endblock content %}
